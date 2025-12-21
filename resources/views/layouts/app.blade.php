@@ -75,7 +75,7 @@
                         </div>
                         <div>
                             <span class="text-2xl font-bold bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">ATC JAPAN</span>
-                            <p class="text-xs text-gray-600">Asia Trading Co.</p>
+                            <p class="text-xs text-gray-600">Asia Trading Co. Ltd.</p>
                         </div>
                     </a>
                     <div class="hidden lg:ml-10 lg:flex lg:space-x-1">

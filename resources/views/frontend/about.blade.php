@@ -29,11 +29,14 @@
                     We take pride in our commitment to excellence, transparency, and customer satisfaction. From sourcing to shipping, we provide end-to-end solutions that make importing Japanese auto parts hassle-free and cost-effective.
                 </p>
             </div>
-            <div class="bg-gradient-to-br from-indigo-100 to-purple-100 rounded-2xl p-8 h-96 flex items-center justify-center">
+            <div class="bg-gradient-to-br from-indigo-100 to-purple-100 rounded-2xl p-8 h-96 flex items-center justify-center" style="
+                background: url('images/about-us.avif') center center no-repeat;
+                background-size: cover;
+            ">
                 <div class="text-center">
-                    <div class="text-6xl mb-4">🚀</div>
-                    <h3 class="text-2xl font-bold text-gray-900">Our Mission</h3>
-                    <p class="text-gray-600 mt-2">Empowering businesses through technology</p>
+                    <!-- <div class="text-6xl mb-4">🚀</div> -->
+                    <!-- <h3 class="text-2xl font-bold text-gray-900">Our Mission</h3>
+                    <p class="text-gray-600 mt-2">Empowering businesses through technology</p> -->
                 </div>
             </div>
         </div>
