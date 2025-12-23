@@ -80,7 +80,7 @@
                 </a>
                 @endcan
 
-                @hasRole('admin')
+                @if(Auth::user()->hasRole('admin'))
                 <div class="pt-2 pb-2 border-t border-gray-200">
                     <p class="px-4 text-xs font-bold text-gray-500 uppercase mb-2">Products</p>
                     
@@ -101,6 +101,39 @@
                 </div>
 
                 <div class="pt-2 pb-2 border-t border-gray-200">
+                    <p class="px-4 text-xs font-bold text-gray-500 uppercase mb-2">Car Parts</p>
+                    
+                    <a href="{{ route('car-parts.index', ['admin' => 1]) }}" class="flex items-center gap-3 px-4 py-3 text-sm font-medium text-gray-700 hover:bg-gradient-to-r hover:from-teal-50 hover:to-cyan-50 hover:text-teal-700 rounded-xl transition-all group">
+                        <i class="fas fa-cogs w-5 text-teal-600"></i>
+                        <span>All Car Parts</span>
+                    </a>
+
+                    <a href="{{ route('admin.car-parts.create') }}" class="flex items-center gap-3 px-4 py-3 text-sm font-medium text-gray-700 hover:bg-gradient-to-r hover:from-purple-50 hover:to-pink-50 hover:text-purple-700 rounded-xl transition-all group">
+                        <i class="fas fa-plus-circle w-5 text-purple-600"></i>
+                        <span>Add New Car Part</span>
+                    </a>
+
+                    <a href="{{ route('car-parts.index') }}" class="flex items-center gap-3 px-4 py-3 text-sm font-medium text-gray-700 hover:bg-gradient-to-r hover:from-blue-50 hover:to-cyan-50 hover:text-blue-700 rounded-xl transition-all group">
+                        <i class="fas fa-eye w-5 text-blue-600"></i>
+                        <span>Public Car Parts</span>
+                    </a>
+                </div>
+
+                <div class="pt-2 pb-2 border-t border-gray-200">
+                    <p class="px-4 text-xs font-bold text-gray-500 uppercase mb-2">Sliders</p>
+                    
+                    <a href="{{ route('admin.sliders.index') }}" class="flex items-center gap-3 px-4 py-3 text-sm font-medium text-gray-700 hover:bg-gradient-to-r hover:from-pink-50 hover:to-rose-50 hover:text-pink-700 rounded-xl transition-all group">
+                        <i class="fas fa-images w-5 text-pink-600"></i>
+                        <span>Manage Sliders</span>
+                    </a>
+
+                    <a href="{{ route('admin.sliders.create') }}" class="flex items-center gap-3 px-4 py-3 text-sm font-medium text-gray-700 hover:bg-gradient-to-r hover:from-rose-50 hover:to-red-50 hover:text-rose-700 rounded-xl transition-all group">
+                        <i class="fas fa-plus-circle w-5 text-rose-600"></i>
+                        <span>Add New Slider</span>
+                    </a>
+                </div>
+
+                <div class="pt-2 pb-2 border-t border-gray-200">
                     <p class="px-4 text-xs font-bold text-gray-500 uppercase mb-2">Quick Stats</p>
                     
                     <div class="px-4 py-3 bg-gradient-to-r from-indigo-50 to-purple-50 rounded-xl">
@@ -108,20 +141,28 @@
                             <span class="text-xs font-medium text-gray-600">Products</span>
                             <span class="text-lg font-bold text-indigo-600">{{ \App\Models\Product::count() }}</span>
                         </div>
+                        <div class="flex items-center justify-between mb-2">
+                            <span class="text-xs font-medium text-gray-600">Car Parts</span>
+                            <span class="text-lg font-bold text-teal-600">{{ \App\Models\CarPart::count() }}</span>
+                        </div>
+                        <div class="flex items-center justify-between mb-2">
+                            <span class="text-xs font-medium text-gray-600">Sliders</span>
+                            <span class="text-lg font-bold text-pink-600">{{ \App\Models\Slider::count() }}</span>
+                        </div>
                         <div class="flex items-center justify-between">
                             <span class="text-xs font-medium text-gray-600">Users</span>
                             <span class="text-lg font-bold text-purple-600">{{ \App\Models\User::count() }}</span>
                         </div>
                     </div>
                 </div>
-                @endhasRole
+                @endif
             </nav>
         </div>
     </aside>
 
     <!-- Main Content -->
-    <main class="ml-64 mt-16 p-8 bg-gradient-to-br from-gray-50 to-gray-100 min-h-screen">
-        <div class="max-w-7xl mx-auto space-y-6">
+    <main class="ml-64 mt-16 p-6 md:p-8 bg-gradient-to-br from-gray-50 to-gray-100 min-h-screen">
+        <div class="w-full space-y-6">
             <!-- Welcome Section with Gradient -->
             <div class="bg-gradient-to-r from-indigo-600 via-purple-600 to-pink-600 overflow-hidden shadow-xl rounded-2xl">
                 <div class="px-8 py-10 sm:p-12">
@@ -301,7 +342,7 @@
                         </div>
                         @endcan
                         
-                        @hasRole('admin')
+                        @if(Auth::user()->hasRole('admin'))
                         <a href="{{ route('products.index', ['admin' => 1]) }}" class="group p-6 border-2 border-gray-200 rounded-xl bg-gradient-to-br from-orange-50 to-amber-50 hover:from-orange-100 hover:to-amber-100 hover:border-orange-300 transition-all duration-300 cursor-pointer block shadow-sm hover:shadow-lg">
                             <div class="flex items-center justify-between mb-3">
                                 <div class="w-12 h-12 bg-gradient-to-br from-orange-500 to-amber-600 rounded-lg flex items-center justify-center">
@@ -334,20 +375,53 @@
                             <h3 class="font-bold text-gray-900 text-lg mb-1">View Public Products</h3>
                             <p class="text-sm text-gray-600">See how products appear to customers</p>
                         </a>
-                        @endhasRole
+
+                        <a href="{{ route('car-parts.index', ['admin' => 1]) }}" class="group p-6 border-2 border-gray-200 rounded-xl bg-gradient-to-br from-teal-50 to-cyan-50 hover:from-teal-100 hover:to-cyan-100 hover:border-teal-300 transition-all duration-300 cursor-pointer block shadow-sm hover:shadow-lg">
+                            <div class="flex items-center justify-between mb-3">
+                                <div class="w-12 h-12 bg-gradient-to-br from-teal-500 to-cyan-600 rounded-lg flex items-center justify-center">
+                                    <i class="fas fa-cogs text-white text-xl"></i>
+                                </div>
+                                <i class="fas fa-arrow-right text-teal-600 group-hover:translate-x-1 transition-transform"></i>
+                            </div>
+                            <h3 class="font-bold text-gray-900 text-lg mb-1">Manage Car Parts</h3>
+                            <p class="text-sm text-gray-600">View, edit, and delete all car parts</p>
+                        </a>
+
+                        <a href="{{ route('admin.car-parts.create') }}" class="group p-6 border-2 border-gray-200 rounded-xl bg-gradient-to-br from-indigo-50 to-purple-50 hover:from-indigo-100 hover:to-purple-100 hover:border-indigo-300 transition-all duration-300 cursor-pointer block shadow-sm hover:shadow-lg">
+                            <div class="flex items-center justify-between mb-3">
+                                <div class="w-12 h-12 bg-gradient-to-br from-indigo-500 to-purple-600 rounded-lg flex items-center justify-center">
+                                    <i class="fas fa-plus-circle text-white text-xl"></i>
+                                </div>
+                                <i class="fas fa-arrow-right text-indigo-600 group-hover:translate-x-1 transition-transform"></i>
+                            </div>
+                            <h3 class="font-bold text-gray-900 text-lg mb-1">Add New Car Part</h3>
+                            <p class="text-sm text-gray-600">Create car part with images and videos</p>
+                        </a>
+
+                        <a href="{{ route('car-parts.index') }}" class="group p-6 border-2 border-gray-200 rounded-xl bg-gradient-to-br from-blue-50 to-cyan-50 hover:from-blue-100 hover:to-cyan-100 hover:border-blue-300 transition-all duration-300 cursor-pointer block shadow-sm hover:shadow-lg">
+                            <div class="flex items-center justify-between mb-3">
+                                <div class="w-12 h-12 bg-gradient-to-br from-blue-500 to-cyan-600 rounded-lg flex items-center justify-center">
+                                    <i class="fas fa-eye text-white text-xl"></i>
+                                </div>
+                                <i class="fas fa-arrow-right text-blue-600 group-hover:translate-x-1 transition-transform"></i>
+                            </div>
+                            <h3 class="font-bold text-gray-900 text-lg mb-1">View Public Car Parts</h3>
+                            <p class="text-sm text-gray-600">See how car parts appear to customers</p>
+                        </a>
+                        @endif
                     </div>
                 </div>
             </div>
             
             <!-- Quick Stats for Admin -->
-            @hasRole('admin')
+            @if(Auth::user()->hasRole('admin'))
             <div class="mt-6 bg-white overflow-hidden shadow-xl rounded-2xl border border-gray-100">
                 <div class="px-6 py-6 sm:p-8">
                     <h2 class="text-2xl font-bold text-gray-900 mb-6 flex items-center gap-2">
                         <i class="fas fa-chart-line text-indigo-600"></i>
                         Quick Stats
                     </h2>
-                    <div class="grid grid-cols-1 sm:grid-cols-3 gap-6">
+                    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
                         <div class="relative overflow-hidden text-center p-6 bg-gradient-to-br from-indigo-500 to-purple-600 rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 group">
                             <div class="absolute top-0 right-0 w-24 h-24 bg-white/10 rounded-full -mr-12 -mt-12"></div>
                             <div class="relative">
@@ -356,12 +430,20 @@
                                 <div class="text-sm text-indigo-100 font-medium">Total Products</div>
                             </div>
                         </div>
+                        <div class="relative overflow-hidden text-center p-6 bg-gradient-to-br from-teal-500 to-cyan-600 rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 group">
+                            <div class="absolute top-0 right-0 w-24 h-24 bg-white/10 rounded-full -mr-12 -mt-12"></div>
+                            <div class="relative">
+                                <i class="fas fa-cogs text-white/80 text-3xl mb-3"></i>
+                                <div class="text-4xl font-bold text-white mb-2">{{ \App\Models\CarPart::count() }}</div>
+                                <div class="text-sm text-teal-100 font-medium">Total Car Parts</div>
+                            </div>
+                        </div>
                         <div class="relative overflow-hidden text-center p-6 bg-gradient-to-br from-green-500 to-emerald-600 rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 group">
                             <div class="absolute top-0 right-0 w-24 h-24 bg-white/10 rounded-full -mr-12 -mt-12"></div>
                             <div class="relative">
                                 <i class="fas fa-check-circle text-white/80 text-3xl mb-3"></i>
-                                <div class="text-4xl font-bold text-white mb-2">{{ \App\Models\Product::where('is_available', true)->count() }}</div>
-                                <div class="text-sm text-green-100 font-medium">Available Products</div>
+                                <div class="text-4xl font-bold text-white mb-2">{{ \App\Models\Product::where('is_available', true)->count() + \App\Models\CarPart::where('is_available', true)->count() }}</div>
+                                <div class="text-sm text-green-100 font-medium">Available Items</div>
                             </div>
                         </div>
                         <div class="relative overflow-hidden text-center p-6 bg-gradient-to-br from-pink-500 to-rose-600 rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 group">
@@ -375,7 +457,7 @@
                     </div>
                 </div>
             </div>
-            @endhasRole
+            @endif
         </div>
     </main>
 </body>

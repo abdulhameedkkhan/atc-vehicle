@@ -2,11 +2,11 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Product;
+use App\Models\CarPart;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 
-class ProductController extends Controller
+class CarPartController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -15,11 +15,11 @@ class ProductController extends Controller
     {
         // Check if admin is viewing (for admin management view)
         if (auth()->check() && auth()->user()->hasRole('admin') && request()->has('admin')) {
-            return view('products.admin-index');
+            return view('car-parts.admin-index');
         }
         
-        // Public view - Livewire handles the products
-        return view('products.index');
+        // Public view - Livewire handles the car parts
+        return view('car-parts.index');
     }
 
     /**
@@ -27,7 +27,7 @@ class ProductController extends Controller
      */
     public function create()
     {
-        return view('products.create');
+        return view('car-parts.create');
     }
 
     /**
@@ -52,49 +52,49 @@ class ProductController extends Controller
 
         // Upload main image
         if ($request->hasFile('image')) {
-            $validated['image'] = $request->file('image')->store('products/images', 'public');
+            $validated['image'] = $request->file('image')->store('car-parts/images', 'public');
         }
 
         // Upload multiple images
         if ($request->hasFile('images')) {
             $images = [];
             foreach ($request->file('images') as $image) {
-                $images[] = $image->store('products/images', 'public');
+                $images[] = $image->store('car-parts/images', 'public');
             }
             $validated['images'] = $images;
         }
 
         // Upload video
         if ($request->hasFile('video')) {
-            $validated['video'] = $request->file('video')->store('products/videos', 'public');
+            $validated['video'] = $request->file('video')->store('car-parts/videos', 'public');
         }
 
-        Product::create($validated);
+        CarPart::create($validated);
 
-        return redirect()->route('products.index', ['admin' => 1])
-            ->with('success', 'Product created successfully.');
+        return redirect()->route('car-parts.index', ['admin' => 1])
+            ->with('success', 'Car part created successfully.');
     }
 
     /**
      * Display the specified resource.
      */
-    public function show(Product $product)
+    public function show(CarPart $carPart)
     {
-        return view('products.show', compact('product'));
+        return view('car-parts.show', compact('carPart'));
     }
 
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(Product $product)
+    public function edit(CarPart $carPart)
     {
-        return view('products.edit', compact('product'));
+        return view('car-parts.edit', compact('carPart'));
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, Product $product)
+    public function update(Request $request, CarPart $carPart)
     {
         $validated = $request->validate([
             'name' => 'required|string|max:255',
@@ -114,67 +114,67 @@ class ProductController extends Controller
 
         // Update main image
         if ($request->hasFile('image')) {
-            if ($product->image) {
-                Storage::disk('public')->delete($product->image);
+            if ($carPart->image) {
+                Storage::disk('public')->delete($carPart->image);
             }
-            $validated['image'] = $request->file('image')->store('products/images', 'public');
+            $validated['image'] = $request->file('image')->store('car-parts/images', 'public');
         }
 
         // Update multiple images
         if ($request->hasFile('images')) {
             // Delete old images
-            if ($product->images) {
-                foreach ($product->images as $oldImage) {
+            if ($carPart->images) {
+                foreach ($carPart->images as $oldImage) {
                     Storage::disk('public')->delete($oldImage);
                 }
             }
             $images = [];
             foreach ($request->file('images') as $image) {
-                $images[] = $image->store('products/images', 'public');
+                $images[] = $image->store('car-parts/images', 'public');
             }
             $validated['images'] = $images;
         }
 
         // Update video
         if ($request->hasFile('video')) {
-            if ($product->video) {
-                Storage::disk('public')->delete($product->video);
+            if ($carPart->video) {
+                Storage::disk('public')->delete($carPart->video);
             }
-            $validated['video'] = $request->file('video')->store('products/videos', 'public');
+            $validated['video'] = $request->file('video')->store('car-parts/videos', 'public');
         }
 
-        $product->update($validated);
+        $carPart->update($validated);
 
-        return redirect()->route('products.index', ['admin' => 1])
-            ->with('success', 'Product updated successfully.');
+        return redirect()->route('car-parts.index', ['admin' => 1])
+            ->with('success', 'Car part updated successfully.');
     }
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Product $product)
+    public function destroy(CarPart $carPart)
     {
         // Delete images
-        if ($product->image) {
-            Storage::disk('public')->delete($product->image);
+        if ($carPart->image) {
+            Storage::disk('public')->delete($carPart->image);
         }
-        if ($product->images) {
-            foreach ($product->images as $image) {
+        if ($carPart->images) {
+            foreach ($carPart->images as $image) {
                 Storage::disk('public')->delete($image);
             }
         }
-        if ($product->video) {
-            Storage::disk('public')->delete($product->video);
+        if ($carPart->video) {
+            Storage::disk('public')->delete($carPart->video);
         }
 
-        $product->delete();
+        $carPart->delete();
 
-        return redirect()->route('products.index', ['admin' => 1])
-            ->with('success', 'Product deleted successfully.');
+        return redirect()->route('car-parts.index', ['admin' => 1])
+            ->with('success', 'Car part deleted successfully.');
     }
 
     /**
-     * Get products for DataTables (Server-side processing)
+     * Get car parts for DataTables (Server-side processing)
      */
     public function datatable(Request $request)
     {
@@ -199,7 +199,7 @@ class ProductController extends Controller
 
         $orderColumnName = $columnMap[$orderColumn] ?? 'created_at';
 
-        $query = Product::query();
+        $query = CarPart::query();
 
         // Apply search
         if (!empty($search)) {
@@ -213,7 +213,7 @@ class ProductController extends Controller
         }
 
         // Get total count
-        $totalRecords = Product::count();
+        $totalRecords = CarPart::count();
         $filteredRecords = $query->count();
 
         // Apply ordering and pagination
@@ -223,29 +223,29 @@ class ProductController extends Controller
             $query->orderBy('created_at', 'desc');
         }
 
-        $products = $query->skip($start)->take($length)->get();
+        $carParts = $query->skip($start)->take($length)->get();
 
         $data = [];
-        foreach ($products as $product) {
+        foreach ($carParts as $carPart) {
             $data[] = [
                 'image' => '<div class="relative group">
-                    <img src="' . $product->image_url . '" alt="' . e($product->name) . '" 
+                    <img src="' . $carPart->image_url . '" alt="' . e($carPart->name) . '" 
                          class="w-20 h-20 object-cover rounded-xl shadow-md border-2 border-gray-100">
-                    ' . ($product->video ? '<div class="absolute top-1 right-1 bg-red-500 rounded-full p-1"><i class="fas fa-video text-white text-xs"></i></div>' : '') . '
+                    ' . ($carPart->video ? '<div class="absolute top-1 right-1 bg-red-500 rounded-full p-1"><i class="fas fa-video text-white text-xs"></i></div>' : '') . '
                 </div>',
-                'name' => '<div class="text-sm font-bold text-gray-900">' . e($product->name) . '</div>' .
-                    ($product->part_number ? '<div class="text-xs text-gray-500 mt-1"><i class="fas fa-barcode"></i> ' . e($product->part_number) . '</div>' : ''),
-                'brand' => '<span class="px-3 py-1.5 text-xs font-bold rounded-lg bg-gradient-to-r from-indigo-100 to-purple-100 text-indigo-800 border border-indigo-200">' . e($product->brand) . '</span>',
-                'category' => '<span class="text-sm text-gray-700 font-medium">' . e($product->category) . '</span>',
-                'price' => $product->price ? '<span class="text-sm font-bold text-green-600">$' . number_format($product->price, 2) . '</span>' : '<span class="text-sm text-gray-400 italic">N/A</span>',
-                'stock' => '<span class="px-2 py-1 text-xs font-semibold rounded-lg ' . ($product->stock_quantity > 0 ? 'bg-blue-100 text-blue-800' : 'bg-gray-100 text-gray-600') . '">' . $product->stock_quantity . ' units</span>',
-                'status' => $product->is_available 
+                'name' => '<div class="text-sm font-bold text-gray-900">' . e($carPart->name) . '</div>' .
+                    ($carPart->part_number ? '<div class="text-xs text-gray-500 mt-1"><i class="fas fa-barcode"></i> ' . e($carPart->part_number) . '</div>' : ''),
+                'brand' => '<span class="px-3 py-1.5 text-xs font-bold rounded-lg bg-gradient-to-r from-indigo-100 to-purple-100 text-indigo-800 border border-indigo-200">' . e($carPart->brand) . '</span>',
+                'category' => '<span class="text-sm text-gray-700 font-medium">' . e($carPart->category) . '</span>',
+                'price' => $carPart->price ? '<span class="text-sm font-bold text-green-600">$' . number_format($carPart->price, 2) . '</span>' : '<span class="text-sm text-gray-400 italic">N/A</span>',
+                'stock' => '<span class="px-2 py-1 text-xs font-semibold rounded-lg ' . ($carPart->stock_quantity > 0 ? 'bg-blue-100 text-blue-800' : 'bg-gray-100 text-gray-600') . '">' . $carPart->stock_quantity . ' units</span>',
+                'status' => $carPart->is_available 
                     ? '<span class="px-3 py-1.5 text-xs font-bold rounded-lg bg-gradient-to-r from-green-100 to-emerald-100 text-green-800 border border-green-200 flex items-center gap-1 w-fit"><i class="fas fa-check-circle"></i> Available</span>'
                     : '<span class="px-3 py-1.5 text-xs font-bold rounded-lg bg-gradient-to-r from-red-100 to-pink-100 text-red-800 border border-red-200 flex items-center gap-1 w-fit"><i class="fas fa-times-circle"></i> Unavailable</span>',
                 'actions' => '<div class="flex items-center justify-end gap-2">
-                    <a href="' . route('products.show', $product->hashid) . '" class="px-3 py-1.5 bg-indigo-100 text-indigo-700 hover:bg-indigo-200 rounded-lg transition-colors duration-200 flex items-center gap-1 text-xs font-semibold"><i class="fas fa-eye"></i> View</a>
-                    <a href="' . route('admin.products.edit', $product->hashid) . '" class="px-3 py-1.5 bg-blue-100 text-blue-700 hover:bg-blue-200 rounded-lg transition-colors duration-200 flex items-center gap-1 text-xs font-semibold"><i class="fas fa-edit"></i> Edit</a>
-                    <form action="' . route('admin.products.destroy', $product->hashid) . '" method="POST" class="inline" onsubmit="return confirm(\'Are you sure?\');">
+                    <a href="' . route('car-parts.show', $carPart->hashid) . '" class="px-3 py-1.5 bg-indigo-100 text-indigo-700 hover:bg-indigo-200 rounded-lg transition-colors duration-200 flex items-center gap-1 text-xs font-semibold"><i class="fas fa-eye"></i> View</a>
+                    <a href="' . route('admin.car-parts.edit', $carPart->hashid) . '" class="px-3 py-1.5 bg-blue-100 text-blue-700 hover:bg-blue-200 rounded-lg transition-colors duration-200 flex items-center gap-1 text-xs font-semibold"><i class="fas fa-edit"></i> Edit</a>
+                    <form action="' . route('admin.car-parts.destroy', $carPart->hashid) . '" method="POST" class="inline" onsubmit="return confirm(\'Are you sure?\');">
                         ' . csrf_field() . '
                         ' . method_field('DELETE') . '
                         <button type="submit" class="px-3 py-1.5 bg-red-100 text-red-700 hover:bg-red-200 rounded-lg transition-colors duration-200 flex items-center gap-1 text-xs font-semibold"><i class="fas fa-trash"></i> Delete</button>
@@ -262,3 +262,4 @@ class ProductController extends Controller
         ]);
     }
 }
+

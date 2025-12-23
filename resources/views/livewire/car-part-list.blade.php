@@ -5,13 +5,13 @@
             <!-- Search Bar -->
             <div class="mb-6">
                 <label class="block text-sm font-semibold text-gray-700 mb-3">
-                    <i class="fas fa-search mr-2 text-blue-600"></i>Search Products
+                    <i class="fas fa-search mr-2 text-teal-600"></i>Search Car Parts
                 </label>
                 <div class="relative">
                     <input type="text" 
                            wire:model.live.debounce.500ms="searchTerm"
-                           placeholder="Search products..." 
-                           class="w-full px-4 py-3 pl-12 border-2 border-gray-200 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-blue-500">
+                           placeholder="Search car parts..." 
+                           class="w-full px-4 py-3 pl-12 border-2 border-gray-200 rounded-xl focus:ring-2 focus:ring-teal-500 focus:border-teal-500">
                     <i class="fas fa-search absolute left-4 top-1/2 transform -translate-y-1/2 text-gray-400"></i>
                     @if($searchTerm)
                     <button wire:click="$set('searchTerm', '')" class="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400 hover:text-red-600 transition">
@@ -24,7 +24,7 @@
             <!-- Filters Section -->
             <div class="space-y-5">
                 <h3 class="text-sm font-bold text-gray-700 uppercase tracking-wider border-b border-gray-200 pb-2">
-                    <i class="fas fa-filter mr-2 text-blue-600"></i>Filters
+                    <i class="fas fa-filter mr-2 text-teal-600"></i>Filters
                 </h3>
 
                 <!-- Brand Filter -->
@@ -32,7 +32,7 @@
                     <label class="block text-sm font-semibold text-gray-700 mb-2">
                         <i class="fas fa-car mr-2"></i>Brand
                     </label>
-                    <select wire:model.live="selectedBrand" class="w-full px-4 py-2.5 border-2 border-gray-200 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-sm">
+                    <select wire:model.live="selectedBrand" class="w-full px-4 py-2.5 border-2 border-gray-200 rounded-lg focus:ring-2 focus:ring-teal-500 focus:border-teal-500 text-sm">
                         <option value="">All Brands</option>
                         <option value="TOYOTA">TOYOTA</option>
                         <option value="NISSAN">NISSAN</option>
@@ -52,14 +52,16 @@
                     <label class="block text-sm font-semibold text-gray-700 mb-2">
                         <i class="fas fa-th-large mr-2"></i>Category
                     </label>
-                    <select wire:model.live="selectedCategory" class="w-full px-4 py-2.5 border-2 border-gray-200 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-sm">
+                    <select wire:model.live="selectedCategory" class="w-full px-4 py-2.5 border-2 border-gray-200 rounded-lg focus:ring-2 focus:ring-teal-500 focus:border-teal-500 text-sm">
                         <option value="">All Categories</option>
-                        <option value="Vehicles">Vehicles</option>
-                        <option value="Parts">Parts</option>
-                        <option value="Engines">Engines</option>
-                        <option value="Transmissions">Transmissions</option>
+                        <option value="Engine Parts">Engine Parts</option>
+                        <option value="Brake System">Brake System</option>
+                        <option value="Transmission">Transmission</option>
                         <option value="Body Parts">Body Parts</option>
-                        <option value="Interior">Interior</option>
+                        <option value="Lighting">Lighting</option>
+                        <option value="Fuel System">Fuel System</option>
+                        <option value="HVAC">HVAC</option>
+                        <option value="Other">Other</option>
                     </select>
                 </div>
 
@@ -68,13 +70,13 @@
                     <label class="block text-sm font-semibold text-gray-700 mb-2">
                         <i class="fas fa-dollar-sign mr-2"></i>Price Range
                     </label>
-                    <select wire:model.live="selectedPrice" class="w-full px-4 py-2.5 border-2 border-gray-200 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-sm">
+                    <select wire:model.live="selectedPrice" class="w-full px-4 py-2.5 border-2 border-gray-200 rounded-lg focus:ring-2 focus:ring-teal-500 focus:border-teal-500 text-sm">
                         <option value="">All Prices</option>
-                        <option value="0-500">Under $500</option>
+                        <option value="0-100">Under $100</option>
+                        <option value="100-500">$100 - $500</option>
                         <option value="500-1000">$500 - $1,000</option>
                         <option value="1000-2000">$1,000 - $2,000</option>
-                        <option value="2000-5000">$2,000 - $5,000</option>
-                        <option value="5000+">$5,000+</option>
+                        <option value="2000+">$2,000+</option>
                     </select>
                 </div>
 
@@ -89,7 +91,7 @@
                     <h4 class="text-xs font-bold text-gray-700 uppercase mb-3">Active Filters</h4>
                     <div class="flex flex-col gap-2">
                         @if($searchTerm)
-                        <span class="bg-blue-100 text-blue-800 px-3 py-1.5 rounded-full text-xs font-semibold flex items-center justify-between">
+                        <span class="bg-teal-100 text-teal-800 px-3 py-1.5 rounded-full text-xs font-semibold flex items-center justify-between">
                             <span class="flex items-center gap-2">
                                 <i class="fas fa-search"></i> "{{ $searchTerm }}"
                             </span>
@@ -114,17 +116,17 @@
                         @if($selectedPrice)
                         <span class="bg-amber-100 text-amber-800 px-3 py-1.5 rounded-full text-xs font-semibold">
                             <i class="fas fa-dollar-sign mr-1"></i> 
-                            @if($selectedPrice === '0-500') Under $500
+                            @if($selectedPrice === '0-100') Under $100
+                            @elseif($selectedPrice === '100-500') $100 - $500
                             @elseif($selectedPrice === '500-1000') $500 - $1,000
                             @elseif($selectedPrice === '1000-2000') $1,000 - $2,000
-                            @elseif($selectedPrice === '2000-5000') $2,000 - $5,000
-                            @elseif($selectedPrice === '5000+') $5,000+
+                            @elseif($selectedPrice === '2000+') $2,000+
                             @endif
                         </span>
                         @endif
 
                         <span class="bg-gray-100 text-gray-700 px-3 py-1.5 rounded-full text-xs font-semibold text-center">
-                            <i class="fas fa-box mr-1"></i> {{ $totalCount }} Found
+                            <i class="fas fa-cog mr-1"></i> {{ $totalCount }} Found
                         </span>
                     </div>
                 </div>
@@ -133,40 +135,40 @@
         </div>
     </aside>
 
-    <!-- Main Content Area - Products Grid -->
+    <!-- Main Content Area - Car Parts Grid -->
     <div class="flex-1">
         <!-- Loading Indicator -->
         <div
             wire:loading
             class="fixed top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 z-[9999]"
         >
-            <div class="inline-flex items-center px-6 py-3 bg-blue-100 text-blue-800 rounded-lg shadow-lg">
-                <svg class="animate-spin -ml-1 mr-3 h-5 w-5 text-blue-800"
+            <div class="inline-flex items-center px-6 py-3 bg-teal-100 text-teal-800 rounded-lg shadow-lg">
+                <svg class="animate-spin -ml-1 mr-3 h-5 w-5 text-teal-800"
                      xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
                     <circle class="opacity-25" cx="12" cy="12" r="10"
                             stroke="currentColor" stroke-width="4"></circle>
                     <path class="opacity-75" fill="currentColor"
                           d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
                 </svg>
-                Loading products...
+                Loading car parts...
             </div>
         </div>
 
-        <!-- Products Grid -->
+        <!-- Car Parts Grid -->
         <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 mb-8">
-        @forelse($products as $product)
+        @forelse($carParts as $carPart)
         <div class="bg-white rounded-xl shadow-lg overflow-hidden hover:shadow-2xl transition-all group">
-            <a href="{{ route('products.show', $product->hashid) }}">
+            <a href="{{ route('car-parts.show', $carPart->hashid) }}">
                 <div class="relative overflow-hidden">
-                    <img src="{{ $product->image_url }}" alt="{{ $product->name }}"
+                    <img src="{{ $carPart->image_url }}" alt="{{ $carPart->name }}"
                          class="w-full h-48 object-cover group-hover:scale-110 transition-transform duration-300">
                     
                     <!-- Brand Badge -->
-                    <div class="absolute top-2 left-2 bg-gradient-to-r from-blue-600 to-purple-600 text-white px-3 py-1 rounded-full text-xs font-bold shadow-lg">
-                        {{ $product->brand }}
+                    <div class="absolute top-2 left-2 bg-gradient-to-r from-teal-600 to-cyan-600 text-white px-3 py-1 rounded-full text-xs font-bold shadow-lg">
+                        {{ $carPart->brand }}
                     </div>
 
-                    @if($product->video)
+                    @if($carPart->video)
                     <div class="absolute top-2 right-2 bg-red-500 text-white px-2 py-1 rounded text-xs font-semibold">
                         <i class="fas fa-video mr-1"></i> Video
                     </div>
@@ -177,31 +179,31 @@
             <div class="p-4">
                 <!-- Category -->
                 <div class="text-xs text-gray-500 mb-2 flex items-center">
-                    <i class="fas fa-tag mr-1"></i> {{ $product->category }}
+                    <i class="fas fa-tag mr-1"></i> {{ $carPart->category }}
                 </div>
 
-                <!-- Product Name -->
-                <h3 class="font-bold text-lg mb-2 line-clamp-2 text-gray-800">{{ $product->name }}</h3>
+                <!-- Car Part Name -->
+                <h3 class="font-bold text-lg mb-2 line-clamp-2 text-gray-800">{{ $carPart->name }}</h3>
                 
-                @if($product->model)
+                @if($carPart->model)
                 <p class="text-gray-500 text-sm mb-2 flex items-center">
-                    <i class="fas fa-car-side mr-1"></i> Model: {{ $product->model }}
+                    <i class="fas fa-car-side mr-1"></i> Model: {{ $carPart->model }}
                 </p>
                 @endif
 
                 <!-- Price -->
-                @if($product->price)
-                <p class="text-blue-600 font-bold text-xl mb-3">${{ number_format($product->price, 2) }}</p>
+                @if($carPart->price)
+                <p class="text-teal-600 font-bold text-xl mb-3">${{ number_format($carPart->price, 2) }}</p>
                 @else
                 <p class="text-gray-600 font-semibold text-lg mb-3">Price on Request</p>
                 @endif
 
                 <!-- Stock Status -->
                 <div class="flex items-center justify-between mb-3">
-                    <span class="text-xs {{ $product->stock_quantity > 0 ? 'text-green-600' : 'text-red-600' }} font-semibold flex items-center">
+                    <span class="text-xs {{ $carPart->stock_quantity > 0 ? 'text-green-600' : 'text-red-600' }} font-semibold flex items-center">
                         <i class="fas fa-box mr-1"></i>
-                        @if($product->stock_quantity > 0)
-                            {{ $product->stock_quantity }} in stock
+                        @if($carPart->stock_quantity > 0)
+                            {{ $carPart->stock_quantity }} in stock
                         @else
                             Out of stock
                         @endif
@@ -209,17 +211,17 @@
                 </div>
 
                 <!-- View Details Button -->
-                <a href="{{ route('products.show', $product->hashid) }}" 
-                   class="block w-full bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white text-center py-2 rounded-lg transition font-semibold">
+                <a href="{{ route('car-parts.show', $carPart->hashid) }}" 
+                   class="block w-full bg-gradient-to-r from-teal-600 to-cyan-600 hover:from-teal-700 hover:to-cyan-700 text-white text-center py-2 rounded-lg transition font-semibold">
                     View Details <i class="fas fa-arrow-right ml-1"></i>
                 </a>
             </div>
         </div>
         @empty
         <div class="md:col-span-2 lg:col-span-3 xl:col-span-4 text-center py-20">
-            <i class="fas fa-box-open text-gray-300 text-6xl mb-4"></i>
-            <p class="text-gray-600 text-xl">No products found matching your criteria.</p>
-            <button wire:click="resetFilters" class="mt-4 bg-blue-600 hover:bg-blue-700 text-white px-6 py-2 rounded-lg font-semibold transition">
+            <i class="fas fa-cog text-gray-300 text-6xl mb-4"></i>
+            <p class="text-gray-600 text-xl">No car parts found matching your criteria.</p>
+            <button wire:click="resetFilters" class="mt-4 bg-teal-600 hover:bg-teal-700 text-white px-6 py-2 rounded-lg font-semibold transition">
                 <i class="fas fa-redo mr-2"></i> Reset Filters
             </button>
         </div>
@@ -227,26 +229,27 @@
     </div>
 
     <!-- Load More Button -->
-    @if($hasMorePages && $products->count() > 0)
+    @if($hasMorePages && $carParts->count() > 0)
     <div class="text-center mb-12">
         <button wire:click="loadMore" 
-                class="bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white px-12 py-4 rounded-xl font-bold text-lg shadow-xl transition-all transform hover:scale-105 flex items-center justify-center gap-3 mx-auto">
+                class="bg-gradient-to-r from-teal-600 to-cyan-600 hover:from-teal-700 hover:to-cyan-700 text-white px-12 py-4 rounded-xl font-bold text-lg shadow-xl transition-all transform hover:scale-105 flex items-center justify-center gap-3 mx-auto">
             <i class="fas fa-plus-circle"></i>
-            Load More Products
+            Load More Car Parts
             <i class="fas fa-chevron-down animate-bounce"></i>
         </button>
-        <p class="text-gray-500 text-sm mt-3">Showing {{ $products->count() }} of {{ $totalCount }} products</p>
+        <p class="text-gray-500 text-sm mt-3">Showing {{ $carParts->count() }} of {{ $totalCount }} car parts</p>
     </div>
     @endif
 
         <!-- Results Summary -->
-        @if($products->count() > 0)
+        @if($carParts->count() > 0)
         <div class="text-center text-gray-600 mb-8">
             <p class="text-lg">
                 <i class="fas fa-check-circle text-green-500 mr-2"></i>
-                Displaying <strong>{{ $products->count() }}</strong> of <strong>{{ $totalCount }}</strong> products
+                Displaying <strong>{{ $carParts->count() }}</strong> of <strong>{{ $totalCount }}</strong> car parts
             </p>
         </div>
         @endif
     </div>
 </div>
+

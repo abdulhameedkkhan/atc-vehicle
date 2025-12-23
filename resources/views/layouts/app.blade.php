@@ -91,6 +91,9 @@
                         <a href="{{ route('products.index') }}" class="px-4 py-2 rounded-lg text-sm font-semibold transition-all flex items-center gap-2 {{ request()->routeIs('products.*') ? 'bg-gradient-to-r from-blue-600 to-purple-600 text-white shadow-md' : 'text-gray-700 hover:bg-gray-100' }}">
                             <i class="fas fa-boxes"></i>Products
                         </a>
+                        <a href="{{ route('car-parts.index') }}" class="px-4 py-2 rounded-lg text-sm font-semibold transition-all flex items-center gap-2 {{ request()->routeIs('car-parts.*') ? 'bg-gradient-to-r from-teal-600 to-cyan-600 text-white shadow-md' : 'text-gray-700 hover:bg-gray-100' }}">
+                            <i class="fas fa-cogs"></i>Car Parts
+                        </a>
                         <a href="{{ route('contact') }}" class="px-4 py-2 rounded-lg text-sm font-semibold transition-all flex items-center gap-2 {{ request()->routeIs('contact') ? 'bg-gradient-to-r from-blue-600 to-purple-600 text-white shadow-md' : 'text-gray-700 hover:bg-gray-100' }}">
                             <i class="fas fa-envelope"></i>Contact
                         </a>
@@ -125,6 +128,9 @@
                 </a>
                 <a href="{{ route('products.index') }}" class="block pl-3 pr-4 py-2 text-base font-medium {{ request()->routeIs('products.*') ? 'text-primary bg-indigo-50 border-l-4 border-primary' : 'text-gray-700 hover:bg-gray-50 hover:text-primary' }}">
                     Products
+                </a>
+                <a href="{{ route('car-parts.index') }}" class="block pl-3 pr-4 py-2 text-base font-medium {{ request()->routeIs('car-parts.*') ? 'text-primary bg-indigo-50 border-l-4 border-primary' : 'text-gray-700 hover:bg-gray-50 hover:text-primary' }}">
+                    Car Parts
                 </a>
                 <a href="{{ route('contact') }}" class="block pl-3 pr-4 py-2 text-base font-medium {{ request()->routeIs('contact') ? 'text-primary bg-indigo-50 border-l-4 border-primary' : 'text-gray-700 hover:bg-gray-50 hover:text-primary' }}">
                     Contact Us
@@ -175,6 +181,7 @@
                         <li><a href="{{ route('about') }}" class="text-gray-400 hover:text-white transition">About Us</a></li>
                         <li><a href="{{ route('services') }}" class="text-gray-400 hover:text-white transition">Services</a></li>
                         <li><a href="{{ route('products.index') }}" class="text-gray-400 hover:text-white transition">Products</a></li>
+                        <li><a href="{{ route('car-parts.index') }}" class="text-gray-400 hover:text-white transition">Car Parts</a></li>
                         <li><a href="{{ route('contact') }}" class="text-gray-400 hover:text-white transition">Contact</a></li>
                     </ul>
                 </div>

@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Manage Products - ATC Japan</title>
+    <title>Manage Car Parts - ATC Japan</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
     <!-- DataTables CSS -->
@@ -67,7 +67,7 @@
                     </div>
                     <div>
                         <p class="text-sm font-bold text-gray-800">{{ Auth::user()->name }}</p>
-                        <p class="text-xs text-gray-600">Products Management</p>
+                        <p class="text-xs text-gray-600">Car Parts Management</p>
                     </div>
                 </div>
             </div>
@@ -88,40 +88,40 @@
 
                 @if(Auth::check() && Auth::user()->hasRole('admin'))
                 <div class="pt-2 pb-2 border-t border-gray-200">
+                    <p class="px-4 text-xs font-bold text-gray-500 uppercase mb-2">Car Parts</p>
+                    
+                    <a href="{{ route('car-parts.index', ['admin' => 1]) }}" class="flex items-center gap-3 px-4 py-3 text-sm font-semibold bg-gradient-to-r from-teal-600 to-cyan-600 text-white rounded-xl shadow-md">
+                        <i class="fas fa-cogs w-5"></i>
+                        <span>All Car Parts</span>
+                    </a>
+
+                    <a href="{{ route('admin.car-parts.create') }}" class="flex items-center gap-3 px-4 py-3 text-sm font-medium text-gray-700 hover:bg-gradient-to-r hover:from-purple-50 hover:to-pink-50 hover:text-purple-700 rounded-xl transition-all group">
+                        <i class="fas fa-plus-circle w-5 text-purple-600"></i>
+                        <span>Add New Car Part</span>
+                    </a>
+
+                    <a href="{{ route('car-parts.index') }}" class="flex items-center gap-3 px-4 py-3 text-sm font-medium text-gray-700 hover:bg-gradient-to-r hover:from-blue-50 hover:to-cyan-50 hover:text-blue-700 rounded-xl transition-all group">
+                        <i class="fas fa-eye w-5 text-blue-600"></i>
+                        <span>Public Car Parts</span>
+                    </a>
+                </div>
+
+                <div class="pt-2 pb-2 border-t border-gray-200">
                     <p class="px-4 text-xs font-bold text-gray-500 uppercase mb-2">Products</p>
                     
-                    <a href="{{ route('products.index', ['admin' => 1]) }}" class="flex items-center gap-3 px-4 py-3 text-sm font-semibold bg-gradient-to-r from-orange-600 to-amber-600 text-white rounded-xl shadow-md">
-                        <i class="fas fa-boxes w-5"></i>
+                    <a href="{{ route('products.index', ['admin' => 1]) }}" class="flex items-center gap-3 px-4 py-3 text-sm font-medium text-gray-700 hover:bg-gradient-to-r hover:from-orange-50 hover:to-amber-50 hover:text-orange-700 rounded-xl transition-all group {{ (request()->is('products') && request()->has('admin')) || request()->routeIs('admin.products.edit') ? 'bg-gradient-to-r from-orange-600 to-amber-600 text-white' : '' }}">
+                        <i class="fas fa-boxes w-5 {{ (request()->is('products') && request()->has('admin')) || request()->routeIs('admin.products.edit') ? 'text-white' : 'text-orange-600' }}"></i>
                         <span>All Products</span>
                     </a>
 
-                    <a href="{{ route('admin.products.create') }}" class="flex items-center gap-3 px-4 py-3 text-sm font-medium text-gray-700 hover:bg-gradient-to-r hover:from-purple-50 hover:to-pink-50 hover:text-purple-700 rounded-xl transition-all group">
-                        <i class="fas fa-plus-circle w-5 text-purple-600"></i>
+                    <a href="{{ route('admin.products.create') }}" class="flex items-center gap-3 px-4 py-3 text-sm font-medium text-gray-700 hover:bg-gradient-to-r hover:from-purple-50 hover:to-pink-50 hover:text-purple-700 rounded-xl transition-all group {{ request()->routeIs('admin.products.create') ? 'bg-gradient-to-r from-purple-600 to-pink-600 text-white' : '' }}">
+                        <i class="fas fa-plus-circle w-5 {{ request()->routeIs('admin.products.create') ? 'text-white' : 'text-purple-600' }}"></i>
                         <span>Add New Product</span>
                     </a>
 
                     <a href="{{ route('products.index') }}" class="flex items-center gap-3 px-4 py-3 text-sm font-medium text-gray-700 hover:bg-gradient-to-r hover:from-blue-50 hover:to-cyan-50 hover:text-blue-700 rounded-xl transition-all group">
                         <i class="fas fa-eye w-5 text-blue-600"></i>
                         <span>Public Products</span>
-                    </a>
-                </div>
-
-                <div class="pt-2 pb-2 border-t border-gray-200">
-                    <p class="px-4 text-xs font-bold text-gray-500 uppercase mb-2">Car Parts</p>
-                    
-                    <a href="{{ route('car-parts.index', ['admin' => 1]) }}" class="flex items-center gap-3 px-4 py-3 text-sm font-medium text-gray-700 hover:bg-gradient-to-r hover:from-teal-50 hover:to-cyan-50 hover:text-teal-700 rounded-xl transition-all group {{ (request()->is('car-parts') && request()->has('admin')) || request()->routeIs('admin.car-parts.edit') ? 'bg-gradient-to-r from-teal-600 to-cyan-600 text-white' : '' }}">
-                        <i class="fas fa-cog w-5 {{ (request()->is('car-parts') && request()->has('admin')) || request()->routeIs('admin.car-parts.edit') ? 'text-white' : 'text-teal-600' }}"></i>
-                        <span>All Car Parts</span>
-                    </a>
-
-                    <a href="{{ route('admin.car-parts.create') }}" class="flex items-center gap-3 px-4 py-3 text-sm font-medium text-gray-700 hover:bg-gradient-to-r hover:from-green-50 hover:to-emerald-50 hover:text-green-700 rounded-xl transition-all group {{ request()->routeIs('admin.car-parts.create') ? 'bg-gradient-to-r from-green-600 to-emerald-600 text-white' : '' }}">
-                        <i class="fas fa-plus-circle w-5 {{ request()->routeIs('admin.car-parts.create') ? 'text-white' : 'text-green-600' }}"></i>
-                        <span>Add New Part</span>
-                    </a>
-
-                    <a href="{{ route('car-parts.index') }}" class="flex items-center gap-3 px-4 py-3 text-sm font-medium text-gray-700 hover:bg-gradient-to-r hover:from-blue-50 hover:to-cyan-50 hover:text-blue-700 rounded-xl transition-all group">
-                        <i class="fas fa-eye w-5 text-blue-600"></i>
-                        <span>Public Parts</span>
                     </a>
                 </div>
 
@@ -173,16 +173,16 @@
         <!-- Header -->
         <div class="flex flex-col md:flex-row justify-between items-start md:items-center mb-8 gap-4">
             <div>
-                <h1 class="text-4xl font-bold bg-gradient-to-r from-orange-600 to-amber-600 bg-clip-text text-transparent mb-2 flex items-center gap-3">
-                    <i class="fas fa-boxes text-orange-600"></i>
-                    Products Management
+                <h1 class="text-4xl font-bold bg-gradient-to-r from-teal-600 to-cyan-600 bg-clip-text text-transparent mb-2 flex items-center gap-3">
+                    <i class="fas fa-cogs text-teal-600"></i>
+                    Car Parts Management
                 </h1>
-                <p class="text-gray-600">View, edit, and manage all your products</p>
+                <p class="text-gray-600">View, edit, and manage all your car parts</p>
             </div>
             <div>
-                <a href="{{ route('admin.products.create') }}" 
+                <a href="{{ route('admin.car-parts.create') }}" 
                    class="bg-gradient-to-r from-indigo-600 to-purple-600 hover:from-indigo-700 hover:to-purple-700 text-white px-6 py-3 rounded-xl font-semibold shadow-lg hover:shadow-xl transition-all duration-300 flex items-center gap-2">
-                    <i class="fas fa-plus-circle"></i> Add New Product
+                    <i class="fas fa-plus-circle"></i> Add New Car Part
                 </a>
             </div>
         </div>
@@ -195,7 +195,7 @@
         @endif
 
         <div class="bg-white shadow-xl overflow-hidden rounded-2xl border border-gray-200 p-6">
-            <table id="productsTable" class="min-w-full divide-y divide-gray-200 display nowrap" style="width:100%">
+            <table id="carPartsTable" class="min-w-full divide-y divide-gray-200 display nowrap" style="width:100%">
                 <thead class="bg-gradient-to-r from-gray-50 to-gray-100">
                     <tr>
                         <th class="px-6 py-4 text-left text-xs font-bold text-gray-700 uppercase tracking-wider">Image</th>
@@ -219,11 +219,11 @@
 
 <script>
 $(document).ready(function() {
-    $('#productsTable').DataTable({
+    $('#carPartsTable').DataTable({
         processing: true,
         serverSide: true,
         ajax: {
-            url: "{{ route('admin.products.datatable') }}",
+            url: "{{ route('admin.car-parts.datatable') }}",
             type: 'GET',
         },
         columns: [
@@ -240,19 +240,19 @@ $(document).ready(function() {
         pageLength: 15,
         responsive: true,
         language: {
-            processing: '<div class="flex items-center justify-center p-4"><i class="fas fa-spinner fa-spin text-indigo-600 text-2xl mr-2"></i> Loading...</div>',
+            processing: '<div class="flex items-center justify-center p-4"><i class="fas fa-spinner fa-spin text-teal-600 text-2xl mr-2"></i> Loading...</div>',
             search: "Search:",
             lengthMenu: "Show _MENU_ entries",
-            info: "Showing _START_ to _END_ of _TOTAL_ products",
-            infoEmpty: "No products available",
-            infoFiltered: "(filtered from _MAX_ total products)",
+            info: "Showing _START_ to _END_ of _TOTAL_ car parts",
+            infoEmpty: "No car parts available",
+            infoFiltered: "(filtered from _MAX_ total car parts)",
             paginate: {
                 first: "First",
                 last: "Last",
                 next: "Next",
                 previous: "Previous"
             },
-            emptyTable: "No products found"
+            emptyTable: "No car parts found"
         },
         dom: '<"flex justify-between items-center mb-4"<"flex items-center gap-2"l><"flex items-center gap-2"f>>rt<"flex justify-between items-center mt-4"<"flex items-center gap-2"i><"flex items-center gap-2"p>>',
     });
