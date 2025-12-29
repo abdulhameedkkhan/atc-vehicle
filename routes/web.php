@@ -5,6 +5,8 @@ use App\Http\Controllers\AuthController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\CarPartController;
 use App\Http\Controllers\SliderController;
+use App\Http\Controllers\ContactController;
+use App\Http\Controllers\ProductEnquiryController;
 
 // Frontend Pages
 Route::get('/', function () {
@@ -19,14 +21,32 @@ Route::get('/services', function () {
     return view('frontend.services');
 })->name('services');
 
-Route::get('/contact', function () {
-    return view('frontend.contact');
-})->name('contact');
+Route::get('/contact', [ContactController::class, 'index'])->name('contact');
+Route::post('/contact', [ContactController::class, 'store'])->name('contact.store');
+
+Route::get('/how-to-buy', function () {
+    return view('frontend.how-to-buy');
+})->name('how-to-buy');
 
 // Authentication Routes
-Route::get('/login', [AuthController::class, 'showLoginForm'])->name('login')->middleware('guest');
-Route::post('/login', [AuthController::class, 'login'])->middleware('guest');
+Route::middleware('guest')->group(function () {
+    Route::get('/login', [AuthController::class, 'showLoginForm'])->name('login');
+    Route::post('/login', [AuthController::class, 'login']);
+    Route::get('/register', [AuthController::class, 'showRegisterForm'])->name('register');
+    Route::post('/register', [AuthController::class, 'register']);
+    Route::get('/verify-otp', [AuthController::class, 'showVerifyOtpForm'])->name('verify-otp.show');
+    Route::post('/verify-otp', [AuthController::class, 'verifyOtp'])->name('verify-otp');
+    Route::post('/resend-otp', [AuthController::class, 'resendOtp'])->name('resend-otp');
+    Route::get('/forgot-password', [AuthController::class, 'showForgotPasswordForm'])->name('forgot-password');
+    Route::post('/forgot-password', [AuthController::class, 'forgotPassword']);
+    Route::get('/reset-password', [AuthController::class, 'showResetPasswordForm'])->name('reset-password.show');
+    Route::post('/reset-password', [AuthController::class, 'resetPassword'])->name('reset-password');
+});
+
 Route::post('/logout', [AuthController::class, 'logout'])->name('logout')->middleware('auth');
+
+// Test Email Route (Remove in production)
+Route::get('/test-email', [\App\Http\Controllers\TestEmailController::class, 'test'])->name('test-email');
 
 // Dashboard Route (protected - requires view dashboard permission)
 Route::get('/dashboard', function () {
@@ -36,6 +56,13 @@ Route::get('/dashboard', function () {
 // Products Routes (Public)
 Route::get('/products', [ProductController::class, 'index'])->name('products.index');
 Route::get('/products/{product}', [ProductController::class, 'show'])->name('products.show');
+
+// Product Enquiry Routes (Authenticated users only)
+Route::middleware('auth')->group(function () {
+    Route::post('/products/{product}/enquiry', [ProductEnquiryController::class, 'store'])->name('products.enquiry.store');
+    Route::get('/enquiries', [ProductEnquiryController::class, 'index'])->name('enquiries.index');
+    Route::get('/enquiries/{enquiry}', [ProductEnquiryController::class, 'show'])->name('enquiries.show');
+});
 
 // Car Parts Routes (Public)
 Route::get('/car-parts', [CarPartController::class, 'index'])->name('car-parts.index');

@@ -100,17 +100,57 @@
                 </div>
                 @endif
 
-                <div class="flex gap-4">
-                    <a href="{{ route('contact') }}" 
-                       class="flex-1 bg-gradient-to-r from-indigo-600 to-purple-600 text-white px-6 py-3 rounded-lg font-semibold text-center hover:from-indigo-700 hover:to-purple-700 transition flex items-center justify-center gap-2">
-                        <i class="fas fa-envelope"></i> Inquire Now
-                    </a>
-                    <a href="https://wa.me/819048043444?text=Hi, I'm interested in {{ urlencode($product->name) }}. Product ID: {{ $product->hashid }}" 
-                       target="_blank"
-                       class="bg-gradient-to-r from-green-500 to-green-600 text-white px-6 py-3 rounded-lg font-semibold hover:from-green-600 hover:to-green-700 transition flex items-center gap-2 shadow-lg">
-                        <i class="fab fa-whatsapp text-xl"></i> WhatsApp
-                    </a>
-                </div>
+                @auth
+                    <!-- Enquiry Form -->
+                    <div class="bg-gray-50 rounded-lg p-6 mb-6">
+                        <h3 class="font-semibold text-lg mb-4">Submit Enquiry</h3>
+                        @if(session('success'))
+                        <div class="mb-4 bg-green-50 border border-green-200 text-green-800 px-4 py-3 rounded-lg">
+                            {{ session('success') }}
+                        </div>
+                        @endif
+                        <form action="{{ route('products.enquiry.store', $product->hashid) }}" method="POST">
+                            @csrf
+                            <div class="mb-4">
+                                <label for="message" class="block text-sm font-medium text-gray-700 mb-2">Message (Optional)</label>
+                                <textarea id="message" name="message" rows="4" 
+                                          class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500"
+                                          placeholder="Tell us about your requirements..."></textarea>
+                            </div>
+                            <button type="submit"
+                                    class="w-full bg-gradient-to-r from-indigo-600 to-purple-600 text-white px-6 py-3 rounded-lg font-semibold hover:from-indigo-700 hover:to-purple-700 transition">
+                                <i class="fas fa-paper-plane mr-2"></i> Submit Enquiry
+                            </button>
+                        </form>
+                    </div>
+
+                    <div class="flex gap-4">
+                        <a href="{{ route('enquiries.index') }}" 
+                           class="flex-1 bg-gray-600 text-white px-6 py-3 rounded-lg font-semibold text-center hover:bg-gray-700 transition flex items-center justify-center gap-2">
+                            <i class="fas fa-list"></i> My Enquiries
+                        </a>
+                        <a href="https://wa.me/819048043444?text=Hi, I'm interested in {{ urlencode($product->name) }}. Product ID: {{ $product->hashid }}" 
+                           target="_blank"
+                           class="bg-gradient-to-r from-green-500 to-green-600 text-white px-6 py-3 rounded-lg font-semibold hover:from-green-600 hover:to-green-700 transition flex items-center gap-2 shadow-lg">
+                            <i class="fab fa-whatsapp text-xl"></i> WhatsApp
+                        </a>
+                    </div>
+                @else
+                    <div class="bg-yellow-50 border border-yellow-200 rounded-lg p-6 mb-6">
+                        <p class="text-yellow-800 mb-4">Please login to submit an enquiry for this product.</p>
+                        <a href="{{ route('login') }}" 
+                           class="w-full bg-gradient-to-r from-indigo-600 to-purple-600 text-white px-6 py-3 rounded-lg font-semibold text-center hover:from-indigo-700 hover:to-purple-700 transition flex items-center justify-center gap-2">
+                            <i class="fas fa-sign-in-alt"></i> Login to Enquire
+                        </a>
+                    </div>
+                    <div class="flex gap-4">
+                        <a href="https://wa.me/819048043444?text=Hi, I'm interested in {{ urlencode($product->name) }}. Product ID: {{ $product->hashid }}" 
+                           target="_blank"
+                           class="flex-1 bg-gradient-to-r from-green-500 to-green-600 text-white px-6 py-3 rounded-lg font-semibold hover:from-green-600 hover:to-green-700 transition flex items-center justify-center gap-2 shadow-lg">
+                            <i class="fab fa-whatsapp text-xl"></i> WhatsApp
+                        </a>
+                    </div>
+                @endauth
             </div>
         </div>
     </div>

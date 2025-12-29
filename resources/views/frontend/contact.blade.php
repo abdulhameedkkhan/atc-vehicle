@@ -117,7 +117,7 @@
                 </div>
                 @endif
 
-                <form action="#" method="POST">
+                <form action="{{ route('contact.store') }}" method="POST">
                     @csrf
                     <div class="space-y-6">
                         <!-- Name -->

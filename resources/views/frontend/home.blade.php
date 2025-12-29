@@ -22,27 +22,27 @@
                         <img src="{{ $slider->image_url }}" 
                              alt="{{ $slider->title }}" 
                              class="w-full h-full object-cover">
-                        <div class="absolute inset-0 bg-gradient-to-r from-blue-900/40 via-blue-800/30 to-purple-900/40"></div>
+                        <div class="absolute inset-0 bg-gradient-to-r from-black/60 via-red-900/50 to-black/60"></div>
                     </div>
                     <!-- Content -->
-                    <div class="relative z-10 text-center py-32 md:py-40 lg:py-48 px-4">
-                        <h1 class="text-4xl md:text-5xl lg:text-6xl xl:text-7xl font-bold mb-6 leading-tight drop-shadow-2xl">
+                    <div class="relative z-10 text-center py-24 md:py-32 lg:py-40 px-4">
+                        <h1 class="text-3xl md:text-4xl lg:text-5xl xl:text-6xl font-bold mb-4 leading-tight drop-shadow-2xl">
                             {{ $slider->title }}
                         </h1>
-                        <p class="text-xl md:text-2xl lg:text-3xl mb-8 text-white max-w-4xl mx-auto drop-shadow-xl font-medium">
+                        <p class="text-base md:text-lg lg:text-xl mb-6 text-white max-w-4xl mx-auto drop-shadow-xl font-medium">
                             {{ $slider->description }}
                         </p>
-                        <div class="flex flex-col sm:flex-row gap-4 justify-center">
+                        <div class="flex flex-col sm:flex-row gap-3 justify-center">
                             @if($slider->button_text_1 && $slider->button_link_1)
-                            <a href="{{ $slider->button_link_1 }}" class="bg-amber-500 hover:bg-amber-600 text-white px-8 py-4 rounded-xl font-bold text-lg transition shadow-2xl flex items-center justify-center gap-2 hover:scale-105 transform"
+                            <a href="{{ $slider->button_link_1 }}" class="bg-red-600 hover:bg-red-700 text-white px-6 py-3 rounded-lg font-bold text-sm transition shadow-2xl flex items-center justify-center gap-2 hover:scale-105 transform border border-red-500"
                                @if(str_contains($slider->button_link_1, 'http')) target="_blank" @endif>
-                                <i class="fas fa-search text-xl"></i> {{ $slider->button_text_1 }}
+                                <i class="fas fa-search text-base"></i> {{ $slider->button_text_1 }}
                             </a>
                             @endif
                             @if($slider->button_text_2 && $slider->button_link_2)
-                            <a href="{{ $slider->button_link_2 }}" class="{{ str_contains($slider->button_link_2, 'whatsapp') ? 'bg-green-600 hover:bg-green-700' : 'bg-white hover:bg-gray-100 text-blue-900' }} text-white px-8 py-4 rounded-xl font-bold text-lg transition shadow-2xl flex items-center justify-center gap-2 hover:scale-105 transform"
+                            <a href="{{ $slider->button_link_2 }}" class="{{ str_contains($slider->button_link_2, 'whatsapp') ? 'bg-green-600 hover:bg-green-700' : 'bg-white hover:bg-gray-100 text-black' }} text-white px-6 py-3 rounded-lg font-bold text-sm transition shadow-2xl flex items-center justify-center gap-2 hover:scale-105 transform"
                                @if(str_contains($slider->button_link_2, 'http')) target="_blank" @endif>
-                                <i class="{{ str_contains($slider->button_link_2, 'whatsapp') ? 'fab fa-whatsapp text-xl' : 'fas fa-envelope text-xl' }}"></i> {{ $slider->button_text_2 }}
+                                <i class="{{ str_contains($slider->button_link_2, 'whatsapp') ? 'fab fa-whatsapp text-base' : 'fas fa-envelope text-base' }}"></i> {{ $slider->button_text_2 }}
                             </a>
                             @endif
                         </div>
@@ -55,13 +55,13 @@
                         <img src="https://images.unsplash.com/photo-1492144534655-ae79c964c9d7?w=1920&h=600&fit=crop" 
                              alt="Japanese Vehicles" 
                              class="w-full h-full object-cover">
-                        <div class="absolute inset-0 bg-gradient-to-r from-blue-900/40 via-blue-800/30 to-purple-900/40"></div>
+                        <div class="absolute inset-0 bg-gradient-to-r from-black/60 via-red-900/50 to-black/60"></div>
                     </div>
-                    <div class="relative z-10 text-center py-32 md:py-40 lg:py-48 px-4">
-                        <h1 class="text-4xl md:text-5xl lg:text-6xl xl:text-7xl font-bold mb-6 leading-tight drop-shadow-2xl">
+                    <div class="relative z-10 text-center py-24 md:py-32 lg:py-40 px-4">
+                        <h1 class="text-3xl md:text-4xl lg:text-5xl xl:text-6xl font-bold mb-4 leading-tight drop-shadow-2xl">
                             Japanese Used Vehicles & Auto Parts Export
                         </h1>
-                        <p class="text-xl md:text-2xl lg:text-3xl mb-8 text-white max-w-4xl mx-auto drop-shadow-xl font-medium">
+                        <p class="text-base md:text-lg lg:text-xl mb-6 text-white max-w-4xl mx-auto drop-shadow-xl font-medium">
                             Sourcing Quality Japanese Vehicles and Genuine Parts Worldwide Since 2016
                         </p>
                     </div>
@@ -70,15 +70,15 @@
             </div>
 
             <!-- Slider Controls -->
-            <button id="prevSlide" class="absolute left-4 md:left-8 top-1/2 -translate-y-1/2 bg-white/30 hover:bg-white/50 text-white p-4 md:p-5 rounded-full transition backdrop-blur-sm hover:scale-110 transform shadow-xl z-50 cursor-pointer">
-                <i class="fas fa-chevron-left text-xl md:text-2xl"></i>
+            <button id="prevSlide" class="absolute left-3 md:left-6 top-1/2 -translate-y-1/2 bg-black/50 hover:bg-red-600/80 text-white p-3 md:p-4 rounded-full transition backdrop-blur-sm hover:scale-110 transform shadow-xl z-50 cursor-pointer border border-red-900">
+                <i class="fas fa-chevron-left text-base md:text-lg"></i>
             </button>
-            <button id="nextSlide" class="absolute right-4 md:right-8 top-1/2 -translate-y-1/2 bg-white/30 hover:bg-white/50 text-white p-4 md:p-5 rounded-full transition backdrop-blur-sm hover:scale-110 transform shadow-xl z-50 cursor-pointer">
-                <i class="fas fa-chevron-right text-xl md:text-2xl"></i>
+            <button id="nextSlide" class="absolute right-3 md:right-6 top-1/2 -translate-y-1/2 bg-black/50 hover:bg-red-600/80 text-white p-3 md:p-4 rounded-full transition backdrop-blur-sm hover:scale-110 transform shadow-xl z-50 cursor-pointer border border-red-900">
+                <i class="fas fa-chevron-right text-base md:text-lg"></i>
             </button>
 
             <!-- Slider Indicators -->
-            <div class="flex justify-center gap-3 mt-8">
+            <div class="flex justify-center gap-2 mt-6">
                 @php
                     $sliders = \App\Models\Slider::where('is_active', true)->orderBy('order')->get();
                 @endphp
@@ -89,22 +89,22 @@
         </div>
 
         <!-- Stats Bar -->
-        <div class="grid grid-cols-2 md:grid-cols-4 gap-4 mt-8 bg-white/10 backdrop-blur-lg rounded-2xl p-6">
+        <div class="grid grid-cols-2 md:grid-cols-4 gap-3 mt-6 bg-black/40 backdrop-blur-lg rounded-xl p-4 border border-red-900/50">
             <div class="text-center">
-                <div class="text-2xl md:text-3xl font-bold text-amber-400 mb-1">350+</div>
-                <div class="text-xs md:text-sm text-blue-100">Vehicles in Stock</div>
+                <div class="text-xl md:text-2xl font-bold text-red-500 mb-1">350+</div>
+                <div class="text-xs text-gray-300">Vehicles in Stock</div>
             </div>
             <div class="text-center">
-                <div class="text-2xl md:text-3xl font-bold text-amber-400 mb-1">10+</div>
-                <div class="text-xs md:text-sm text-blue-100">Years Experience</div>
+                <div class="text-xl md:text-2xl font-bold text-red-500 mb-1">10+</div>
+                <div class="text-xs text-gray-300">Years Experience</div>
             </div>
             <div class="text-center">
-                <div class="text-2xl md:text-3xl font-bold text-amber-400 mb-1">80+</div>
-                <div class="text-xs md:text-sm text-blue-100">Japanese Brands</div>
+                <div class="text-xl md:text-2xl font-bold text-red-500 mb-1">80+</div>
+                <div class="text-xs text-gray-300">Japanese Brands</div>
             </div>
             <div class="text-center">
-                <div class="text-2xl md:text-3xl font-bold text-amber-400 mb-1">100%</div>
-                <div class="text-xs md:text-sm text-blue-100">Quality Guaranteed</div>
+                <div class="text-xl md:text-2xl font-bold text-red-500 mb-1">100%</div>
+                <div class="text-xs text-gray-300">Quality Guaranteed</div>
             </div>
         </div>
     </div>
@@ -120,20 +120,20 @@
     display: block;
 }
 .slider-indicator {
-    width: 16px;
-    height: 16px;
+    width: 12px;
+    height: 12px;
     border-radius: 50%;
-    background: rgba(255, 255, 255, 0.4);
-    border: 2px solid rgba(255, 255, 255, 0.6);
+    background: rgba(220, 38, 38, 0.4);
+    border: 2px solid rgba(220, 38, 38, 0.6);
     cursor: pointer;
     transition: all 0.3s;
 }
 .slider-indicator.active {
-    width: 36px;
+    width: 32px;
     border-radius: 6px;
-    background: rgba(255, 255, 255, 1);
-    border-color: rgba(255, 255, 255, 1);
-    box-shadow: 0 0 12px rgba(255, 255, 255, 0.6);
+    background: rgba(220, 38, 38, 1);
+    border-color: rgba(220, 38, 38, 1);
+    box-shadow: 0 0 12px rgba(220, 38, 38, 0.8);
 }
 @keyframes fadeIn {
     from { opacity: 0; transform: translateY(10px); }
@@ -250,66 +250,127 @@ document.addEventListener('DOMContentLoaded', function() {
 </script>
 
 <!-- Featured Brands Section -->
-<section class="py-20 bg-gray-50">
+<section class="py-12 bg-white border-t border-gray-200 border-b border-gray-200">
     <div class="w-full px-4 sm:px-6 lg:px-8">
-        <div class="text-center mb-12">
-            <h2 class="text-3xl md:text-4xl font-bold text-gray-900 mb-4">
+        <div class="text-center mb-8">
+            <h2 class="text-2xl md:text-3xl font-bold text-red-600 mb-2">
                 Featured Japanese Brands
             </h2>
-            <p class="text-xl text-gray-600">
+            <p class="text-sm text-gray-600">
                 We Deal with All Major Japanese Automotive Brands
             </p>
         </div>
-        <div class="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6 gap-6">
-            <div class="bg-white p-6 rounded-xl shadow-md hover:shadow-xl transition text-center">
-                <div class="text-2xl font-bold text-blue-900">TOYOTA</div>
+        <div class="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6 gap-4">
+            <!-- Toyota -->
+            <div class="bg-white border-2 border-gray-200 p-4 rounded-lg shadow-md hover:shadow-xl hover:border-red-500 transition text-center group">
+                <div class="mb-2 flex justify-center h-16 items-center">
+                    <img src="https://logos-world.net/wp-content/uploads/2021/04/Toyota-Logo.png" alt="Toyota Logo" class="h-12 object-contain filter group-hover:scale-110 transition-transform" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+                    <div class="w-16 h-16 bg-red-600 rounded-lg flex items-center justify-center text-white font-bold text-lg" style="display:none;">TOY</div>
+                </div>
+                <div class="text-xs font-bold text-gray-800">TOYOTA</div>
             </div>
-            <div class="bg-white p-6 rounded-xl shadow-md hover:shadow-xl transition text-center">
-                <div class="text-2xl font-bold text-red-700">NISSAN</div>
+            <!-- Nissan -->
+            <div class="bg-white border-2 border-gray-200 p-4 rounded-lg shadow-md hover:shadow-xl hover:border-red-500 transition text-center group">
+                <div class="mb-2 flex justify-center h-16 items-center">
+                    <img src="https://logos-world.net/wp-content/uploads/2021/03/Nissan-Logo.png" alt="Nissan Logo" class="h-12 object-contain filter group-hover:scale-110 transition-transform" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+                    <div class="w-16 h-16 bg-red-700 rounded-lg flex items-center justify-center text-white font-bold text-lg" style="display:none;">NIS</div>
+                </div>
+                <div class="text-xs font-bold text-gray-800">NISSAN</div>
             </div>
-            <div class="bg-white p-6 rounded-xl shadow-md hover:shadow-xl transition text-center">
-                <div class="text-2xl font-bold text-blue-800">HONDA</div>
+            <!-- Honda -->
+            <div class="bg-white border-2 border-gray-200 p-4 rounded-lg shadow-md hover:shadow-xl hover:border-red-500 transition text-center group">
+                <div class="mb-2 flex justify-center h-16 items-center">
+                    <img src="https://logos-world.net/wp-content/uploads/2021/03/Honda-Logo.png" alt="Honda Logo" class="h-12 object-contain filter group-hover:scale-110 transition-transform" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+                    <div class="w-16 h-16 bg-red-500 rounded-lg flex items-center justify-center text-white font-bold text-lg" style="display:none;">HON</div>
+                </div>
+                <div class="text-xs font-bold text-gray-800">HONDA</div>
             </div>
-            <div class="bg-white p-6 rounded-xl shadow-md hover:shadow-xl transition text-center">
-                <div class="text-2xl font-bold text-gray-800">MAZDA</div>
+            <!-- Mazda -->
+            <div class="bg-white border-2 border-gray-200 p-4 rounded-lg shadow-md hover:shadow-xl hover:border-red-500 transition text-center group">
+                <div class="mb-2 flex justify-center h-16 items-center">
+                    <img src="https://logos-world.net/wp-content/uploads/2021/03/Mazda-Logo.png" alt="Mazda Logo" class="h-12 object-contain filter group-hover:scale-110 transition-transform" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+                    <div class="w-16 h-16 bg-blue-700 rounded-lg flex items-center justify-center text-white font-bold text-lg" style="display:none;">MAZ</div>
+                </div>
+                <div class="text-xs font-bold text-gray-800">MAZDA</div>
             </div>
-            <div class="bg-white p-6 rounded-xl shadow-md hover:shadow-xl transition text-center">
-                <div class="text-2xl font-bold text-red-800">MITSUBISHI</div>
+            <!-- Mitsubishi -->
+            <div class="bg-white border-2 border-gray-200 p-4 rounded-lg shadow-md hover:shadow-xl hover:border-red-500 transition text-center group">
+                <div class="mb-2 flex justify-center h-16 items-center">
+                    <img src="https://logos-world.net/wp-content/uploads/2021/03/Mitsubishi-Logo.png" alt="Mitsubishi Logo" class="h-12 object-contain filter group-hover:scale-110 transition-transform" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+                    <div class="w-16 h-16 bg-red-800 rounded-lg flex items-center justify-center text-white font-bold text-sm" style="display:none;">MIT</div>
+                </div>
+                <div class="text-xs font-bold text-gray-800">MITSUBISHI</div>
             </div>
-            <div class="bg-white p-6 rounded-xl shadow-md hover:shadow-xl transition text-center">
-                <div class="text-2xl font-bold text-blue-600">SUZUKI</div>
+            <!-- Suzuki -->
+            <div class="bg-white border-2 border-gray-200 p-4 rounded-lg shadow-md hover:shadow-xl hover:border-red-500 transition text-center group">
+                <div class="mb-2 flex justify-center h-16 items-center">
+                    <img src="https://logos-world.net/wp-content/uploads/2021/03/Suzuki-Logo.png" alt="Suzuki Logo" class="h-12 object-contain filter group-hover:scale-110 transition-transform" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+                    <div class="w-16 h-16 bg-blue-600 rounded-lg flex items-center justify-center text-white font-bold text-lg" style="display:none;">SUZ</div>
+                </div>
+                <div class="text-xs font-bold text-gray-800">SUZUKI</div>
             </div>
-            <div class="bg-white p-6 rounded-xl shadow-md hover:shadow-xl transition text-center">
-                <div class="text-2xl font-bold text-blue-900">SUBARU</div>
+            <!-- Subaru -->
+            <div class="bg-white border-2 border-gray-200 p-4 rounded-lg shadow-md hover:shadow-xl hover:border-red-500 transition text-center group">
+                <div class="mb-2 flex justify-center h-16 items-center">
+                    <img src="https://logos-world.net/wp-content/uploads/2021/03/Subaru-Logo.png" alt="Subaru Logo" class="h-12 object-contain filter group-hover:scale-110 transition-transform" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+                    <div class="w-16 h-16 bg-blue-700 rounded-lg flex items-center justify-center text-white font-bold text-lg" style="display:none;">SUB</div>
+                </div>
+                <div class="text-xs font-bold text-gray-800">SUBARU</div>
             </div>
-            <div class="bg-white p-6 rounded-xl shadow-md hover:shadow-xl transition text-center">
-                <div class="text-2xl font-bold text-red-600">ISUZU</div>
+            <!-- Isuzu -->
+            <div class="bg-white border-2 border-gray-200 p-4 rounded-lg shadow-md hover:shadow-xl hover:border-red-500 transition text-center group">
+                <div class="mb-2 flex justify-center h-16 items-center">
+                    <img src="https://logos-world.net/wp-content/uploads/2021/04/Isuzu-Logo.png" alt="Isuzu Logo" class="h-12 object-contain filter group-hover:scale-110 transition-transform" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+                    <div class="w-16 h-16 bg-red-600 rounded-lg flex items-center justify-center text-white font-bold text-lg" style="display:none;">ISU</div>
+                </div>
+                <div class="text-xs font-bold text-gray-800">ISUZU</div>
             </div>
-            <div class="bg-white p-6 rounded-xl shadow-md hover:shadow-xl transition text-center">
-                <div class="text-2xl font-bold text-gray-700">DAIHATSU</div>
+            <!-- Daihatsu -->
+            <div class="bg-white border-2 border-gray-200 p-4 rounded-lg shadow-md hover:shadow-xl hover:border-red-500 transition text-center group">
+                <div class="mb-2 flex justify-center h-16 items-center">
+                    <img src="https://logos-world.net/wp-content/uploads/2021/04/Daihatsu-Logo.png" alt="Daihatsu Logo" class="h-12 object-contain filter group-hover:scale-110 transition-transform" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+                    <div class="w-16 h-16 bg-gray-700 rounded-lg flex items-center justify-center text-white font-bold text-sm" style="display:none;">DAI</div>
+                </div>
+                <div class="text-xs font-bold text-gray-800">DAIHATSU</div>
             </div>
-            <div class="bg-white p-6 rounded-xl shadow-md hover:shadow-xl transition text-center">
-                <div class="text-2xl font-bold text-gray-900">LEXUS</div>
+            <!-- Lexus -->
+            <div class="bg-white border-2 border-gray-200 p-4 rounded-lg shadow-md hover:shadow-xl hover:border-red-500 transition text-center group">
+                <div class="mb-2 flex justify-center h-16 items-center">
+                    <img src="https://logos-world.net/wp-content/uploads/2021/03/Lexus-Logo.png" alt="Lexus Logo" class="h-12 object-contain filter group-hover:scale-110 transition-transform" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+                    <div class="w-16 h-16 bg-black rounded-lg flex items-center justify-center text-white font-bold text-lg" style="display:none;">LEX</div>
+                </div>
+                <div class="text-xs font-bold text-gray-800">LEXUS</div>
             </div>
-            <div class="bg-white p-6 rounded-xl shadow-md hover:shadow-xl transition text-center">
-                <div class="text-2xl font-bold text-blue-700">HINO</div>
+            <!-- Hino -->
+            <div class="bg-white border-2 border-gray-200 p-4 rounded-lg shadow-md hover:shadow-xl hover:border-red-500 transition text-center group">
+                <div class="mb-2 flex justify-center h-16 items-center">
+                    <img src="https://logos-world.net/wp-content/uploads/2021/04/Hino-Logo.png" alt="Hino Logo" class="h-12 object-contain filter group-hover:scale-110 transition-transform" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+                    <div class="w-16 h-16 bg-blue-700 rounded-lg flex items-center justify-center text-white font-bold text-lg" style="display:none;">HIN</div>
+                </div>
+                <div class="text-xs font-bold text-gray-800">HINO</div>
             </div>
-            <div class="bg-white p-6 rounded-xl shadow-md hover:shadow-xl transition text-center">
-                <div class="text-xl font-bold text-gray-600">& 70+ More</div>
+            <!-- More -->
+            <div class="bg-white border-2 border-gray-200 p-4 rounded-lg shadow-md hover:shadow-xl hover:border-red-500 transition text-center group">
+                <div class="mb-2 flex justify-center h-16 items-center">
+                    <div class="w-16 h-16 bg-gradient-to-br from-red-600 to-red-800 rounded-lg flex items-center justify-center text-white font-bold text-2xl">
+                        <i class="fas fa-plus"></i>
+                    </div>
+                </div>
+                <div class="text-xs font-bold text-gray-600">& 70+ More</div>
             </div>
         </div>
     </div>
 </section>
 
 <!-- Featured Products Section -->
-<section class="py-20 bg-gray-50">
+<section class="py-12 bg-gray-50">
     <div class="w-full px-4 sm:px-6 lg:px-8">
-        <div class="text-center mb-12">
-            <h2 class="text-3xl md:text-4xl font-bold text-gray-900 mb-4">
-                <i class="fas fa-star text-amber-500 mr-2"></i>
+        <div class="text-center mb-8">
+            <h2 class="text-2xl md:text-3xl font-bold text-red-500 mb-2">
+                <i class="fas fa-star text-red-500 mr-2"></i>
                 Featured Products
             </h2>
-            <p class="text-xl text-gray-600">
+            <p class="text-sm text-gray-400">
                 Browse Our Latest Vehicles & Auto Parts from Japan
             </p>
         </div>
@@ -318,37 +379,37 @@ document.addEventListener('DOMContentLoaded', function() {
         <div class="flex flex-col lg:flex-row gap-6 mb-8">
             <!-- Left Sidebar - Search & Filters -->
             <aside class="w-full lg:w-80 flex-shrink-0">
-                <div class="bg-white rounded-2xl shadow-xl p-6 sticky top-4">
+                <div class="bg-white border border-gray-200 rounded-xl shadow-xl p-5 sticky top-4">
                     <!-- Search Bar -->
-                    <div class="mb-6">
-                        <label class="block text-sm font-semibold text-gray-700 mb-3">
-                            <i class="fas fa-search mr-2 text-blue-600"></i>Search Products
+                    <div class="mb-5">
+                        <label class="block text-xs font-semibold text-red-600 mb-2">
+                            <i class="fas fa-search mr-1.5 text-red-500 text-xs"></i>Search Products
                         </label>
                         <div class="relative">
                             <input type="text" 
                                    id="searchInput" 
                                    placeholder="Search products..." 
-                                   class="w-full px-4 py-3 pl-12 border-2 border-gray-200 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                                   class="w-full px-3 py-2 pl-10 text-sm bg-white border border-gray-300 rounded-lg focus:ring-2 focus:ring-red-500 focus:border-red-500 text-gray-900 placeholder-gray-400"
                                    onkeyup="applyFilters()">
-                            <i class="fas fa-search absolute left-4 top-1/2 transform -translate-y-1/2 text-gray-400"></i>
-                            <button onclick="clearSearch()" class="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400 hover:text-red-600 transition">
-                                <i class="fas fa-times-circle"></i>
+                            <i class="fas fa-search absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 text-xs"></i>
+                            <button onclick="clearSearch()" class="absolute right-2 top-1/2 transform -translate-y-1/2 text-gray-400 hover:text-red-600 transition">
+                                <i class="fas fa-times-circle text-xs"></i>
                             </button>
                         </div>
                     </div>
 
                     <!-- Filters Section -->
-                    <div class="space-y-5">
-                        <h3 class="text-sm font-bold text-gray-700 uppercase tracking-wider border-b border-gray-200 pb-2">
-                            <i class="fas fa-filter mr-2 text-blue-600"></i>Filters
+                    <div class="space-y-4">
+                        <h3 class="text-xs font-bold text-red-600 uppercase tracking-wider border-b border-gray-200 pb-2">
+                            <i class="fas fa-filter mr-1.5 text-red-500 text-xs"></i>Filters
                         </h3>
 
                         <!-- Brand Filter -->
                         <div>
-                            <label class="block text-sm font-semibold text-gray-700 mb-2">
-                                <i class="fas fa-car mr-2"></i>Brand
+                            <label class="block text-xs font-semibold text-gray-700 mb-1.5">
+                                <i class="fas fa-car mr-1.5 text-xs"></i>Brand
                             </label>
-                            <select id="brandFilter" class="w-full px-4 py-2.5 border-2 border-gray-200 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-sm" onchange="applyFilters()">
+                            <select id="brandFilter" class="w-full px-3 py-2 text-xs bg-white border border-gray-300 rounded-lg focus:ring-2 focus:ring-red-500 focus:border-red-500 text-gray-900" onchange="applyFilters()">
                                 <option value="">All Brands</option>
                                 <option value="TOYOTA">TOYOTA</option>
                                 <option value="NISSAN">NISSAN</option>
@@ -365,10 +426,10 @@ document.addEventListener('DOMContentLoaded', function() {
 
                         <!-- Category Filter -->
                         <div>
-                            <label class="block text-sm font-semibold text-gray-700 mb-2">
-                                <i class="fas fa-th-large mr-2"></i>Category
+                            <label class="block text-xs font-semibold text-gray-700 mb-1.5">
+                                <i class="fas fa-th-large mr-1.5 text-xs"></i>Category
                             </label>
-                            <select id="categoryFilter" class="w-full px-4 py-2.5 border-2 border-gray-200 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-sm" onchange="applyFilters()">
+                            <select id="categoryFilter" class="w-full px-3 py-2 text-xs bg-white border border-gray-300 rounded-lg focus:ring-2 focus:ring-red-500 focus:border-red-500 text-gray-900" onchange="applyFilters()">
                                 <option value="">All Categories</option>
                                 <option value="Vehicles">Vehicles</option>
                                 <option value="Parts">Parts</option>
@@ -381,10 +442,10 @@ document.addEventListener('DOMContentLoaded', function() {
 
                         <!-- Price Range -->
                         <div>
-                            <label class="block text-sm font-semibold text-gray-700 mb-2">
-                                <i class="fas fa-dollar-sign mr-2"></i>Price Range
+                            <label class="block text-xs font-semibold text-gray-700 mb-1.5">
+                                <i class="fas fa-dollar-sign mr-1.5 text-xs"></i>Price Range
                             </label>
-                            <select id="priceFilter" class="w-full px-4 py-2.5 border-2 border-gray-200 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-sm" onchange="applyFilters()">
+                            <select id="priceFilter" class="w-full px-3 py-2 text-xs bg-white border border-gray-300 rounded-lg focus:ring-2 focus:ring-red-500 focus:border-red-500 text-gray-900" onchange="applyFilters()">
                                 <option value="">All Prices</option>
                                 <option value="0-500">Under $500</option>
                                 <option value="500-1000">$500 - $1,000</option>
@@ -395,12 +456,12 @@ document.addEventListener('DOMContentLoaded', function() {
                         </div>
 
                         <!-- Reset Button -->
-                        <button onclick="clearAllFilters()" class="w-full bg-gray-600 hover:bg-gray-700 text-white px-4 py-2.5 rounded-lg font-semibold transition shadow-lg flex items-center justify-center gap-2 text-sm">
-                            <i class="fas fa-redo"></i> Reset Filters
+                        <button onclick="clearAllFilters()" class="w-full bg-red-600 hover:bg-red-700 text-white px-3 py-2 rounded-lg font-semibold transition shadow-lg flex items-center justify-center gap-1.5 text-xs border border-red-700">
+                            <i class="fas fa-redo text-xs"></i> Reset Filters
                         </button>
 
                         <!-- Active Filters Display -->
-                        <div id="activeFilters" class="pt-4 border-t border-gray-200"></div>
+                        <div id="activeFilters" class="pt-3 border-t border-gray-200"></div>
                     </div>
                 </div>
             </aside>
@@ -413,7 +474,7 @@ document.addEventListener('DOMContentLoaded', function() {
             @endphp
             
             @forelse($featuredProducts as $product)
-            <div class="product-card bg-white rounded-lg shadow-md overflow-hidden hover:shadow-xl transition-all group" 
+            <div class="product-card bg-white border border-gray-200 rounded-lg shadow-md overflow-hidden hover:shadow-xl hover:border-red-500 transition-all group" 
                  data-brand="{{ $product->brand }}" 
                  data-category="{{ $product->category }}" 
                  data-price="{{ $product->price ?? 0 }}"
@@ -421,43 +482,43 @@ document.addEventListener('DOMContentLoaded', function() {
                  data-model="{{ strtolower($product->model ?? '') }}"
                  data-partnumber="{{ strtolower($product->part_number ?? '') }}">
                 <a href="{{ route('products.show', $product->hashid) }}">
-                    <div class="relative overflow-hidden h-36">
+                    <div class="relative overflow-hidden h-32">
                         <img src="{{ $product->image_url }}" alt="{{ $product->name }}" 
                              class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-300">
                         @if($product->video)
-                        <div class="absolute top-2 right-2 bg-red-500 text-white px-2 py-0.5 rounded-full text-xs font-bold flex items-center gap-1 shadow-lg">
-                            <i class="fas fa-video"></i>
+                        <div class="absolute top-1.5 right-1.5 bg-red-600 text-white px-1.5 py-0.5 rounded-full text-xs font-bold flex items-center gap-0.5 shadow-lg">
+                            <i class="fas fa-video text-xs"></i>
                         </div>
                         @endif
-                        <div class="absolute top-2 left-2 bg-blue-600 text-white px-2 py-0.5 rounded-full text-xs font-bold shadow-lg">
+                        <div class="absolute top-1.5 left-1.5 bg-red-600 text-white px-1.5 py-0.5 rounded-full text-xs font-bold shadow-lg">
                             {{ $product->brand }}
                         </div>
                     </div>
                 </a>
-                <div class="p-3">
+                <div class="p-2.5">
                     <div class="mb-1">
                         <span class="text-xs font-semibold text-gray-500">{{ $product->category }}</span>
                     </div>
-                    <h3 class="font-bold text-sm mb-2 line-clamp-2 hover:text-blue-600 transition">
+                    <h3 class="font-bold text-xs mb-1.5 line-clamp-2 hover:text-red-600 transition">
                         <a href="{{ route('products.show', $product->hashid) }}">{{ $product->name }}</a>
                     </h3>
-                    <div class="mb-2">
+                    <div class="mb-1.5">
                         @if($product->price)
-                        <span class="text-lg font-bold text-blue-600">${{ number_format($product->price, 2) }}</span>
+                        <span class="text-sm font-bold text-red-600">${{ number_format($product->price, 2) }}</span>
                         @else
-                        <span class="text-xs text-gray-600 font-semibold">Price on Request</span>
+                        <span class="text-xs text-gray-500 font-semibold">Price on Request</span>
                         @endif
                     </div>
                     <a href="{{ route('products.show', $product->hashid) }}" 
-                       class="block w-full bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white text-center px-3 py-2 rounded-lg font-semibold transition text-xs">
-                        <i class="fas fa-eye mr-1"></i>View
+                       class="block w-full bg-red-600 hover:bg-red-700 text-white text-center px-2 py-1.5 rounded-lg font-semibold transition text-xs border border-red-700">
+                        <i class="fas fa-eye mr-1 text-xs"></i>View
                     </a>
                 </div>
             </div>
             @empty
-            <div class="col-span-2 sm:col-span-3 md:col-span-4 lg:col-span-5 text-center py-12">
-                <i class="fas fa-box-open text-gray-300 text-6xl mb-4"></i>
-                <p class="text-gray-500 text-lg">No products available</p>
+            <div class="col-span-2 sm:col-span-3 md:col-span-4 lg:col-span-5 text-center py-10">
+                <i class="fas fa-box-open text-gray-400 text-4xl mb-3"></i>
+                <p class="text-gray-600 text-sm">No products available</p>
             </div>
             @endforelse
                 </div>
@@ -465,10 +526,10 @@ document.addEventListener('DOMContentLoaded', function() {
         </div>
 
         <!-- View All Button -->
-        <div class="text-center">
-            <a href="{{ route('products.index') }}" class="inline-flex items-center gap-3 bg-white hover:bg-gray-50 text-blue-900 px-8 py-4 rounded-xl font-bold text-lg border-2 border-blue-600 transition shadow-lg hover:shadow-xl">
-                <i class="fas fa-th"></i> View All Products
-                <i class="fas fa-arrow-right"></i>
+        <div class="text-center mt-8">
+            <a href="{{ route('products.index') }}" class="inline-flex items-center gap-2 bg-red-600 hover:bg-red-700 text-white px-6 py-3 rounded-lg font-bold text-sm border border-red-700 transition shadow-lg hover:shadow-xl">
+                <i class="fas fa-th text-xs"></i> <span>View All Products</span>
+                <i class="fas fa-arrow-right text-xs"></i>
             </a>
         </div>
     </div>
@@ -542,25 +603,25 @@ function updateActiveFilters(search, brand, category, price, count) {
     let html = '';
     
     if (search || brand || category || price) {
-        html = '<h4 class="text-xs font-bold text-gray-700 uppercase mb-3">Active Filters</h4>';
+        html = '<h4 class="text-xs font-bold text-red-600 uppercase mb-2">Active Filters</h4>';
         html += '<div class="flex flex-col gap-2">';
         
         if (search) {
-            html += `<span class="bg-blue-100 text-blue-800 px-3 py-1.5 rounded-full text-xs font-semibold flex items-center justify-between">
-                <span class="flex items-center gap-2">
-                    <i class="fas fa-search"></i> "${search}"
+            html += `<span class="bg-red-100 text-red-700 border border-red-300 px-2.5 py-1 rounded-full text-xs font-semibold flex items-center justify-between">
+                <span class="flex items-center gap-1.5">
+                    <i class="fas fa-search text-xs"></i> "${search}"
                 </span>
-                <button onclick="clearSearch()" class="hover:text-red-600"><i class="fas fa-times"></i></button>
+                <button onclick="clearSearch()" class="hover:text-red-900"><i class="fas fa-times text-xs"></i></button>
             </span>`;
         }
         if (brand) {
-            html += `<span class="bg-purple-100 text-purple-800 px-3 py-1.5 rounded-full text-xs font-semibold">
-                <i class="fas fa-car mr-1"></i> ${brand}
+            html += `<span class="bg-red-100 text-red-700 border border-red-300 px-2.5 py-1 rounded-full text-xs font-semibold">
+                <i class="fas fa-car mr-1 text-xs"></i> ${brand}
             </span>`;
         }
         if (category) {
-            html += `<span class="bg-green-100 text-green-800 px-3 py-1.5 rounded-full text-xs font-semibold">
-                <i class="fas fa-th-large mr-1"></i> ${category}
+            html += `<span class="bg-red-100 text-red-700 border border-red-300 px-2.5 py-1 rounded-full text-xs font-semibold">
+                <i class="fas fa-th-large mr-1 text-xs"></i> ${category}
             </span>`;
         }
         if (price) {
@@ -571,13 +632,13 @@ function updateActiveFilters(search, brand, category, price, count) {
                 '2000-5000': '$2,000 - $5,000',
                 '5000+': '$5,000+'
             };
-            html += `<span class="bg-amber-100 text-amber-800 px-3 py-1.5 rounded-full text-xs font-semibold">
-                <i class="fas fa-dollar-sign mr-1"></i> ${priceLabels[price]}
+            html += `<span class="bg-red-100 text-red-700 border border-red-300 px-2.5 py-1 rounded-full text-xs font-semibold">
+                <i class="fas fa-dollar-sign mr-1 text-xs"></i> ${priceLabels[price]}
             </span>`;
         }
         
-        html += `<span class="bg-gray-100 text-gray-700 px-3 py-1.5 rounded-full text-xs font-semibold text-center">
-            <i class="fas fa-box mr-1"></i> ${count} Found
+        html += `<span class="bg-gray-100 text-gray-700 border border-gray-300 px-2.5 py-1 rounded-full text-xs font-semibold text-center">
+            <i class="fas fa-box mr-1 text-xs"></i> ${count} Found
         </span>`;
         html += '</div>';
         
@@ -609,27 +670,27 @@ document.addEventListener('DOMContentLoaded', function() {
 </script>
 
 <!-- CTA Section -->
-<section class="relative bg-gradient-to-br from-blue-900 via-purple-900 to-pink-900 text-white py-20 overflow-hidden">
+<section class="relative bg-gradient-to-br from-black via-red-900 to-black text-white py-12 overflow-hidden border-t border-red-900">
     <div class="absolute inset-0 opacity-10">
         <div class="absolute inset-0" style="background-image: url('data:image/svg+xml,%3Csvg width=\'60\' height=\'60\' viewBox=\'0 0 60 60\' xmlns=\'http://www.w3.org/2000/svg\'%3E%3Cg fill=\'none\' fill-rule=\'evenodd\'%3E%3Cg fill=\'%23ffffff\' fill-opacity=\'1\'%3E%3Cpath d=\'M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4z\'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E');"></div>
     </div>
     <div class="w-full px-4 sm:px-6 lg:px-8 text-center relative z-10">
-        <h2 class="text-3xl md:text-5xl font-bold mb-6">
+        <h2 class="text-2xl md:text-3xl font-bold mb-4">
             Ready to Source Japanese Quality?
         </h2>
-        <p class="text-xl md:text-2xl mb-8 text-blue-100">
+        <p class="text-sm md:text-base mb-6 text-gray-300">
             Get genuine Japanese vehicles and auto parts exported directly to your destination
         </p>
-        <div class="flex flex-col sm:flex-row gap-4 justify-center">
-            <a href="{{ route('contact') }}" class="inline-flex items-center justify-center gap-3 bg-white text-blue-900 px-8 py-4 rounded-lg font-bold text-lg hover:bg-gray-100 transition shadow-2xl">
-                <i class="fas fa-envelope"></i> Request Quote
+        <div class="flex flex-col sm:flex-row gap-3 justify-center">
+            <a href="{{ route('contact') }}" class="inline-flex items-center justify-center gap-2 bg-white text-black px-6 py-3 rounded-lg font-bold text-sm hover:bg-gray-100 transition shadow-2xl border border-gray-300">
+                <i class="fas fa-envelope text-xs"></i> <span>Request Quote</span>
             </a>
-            <a href="https://wa.me/819048043444" target="_blank" class="inline-flex items-center justify-center gap-3 bg-green-600 hover:bg-green-700 text-white px-8 py-4 rounded-lg font-bold text-lg transition shadow-2xl">
-                <i class="fab fa-whatsapp text-2xl"></i> WhatsApp Us
+            <a href="https://wa.me/819048043444" target="_blank" class="inline-flex items-center justify-center gap-2 bg-green-600 hover:bg-green-700 text-white px-6 py-3 rounded-lg font-bold text-sm transition shadow-2xl border border-green-700">
+                <i class="fab fa-whatsapp text-base"></i> <span>WhatsApp Us</span>
             </a>
         </div>
-        <p class="mt-8 text-blue-200 text-sm">
-            <i class="fas fa-shield-alt mr-2"></i> 10+ Years of Trusted Service | 100% Genuine Parts | Worldwide Delivery
+        <p class="mt-6 text-gray-400 text-xs">
+            <i class="fas fa-shield-alt mr-1.5"></i> 10+ Years of Trusted Service | 100% Genuine Parts | Worldwide Delivery
         </p>
     </div>
 </section>

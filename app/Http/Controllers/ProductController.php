@@ -42,12 +42,18 @@ class ProductController extends Controller
             'category' => 'required|string',
             'model' => 'nullable|string',
             'price' => 'nullable|numeric',
-            'image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
-            'images.*' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
+            'image' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg,webp,bmp,ico,tiff,tif|max:5120',
+            'images' => 'nullable|array|max:10',
+            'images.*' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg,webp,bmp,ico,tiff,tif|max:5120',
             'video' => 'nullable|mimes:mp4,avi,mov|max:10240',
             'condition' => 'nullable|string',
             'part_number' => 'nullable|string',
             'stock_quantity' => 'nullable|integer',
+        ], [
+            'images.max' => 'You can upload a maximum of 10 additional images.',
+            'images.*.image' => 'Each file must be an image.',
+            'images.*.mimes' => 'Each image must be a file of type: jpeg, png, jpg, gif, svg, webp, bmp, ico, tiff, tif.',
+            'images.*.max' => 'Each image must not be larger than 5MB.',
         ]);
 
         // Upload main image
@@ -55,13 +61,20 @@ class ProductController extends Controller
             $validated['image'] = $request->file('image')->store('products/images', 'public');
         }
 
-        // Upload multiple images
+        // Upload multiple images (limit to 10)
         if ($request->hasFile('images')) {
             $images = [];
-            foreach ($request->file('images') as $image) {
-                $images[] = $image->store('products/images', 'public');
+            $uploadedFiles = $request->file('images');
+            // Limit to first 10 files
+            $filesToProcess = array_slice($uploadedFiles, 0, 10);
+            foreach ($filesToProcess as $image) {
+                if ($image->isValid()) {
+                    $images[] = $image->store('products/images', 'public');
+                }
             }
-            $validated['images'] = $images;
+            if (!empty($images)) {
+                $validated['images'] = $images;
+            }
         }
 
         // Upload video
@@ -103,13 +116,19 @@ class ProductController extends Controller
             'category' => 'required|string',
             'model' => 'nullable|string',
             'price' => 'nullable|numeric',
-            'image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
-            'images.*' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
+            'image' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg,webp,bmp,ico,tiff,tif|max:5120',
+            'images' => 'nullable|array|max:10',
+            'images.*' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg,webp,bmp,ico,tiff,tif|max:5120',
             'video' => 'nullable|mimes:mp4,avi,mov|max:10240',
             'condition' => 'nullable|string',
             'part_number' => 'nullable|string',
             'stock_quantity' => 'nullable|integer',
             'is_available' => 'nullable|boolean',
+        ], [
+            'images.max' => 'You can upload a maximum of 10 additional images.',
+            'images.*.image' => 'Each file must be an image.',
+            'images.*.mimes' => 'Each image must be a file of type: jpeg, png, jpg, gif, svg, webp, bmp, ico, tiff, tif.',
+            'images.*.max' => 'Each image must not be larger than 5MB.',
         ]);
 
         // Update main image
@@ -123,16 +142,25 @@ class ProductController extends Controller
         // Update multiple images
         if ($request->hasFile('images')) {
             // Delete old images
-            if ($product->images) {
+            if ($product->images && is_array($product->images)) {
                 foreach ($product->images as $oldImage) {
-                    Storage::disk('public')->delete($oldImage);
+                    if ($oldImage) {
+                        Storage::disk('public')->delete($oldImage);
+                    }
                 }
             }
             $images = [];
-            foreach ($request->file('images') as $image) {
-                $images[] = $image->store('products/images', 'public');
+            $uploadedFiles = $request->file('images');
+            // Limit to first 10 files
+            $filesToProcess = array_slice($uploadedFiles, 0, 10);
+            foreach ($filesToProcess as $image) {
+                if ($image->isValid()) {
+                    $images[] = $image->store('products/images', 'public');
+                }
             }
-            $validated['images'] = $images;
+            if (!empty($images)) {
+                $validated['images'] = $images;
+            }
         }
 
         // Update video
@@ -154,15 +182,19 @@ class ProductController extends Controller
      */
     public function destroy(Product $product)
     {
-        // Delete images
+        // Delete main image
         if ($product->image) {
             Storage::disk('public')->delete($product->image);
         }
-        if ($product->images) {
+        // Delete multiple images
+        if ($product->images && is_array($product->images)) {
             foreach ($product->images as $image) {
-                Storage::disk('public')->delete($image);
+                if ($image) {
+                    Storage::disk('public')->delete($image);
+                }
             }
         }
+        // Delete video
         if ($product->video) {
             Storage::disk('public')->delete($product->video);
         }

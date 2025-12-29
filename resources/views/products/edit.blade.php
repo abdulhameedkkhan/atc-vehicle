@@ -128,30 +128,91 @@
             <!-- Main Image -->
             <div class="mb-6">
                 <label for="image" class="block text-sm font-medium text-gray-700 mb-2">Update Main Image</label>
-                <input type="file" name="image" id="image" accept="image/*"
-                       class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500">
-                <p class="mt-1 text-sm text-gray-500">Leave blank to keep current image. Max size: 2MB</p>
+                <input type="file" name="image" id="image" accept="image/jpeg,image/png,image/jpg,image/gif,image/svg+xml,image/webp,image/bmp,image/x-icon,image/tiff"
+                       class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500"
+                       onchange="previewMainImage(this)">
+                <p class="mt-1 text-sm text-gray-500">Leave blank to keep current image. Max size: 5MB</p>
+                <div id="mainImagePreview" class="mt-3 hidden">
+                    <p class="text-sm font-medium text-gray-700 mb-2">New Image Preview:</p>
+                    <img id="mainImagePreviewImg" src="" alt="Preview" class="w-32 h-32 object-cover rounded-lg border-2 border-gray-200">
+                </div>
             </div>
 
             <!-- Current Additional Images -->
             @if($product->images_urls && count($product->images_urls) > 0)
             <div class="mb-6">
-                <label class="block text-sm font-medium text-gray-700 mb-2">Current Additional Images</label>
-                <div class="grid grid-cols-4 gap-2">
-                    @foreach($product->images_urls as $image)
-                    <img src="{{ $image }}" alt="Product image" class="w-full h-24 object-cover rounded">
+                <label class="block text-sm font-medium text-gray-700 mb-2">Current Additional Images ({{ count($product->images_urls) }})</label>
+                <div class="grid grid-cols-2 md:grid-cols-5 gap-3">
+                    @foreach($product->images_urls as $index => $image)
+                    <div class="relative group">
+                        <img src="{{ $image }}" alt="Product image {{ $index + 1 }}" class="w-full h-24 object-cover rounded-lg border-2 border-gray-200">
+                        <div class="absolute top-1 right-1 bg-black bg-opacity-50 text-white text-xs px-2 py-1 rounded">{{ $index + 1 }}</div>
+                    </div>
                     @endforeach
                 </div>
+                <p class="mt-2 text-sm text-orange-600 font-medium">⚠️ Note: Uploading new images will replace all current additional images.</p>
             </div>
             @endif
 
             <!-- Multiple Images -->
             <div class="mb-6">
-                <label for="images" class="block text-sm font-medium text-gray-700 mb-2">Update Additional Images</label>
-                <input type="file" name="images[]" id="images" accept="image/*" multiple
-                       class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500">
-                <p class="mt-1 text-sm text-gray-500">Leave blank to keep current images. You can select multiple images</p>
+                <label for="images" class="block text-sm font-medium text-gray-700 mb-2">
+                    Update Additional Images (Maximum 10 images)
+                </label>
+                <input type="file" name="images[]" id="images" accept="image/jpeg,image/png,image/jpg,image/gif,image/svg+xml,image/webp,image/bmp,image/x-icon,image/tiff" multiple
+                       class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500"
+                       onchange="previewMultipleImages(this)">
+                <p class="mt-1 text-sm text-gray-500">Leave blank to keep current images. Max size per image: 5MB</p>
+                <p class="mt-1 text-xs text-orange-600 font-medium" id="imageCountWarning"></p>
+                <div id="imagesPreview" class="mt-4 grid grid-cols-2 md:grid-cols-5 gap-3"></div>
             </div>
+
+            <script>
+                function previewMainImage(input) {
+                    const preview = document.getElementById('mainImagePreview');
+                    const img = document.getElementById('mainImagePreviewImg');
+                    if (input.files && input.files[0]) {
+                        const reader = new FileReader();
+                        reader.onload = function(e) {
+                            img.src = e.target.result;
+                            preview.classList.remove('hidden');
+                        }
+                        reader.readAsDataURL(input.files[0]);
+                    } else {
+                        preview.classList.add('hidden');
+                    }
+                }
+
+                function previewMultipleImages(input) {
+                    const preview = document.getElementById('imagesPreview');
+                    const warning = document.getElementById('imageCountWarning');
+                    preview.innerHTML = '';
+                    
+                    if (input.files.length > 10) {
+                        warning.textContent = `⚠️ You selected ${input.files.length} images. Only the first 10 will be uploaded.`;
+                        warning.classList.remove('hidden');
+                    } else {
+                        warning.textContent = '';
+                        warning.classList.add('hidden');
+                    }
+
+                    const maxFiles = Math.min(input.files.length, 10);
+                    for (let i = 0; i < maxFiles; i++) {
+                        const file = input.files[i];
+                        const reader = new FileReader();
+                        reader.onload = function(e) {
+                            const div = document.createElement('div');
+                            div.className = 'relative group';
+                            div.innerHTML = `
+                                <img src="${e.target.result}" alt="Preview ${i + 1}" class="w-full h-24 object-cover rounded-lg border-2 border-gray-200">
+                                <div class="absolute top-1 right-1 bg-black bg-opacity-50 text-white text-xs px-2 py-1 rounded">${i + 1}</div>
+                            `;
+                            preview.appendChild(div);
+                        }
+                        reader.readAsDataURL(file);
+                    }
+                }
+            </script>
 
             <!-- Current Video -->
             @if($product->video)
