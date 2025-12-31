@@ -139,6 +139,12 @@ class AuthController extends Controller
         // Auto login
         Auth::login($user);
 
+        // Redirect based on role
+        if ($user->hasRole('admin') && $user->can('view dashboard')) {
+            return redirect()->route('admin.dashboard')
+                ->with('success', 'Email verified successfully! You are now logged in.');
+        }
+
         return redirect()->route('dashboard')
             ->with('success', 'Email verified successfully! You are now logged in.');
     }
@@ -225,6 +231,13 @@ class AuthController extends Controller
 
         if (Auth::attempt($request->only('email', 'password'), $request->filled('remember'))) {
             $request->session()->regenerate();
+
+            $user = Auth::user();
+            
+            // Redirect admin to admin dashboard, regular users to user dashboard
+            if ($user->hasRole('admin') && $user->can('view dashboard')) {
+                return redirect()->intended('/admin/dashboard');
+            }
 
             return redirect()->intended('/dashboard');
         }

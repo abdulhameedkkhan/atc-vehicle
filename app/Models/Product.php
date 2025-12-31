@@ -24,12 +24,28 @@ class Product extends Model
         'part_number',
         'is_available',
         'stock_quantity',
+        'stock_id',
+        'chassis_number',
+        'model_code',
+        'year_month',
+        'grade',
+        'body_style',
+        'mileage',
+        'transmission',
+        'engine_cc',
+        'fuel_type',
+        'color',
+        'doors',
+        'seats',
+        'dimension',
+        'additional_features',
     ];
 
     protected $casts = [
         'images' => 'array',
         'is_available' => 'boolean',
         'price' => 'decimal:2',
+        'additional_features' => 'array',
     ];
 
     // Get encrypted ID

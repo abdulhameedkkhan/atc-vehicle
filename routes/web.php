@@ -7,6 +7,8 @@ use App\Http\Controllers\CarPartController;
 use App\Http\Controllers\SliderController;
 use App\Http\Controllers\ContactController;
 use App\Http\Controllers\ProductEnquiryController;
+use App\Http\Controllers\Admin\AdminEnquiryController;
+use App\Http\Controllers\UserDashboardController;
 
 // Frontend Pages
 Route::get('/', function () {
@@ -48,10 +50,16 @@ Route::post('/logout', [AuthController::class, 'logout'])->name('logout')->middl
 // Test Email Route (Remove in production)
 Route::get('/test-email', [\App\Http\Controllers\TestEmailController::class, 'test'])->name('test-email');
 
-// Dashboard Route (protected - requires view dashboard permission)
-Route::get('/dashboard', function () {
-    return view('dashboard');
-})->middleware(['auth', 'permission:view dashboard'])->name('dashboard');
+// Dashboard Routes (protected - auth only)
+Route::middleware('auth')->group(function () {
+    // Admin Dashboard (requires view dashboard permission)
+    Route::get('/admin/dashboard', function () {
+        return view('dashboard');
+    })->middleware('permission:view dashboard')->name('admin.dashboard');
+    
+    // User Dashboard (for all authenticated users)
+    Route::get('/dashboard', [UserDashboardController::class, 'index'])->name('dashboard');
+});
 
 // Products Routes (Public)
 Route::get('/products', [ProductController::class, 'index'])->name('products.index');
@@ -61,6 +69,7 @@ Route::get('/products/{product}', [ProductController::class, 'show'])->name('pro
 Route::middleware('auth')->group(function () {
     Route::post('/products/{product}/enquiry', [ProductEnquiryController::class, 'store'])->name('products.enquiry.store');
     Route::get('/enquiries', [ProductEnquiryController::class, 'index'])->name('enquiries.index');
+    Route::get('/enquiries/datatable', [ProductEnquiryController::class, 'datatable'])->name('enquiries.datatable');
     Route::get('/enquiries/{enquiry}', [ProductEnquiryController::class, 'show'])->name('enquiries.show');
 });
 
@@ -91,6 +100,12 @@ Route::middleware(['auth', 'role:admin'])->group(function () {
 
         // Slider Management Routes (Admin only)
         Route::resource('sliders', SliderController::class)->except(['show']);
+
+        // Enquiries Management Routes (Admin only)
+        Route::get('/enquiries', [AdminEnquiryController::class, 'index'])->name('enquiries.index');
+        Route::get('/enquiries/datatable', [AdminEnquiryController::class, 'datatable'])->name('enquiries.datatable');
+        Route::get('/enquiries/{enquiry}', [AdminEnquiryController::class, 'show'])->name('enquiries.show');
+        Route::put('/enquiries/{enquiry}/status', [AdminEnquiryController::class, 'updateStatus'])->name('enquiries.update-status');
     });
 });
 

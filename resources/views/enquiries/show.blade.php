@@ -19,13 +19,21 @@
                     <div>
                         <h2 class="text-2xl font-bold text-gray-900 mb-2">Enquiry Status</h2>
                         @if($enquiry->status === 'pending')
-                            <span class="px-3 py-1 inline-flex text-sm leading-5 font-semibold rounded-full bg-yellow-100 text-yellow-800">Pending Review</span>
-                        @elseif($enquiry->status === 'viewed')
-                            <span class="px-3 py-1 inline-flex text-sm leading-5 font-semibold rounded-full bg-blue-100 text-blue-800">Under Review</span>
-                        @elseif($enquiry->status === 'replied')
-                            <span class="px-3 py-1 inline-flex text-sm leading-5 font-semibold rounded-full bg-green-100 text-green-800">Response Received</span>
+                            <span class="px-3 py-1 inline-flex text-sm leading-5 font-semibold rounded-full bg-yellow-100 text-yellow-800">Pending</span>
+                        @elseif($enquiry->status === 'reserved')
+                            <span class="px-3 py-1 inline-flex text-sm leading-5 font-semibold rounded-full bg-purple-100 text-purple-800">Reserved</span>
+                        @elseif($enquiry->status === 'dealers_stock')
+                            <span class="px-3 py-1 inline-flex text-sm leading-5 font-semibold rounded-full bg-blue-100 text-blue-800">Dealers Stock</span>
+                        @elseif($enquiry->status === 'sold')
+                            <span class="px-3 py-1 inline-flex text-sm leading-5 font-semibold rounded-full bg-red-100 text-red-800">Sold</span>
+                        @elseif($enquiry->status === 'stock')
+                            <span class="px-3 py-1 inline-flex text-sm leading-5 font-semibold rounded-full bg-green-100 text-green-800">Stock</span>
+                        @elseif($enquiry->status === 'shipped')
+                            <span class="px-3 py-1 inline-flex text-sm leading-5 font-semibold rounded-full bg-indigo-100 text-indigo-800">Shipped</span>
+                        @elseif($enquiry->status === 'delivered')
+                            <span class="px-3 py-1 inline-flex text-sm leading-5 font-semibold rounded-full bg-emerald-100 text-emerald-800">Delivered</span>
                         @else
-                            <span class="px-3 py-1 inline-flex text-sm leading-5 font-semibold rounded-full bg-gray-100 text-gray-800">Closed</span>
+                            <span class="px-3 py-1 inline-flex text-sm leading-5 font-semibold rounded-full bg-gray-100 text-gray-800">{{ ucfirst(str_replace('_', ' ', $enquiry->status)) }}</span>
                         @endif
                     </div>
                     <div class="text-sm text-gray-500">

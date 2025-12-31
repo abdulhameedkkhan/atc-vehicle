@@ -68,7 +68,7 @@
 
             <!-- Navigation Menu -->
             <nav class="space-y-2">
-                <a href="{{ route('dashboard') }}" class="flex items-center gap-3 px-4 py-3 text-sm font-semibold bg-gradient-to-r from-indigo-600 to-purple-600 text-white rounded-xl shadow-md">
+                <a href="{{ route('admin.dashboard') }}" class="flex items-center gap-3 px-4 py-3 text-sm font-semibold bg-gradient-to-r from-indigo-600 to-purple-600 text-white rounded-xl shadow-md">
                     <i class="fas fa-home w-5"></i>
                     <span>Dashboard</span>
                 </a>
@@ -130,6 +130,15 @@
                     <a href="{{ route('admin.sliders.create') }}" class="flex items-center gap-3 px-4 py-3 text-sm font-medium text-gray-700 hover:bg-gradient-to-r hover:from-rose-50 hover:to-red-50 hover:text-rose-700 rounded-xl transition-all group">
                         <i class="fas fa-plus-circle w-5 text-rose-600"></i>
                         <span>Add New Slider</span>
+                    </a>
+                </div>
+
+                <div class="pt-2 pb-2 border-t border-gray-200">
+                    <p class="px-4 text-xs font-bold text-gray-500 uppercase mb-2">Enquiries</p>
+                    
+                    <a href="{{ route('admin.enquiries.index') }}" class="flex items-center gap-3 px-4 py-3 text-sm font-medium text-gray-700 hover:bg-gradient-to-r hover:from-amber-50 hover:to-orange-50 hover:text-amber-700 rounded-xl transition-all group">
+                        <i class="fas fa-envelope w-5 text-amber-600"></i>
+                        <span>All Enquiries</span>
                     </a>
                 </div>
 

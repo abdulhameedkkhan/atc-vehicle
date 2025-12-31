@@ -16,10 +16,9 @@
         </div>
         @endif
 
-        @if($enquiries->count() > 0)
         <div class="bg-white rounded-xl shadow-lg overflow-hidden">
-            <div class="overflow-x-auto">
-                <table class="min-w-full divide-y divide-gray-200">
+            <div class="p-6">
+                <table id="enquiriesTable" class="min-w-full divide-y divide-gray-200 display nowrap" style="width:100%">
                     <thead class="bg-gray-50">
                         <tr>
                             <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Product</th>
@@ -29,56 +28,60 @@
                             <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Action</th>
                         </tr>
                     </thead>
-                    <tbody class="bg-white divide-y divide-gray-200">
-                        @foreach($enquiries as $enquiry)
-                        <tr>
-                            <td class="px-6 py-4 whitespace-nowrap">
-                                <div class="flex items-center">
-                                    <img src="{{ $enquiry->product->image_url }}" alt="{{ $enquiry->product->name }}" class="w-12 h-12 object-cover rounded-lg mr-3">
-                                    <div>
-                                        <div class="text-sm font-medium text-gray-900">{{ $enquiry->product->name }}</div>
-                                        <div class="text-sm text-gray-500">{{ $enquiry->product->brand }}</div>
-                                    </div>
-                                </div>
-                            </td>
-                            <td class="px-6 py-4">
-                                <div class="text-sm text-gray-900">
-                                    {{ Str::limit($enquiry->message ?? 'No message', 50) }}
-                                </div>
-                            </td>
-                            <td class="px-6 py-4 whitespace-nowrap">
-                                @if($enquiry->status === 'pending')
-                                    <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-yellow-100 text-yellow-800">Pending</span>
-                                @elseif($enquiry->status === 'viewed')
-                                    <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-blue-100 text-blue-800">Viewed</span>
-                                @elseif($enquiry->status === 'replied')
-                                    <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-800">Replied</span>
-                                @else
-                                    <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-gray-100 text-gray-800">Closed</span>
-                                @endif
-                            </td>
-                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                                {{ $enquiry->created_at->format('M d, Y') }}
-                            </td>
-                            <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">
-                                <a href="{{ route('enquiries.show', $enquiry->id) }}" class="text-indigo-600 hover:text-indigo-900">View Details</a>
-                            </td>
-                        </tr>
-                        @endforeach
+                    <tbody>
+                        <!-- DataTables will populate this via AJAX -->
                     </tbody>
                 </table>
             </div>
         </div>
-        @else
-        <div class="bg-white rounded-xl shadow-lg p-12 text-center">
-            <i class="fas fa-inbox text-6xl text-gray-300 mb-4"></i>
-            <h3 class="text-xl font-semibold text-gray-900 mb-2">No Enquiries Yet</h3>
-            <p class="text-gray-600 mb-6">Start browsing our products and submit enquiries for items you're interested in.</p>
-            <a href="{{ route('products.index') }}" class="inline-flex items-center gap-2 bg-red-600 hover:bg-red-700 text-white px-6 py-3 rounded-lg font-semibold transition">
-                <i class="fas fa-search"></i> Browse Products
-            </a>
-        </div>
-        @endif
     </div>
 </section>
+
+<!-- DataTables Scripts -->
+<link rel="stylesheet" href="https://cdn.datatables.net/1.13.7/css/jquery.dataTables.min.css">
+<link rel="stylesheet" href="https://cdn.datatables.net/responsive/2.5.0/css/responsive.dataTables.min.css">
+<script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+<script src="https://cdn.datatables.net/1.13.7/js/jquery.dataTables.min.js"></script>
+<script src="https://cdn.datatables.net/responsive/2.5.0/js/dataTables.responsive.min.js"></script>
+
+<script>
+$(document).ready(function() {
+    $('#enquiriesTable').DataTable({
+        processing: true,
+        serverSide: true,
+        ajax: {
+            url: "{{ route('enquiries.datatable') }}",
+            type: 'GET',
+            headers: {
+                'X-CSRF-TOKEN': '{{ csrf_token() }}'
+            }
+        },
+        columns: [
+            { data: 'product', name: 'product_id', orderable: true, searchable: true },
+            { data: 'message', name: 'message', orderable: true, searchable: true },
+            { data: 'status', name: 'status', orderable: true, searchable: true },
+            { data: 'date', name: 'created_at', orderable: true, searchable: false },
+            { data: 'actions', name: 'actions', orderable: false, searchable: false },
+        ],
+        order: [[3, 'desc']],
+        pageLength: 15,
+        responsive: true,
+        language: {
+            processing: '<div class="flex items-center justify-center p-4"><i class="fas fa-spinner fa-spin text-red-600 text-2xl mr-2"></i> Loading...</div>',
+            search: "Search:",
+            lengthMenu: "Show _MENU_ entries",
+            info: "Showing _START_ to _END_ of _TOTAL_ enquiries",
+            infoEmpty: "No enquiries available",
+            infoFiltered: "(filtered from _MAX_ total enquiries)",
+            paginate: {
+                first: "First",
+                last: "Last",
+                next: "Next",
+                previous: "Previous"
+            },
+            zeroRecords: "No matching enquiries found"
+        }
+    });
+});
+</script>
 @endsection

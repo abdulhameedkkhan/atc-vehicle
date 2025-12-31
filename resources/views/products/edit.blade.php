@@ -101,6 +101,169 @@
                 </div>
             </div>
 
+            <!-- Vehicle Specifications Section -->
+            <div class="mb-6 p-4 bg-gray-50 rounded-lg border border-gray-200">
+                <h3 class="text-lg font-semibold text-gray-800 mb-4 flex items-center gap-2">
+                    <i class="fas fa-car text-indigo-600"></i>
+                    Vehicle Specifications
+                </h3>
+
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
+                    <!-- Stock ID -->
+                    <div>
+                        <label for="stock_id" class="block text-sm font-medium text-gray-700 mb-2">Stock ID</label>
+                        <input type="text" name="stock_id" id="stock_id" value="{{ old('stock_id', $product->stock_id) }}"
+                               class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500"
+                               placeholder="e.g., 82406">
+                    </div>
+
+                    <!-- Chassis Number -->
+                    <div>
+                        <label for="chassis_number" class="block text-sm font-medium text-gray-700 mb-2">Chassis Number</label>
+                        <input type="text" name="chassis_number" id="chassis_number" value="{{ old('chassis_number', $product->chassis_number) }}"
+                               class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500"
+                               placeholder="e.g., JF3-528****">
+                    </div>
+
+                    <!-- Model Code -->
+                    <div>
+                        <label for="model_code" class="block text-sm font-medium text-gray-700 mb-2">Model Code</label>
+                        <input type="text" name="model_code" id="model_code" value="{{ old('model_code', $product->model_code) }}"
+                               class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500"
+                               placeholder="e.g., 68A-JF3">
+                    </div>
+
+                    <!-- Year/Month -->
+                    <div>
+                        <label for="year_month" class="block text-sm font-medium text-gray-700 mb-2">Year/Month</label>
+                        <input type="text" name="year_month" id="year_month" value="{{ old('year_month', $product->year_month) }}"
+                               class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500"
+                               placeholder="e.g., 2023/4">
+                    </div>
+
+                    <!-- Grade -->
+                    <div>
+                        <label for="grade" class="block text-sm font-medium text-gray-700 mb-2">Grade</label>
+                        <input type="text" name="grade" id="grade" value="{{ old('grade', $product->grade) }}"
+                               class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500"
+                               placeholder="e.g., G SENSING">
+                    </div>
+
+                    <!-- Body Style -->
+                    <div>
+                        <label for="body_style" class="block text-sm font-medium text-gray-700 mb-2">Body Style</label>
+                        <input type="text" name="body_style" id="body_style" value="{{ old('body_style', $product->body_style) }}"
+                               class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500"
+                               placeholder="e.g., HATCHBACK">
+                    </div>
+
+                    <!-- Mileage -->
+                    <div>
+                        <label for="mileage" class="block text-sm font-medium text-gray-700 mb-2">Mileage</label>
+                        <input type="number" name="mileage" id="mileage" value="{{ old('mileage', $product->mileage) }}"
+                               class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500"
+                               placeholder="e.g., 8000">
+                    </div>
+
+                    <!-- Transmission -->
+                    <div>
+                        <label for="transmission" class="block text-sm font-medium text-gray-700 mb-2">Transmission</label>
+                        <select name="transmission" id="transmission"
+                                class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500">
+                            <option value="">Select Transmission</option>
+                            <option value="AUTOMATIC" {{ old('transmission', $product->transmission) == 'AUTOMATIC' ? 'selected' : '' }}>Automatic</option>
+                            <option value="MANUAL" {{ old('transmission', $product->transmission) == 'MANUAL' ? 'selected' : '' }}>Manual</option>
+                            <option value="CVT" {{ old('transmission', $product->transmission) == 'CVT' ? 'selected' : '' }}>CVT</option>
+                        </select>
+                    </div>
+
+                    <!-- Engine CC -->
+                    <div>
+                        <label for="engine_cc" class="block text-sm font-medium text-gray-700 mb-2">Engine CC</label>
+                        <input type="number" name="engine_cc" id="engine_cc" value="{{ old('engine_cc', $product->engine_cc) }}"
+                               class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500"
+                               placeholder="e.g., 660">
+                    </div>
+
+                    <!-- Fuel Type -->
+                    <div>
+                        <label for="fuel_type" class="block text-sm font-medium text-gray-700 mb-2">Fuel Type</label>
+                        <select name="fuel_type" id="fuel_type"
+                                class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500">
+                            <option value="">Select Fuel Type</option>
+                            <option value="GASOLINE" {{ old('fuel_type', $product->fuel_type) == 'GASOLINE' ? 'selected' : '' }}>Gasoline</option>
+                            <option value="DIESEL" {{ old('fuel_type', $product->fuel_type) == 'DIESEL' ? 'selected' : '' }}>Diesel</option>
+                            <option value="HYBRID" {{ old('fuel_type', $product->fuel_type) == 'HYBRID' ? 'selected' : '' }}>Hybrid</option>
+                            <option value="ELECTRIC" {{ old('fuel_type', $product->fuel_type) == 'ELECTRIC' ? 'selected' : '' }}>Electric</option>
+                        </select>
+                    </div>
+
+                    <!-- Color -->
+                    <div>
+                        <label for="color" class="block text-sm font-medium text-gray-700 mb-2">Color</label>
+                        <input type="text" name="color" id="color" value="{{ old('color', $product->color) }}"
+                               class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500"
+                               placeholder="e.g., BLACK">
+                    </div>
+
+                    <!-- Doors -->
+                    <div>
+                        <label for="doors" class="block text-sm font-medium text-gray-700 mb-2">Doors</label>
+                        <input type="number" name="doors" id="doors" value="{{ old('doors', $product->doors) }}"
+                               class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500"
+                               placeholder="e.g., 4">
+                    </div>
+
+                    <!-- Seats -->
+                    <div>
+                        <label for="seats" class="block text-sm font-medium text-gray-700 mb-2">Seats</label>
+                        <input type="number" name="seats" id="seats" value="{{ old('seats', $product->seats) }}"
+                               class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500"
+                               placeholder="e.g., 4">
+                    </div>
+
+                    <!-- Dimension -->
+                    <div>
+                        <label for="dimension" class="block text-sm font-medium text-gray-700 mb-2">Dimension</label>
+                        <input type="text" name="dimension" id="dimension" value="{{ old('dimension', $product->dimension) }}"
+                               class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500"
+                               placeholder="e.g., 339 X 147 X 179">
+                    </div>
+                </div>
+
+                <!-- Additional Features -->
+                <div class="mb-4">
+                    <label for="additional_features" class="block text-sm font-medium text-gray-700 mb-2">Additional Features</label>
+                    <div id="additionalFeaturesContainer" class="space-y-2">
+                        @if(old('additional_features', $product->additional_features))
+                            @foreach(old('additional_features', $product->additional_features) as $feature)
+                            <div class="flex gap-2">
+                                <input type="text" name="additional_features[]" value="{{ $feature }}"
+                                       class="flex-1 px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500"
+                                       placeholder="e.g., Power Window">
+                                <button type="button" onclick="removeFeature(this)" class="px-4 py-2 bg-red-500 text-white rounded-lg hover:bg-red-600 remove-feature-btn">
+                                    <i class="fas fa-times"></i>
+                                </button>
+                            </div>
+                            @endforeach
+                        @else
+                            <div class="flex gap-2">
+                                <input type="text" name="additional_features[]" 
+                                       class="flex-1 px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500"
+                                       placeholder="e.g., Power Window">
+                                <button type="button" onclick="removeFeature(this)" class="px-4 py-2 bg-red-500 text-white rounded-lg hover:bg-red-600 hidden remove-feature-btn">
+                                    <i class="fas fa-times"></i>
+                                </button>
+                            </div>
+                        @endif
+                    </div>
+                    <button type="button" onclick="addFeature()" class="mt-2 px-4 py-2 bg-indigo-100 text-indigo-700 rounded-lg hover:bg-indigo-200 text-sm font-medium">
+                        <i class="fas fa-plus mr-1"></i> Add Feature
+                    </button>
+                    <p class="mt-1 text-xs text-gray-500">Add features like Power Window, Sun Roof, 4 Wheel Drive, etc.</p>
+                </div>
+            </div>
+
             <!-- Stock Quantity -->
             <div class="mb-6">
                 <label for="stock_quantity" class="block text-sm font-medium text-gray-700 mb-2">Stock Quantity</label>
@@ -212,6 +375,44 @@
                         reader.readAsDataURL(file);
                     }
                 }
+
+                function addFeature() {
+                    const container = document.getElementById('additionalFeaturesContainer');
+                    const div = document.createElement('div');
+                    div.className = 'flex gap-2';
+                    div.innerHTML = `
+                        <input type="text" name="additional_features[]" 
+                               class="flex-1 px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500"
+                               placeholder="e.g., Power Window">
+                        <button type="button" onclick="removeFeature(this)" class="px-4 py-2 bg-red-500 text-white rounded-lg hover:bg-red-600 remove-feature-btn">
+                            <i class="fas fa-times"></i>
+                        </button>
+                    `;
+                    container.appendChild(div);
+                    updateRemoveButtons();
+                }
+
+                function removeFeature(button) {
+                    button.parentElement.remove();
+                    updateRemoveButtons();
+                }
+
+                function updateRemoveButtons() {
+                    const containers = document.querySelectorAll('#additionalFeaturesContainer > div');
+                    containers.forEach((container, index) => {
+                        const removeBtn = container.querySelector('.remove-feature-btn');
+                        if (containers.length > 1) {
+                            removeBtn.classList.remove('hidden');
+                        } else {
+                            removeBtn.classList.add('hidden');
+                        }
+                    });
+                }
+
+                // Initialize on page load
+                document.addEventListener('DOMContentLoaded', function() {
+                    updateRemoveButtons();
+                });
             </script>
 
             <!-- Current Video -->
