@@ -4,10 +4,10 @@
 
 @section('content')
 <!-- Page Header -->
-<section class="bg-gradient-to-r from-red-600 to-red-800 text-white py-12">
+<section class="bg-gradient-to-r from-blue-600 to-blue-800 text-white py-12">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <h1 class="text-3xl md:text-4xl font-bold mb-2">How to Buy</h1>
-        <p class="text-lg text-red-100">Complete guide to purchasing from ATC Japan</p>
+        <p class="text-lg text-blue-100">Complete guide to purchasing from ATC Japan</p>
     </div>
 </section>
 
@@ -20,7 +20,7 @@
             <div class="space-y-6 mb-8">
                 <div class="flex gap-4">
                     <div class="flex-shrink-0">
-                        <div class="w-10 h-10 bg-red-600 text-white rounded-full flex items-center justify-center font-bold">1</div>
+                        <div class="w-10 h-10 bg-blue-600 text-white rounded-full flex items-center justify-center font-bold">1</div>
                     </div>
                     <div>
                         <h3 class="text-lg font-semibold text-gray-900 mb-2">Browse Our Products</h3>
@@ -30,7 +30,7 @@
 
                 <div class="flex gap-4">
                     <div class="flex-shrink-0">
-                        <div class="w-10 h-10 bg-red-600 text-white rounded-full flex items-center justify-center font-bold">2</div>
+                        <div class="w-10 h-10 bg-blue-600 text-white rounded-full flex items-center justify-center font-bold">2</div>
                     </div>
                     <div>
                         <h3 class="text-lg font-semibold text-gray-900 mb-2">Submit an Enquiry</h3>
@@ -40,7 +40,7 @@
 
                 <div class="flex gap-4">
                     <div class="flex-shrink-0">
-                        <div class="w-10 h-10 bg-red-600 text-white rounded-full flex items-center justify-center font-bold">3</div>
+                        <div class="w-10 h-10 bg-blue-600 text-white rounded-full flex items-center justify-center font-bold">3</div>
                     </div>
                     <div>
                         <h3 class="text-lg font-semibold text-gray-900 mb-2">Receive Quote</h3>
@@ -50,7 +50,7 @@
 
                 <div class="flex gap-4">
                     <div class="flex-shrink-0">
-                        <div class="w-10 h-10 bg-red-600 text-white rounded-full flex items-center justify-center font-bold">4</div>
+                        <div class="w-10 h-10 bg-blue-600 text-white rounded-full flex items-center justify-center font-bold">4</div>
                     </div>
                     <div>
                         <h3 class="text-lg font-semibold text-gray-900 mb-2">Make Payment</h3>
@@ -60,7 +60,7 @@
 
                 <div class="flex gap-4">
                     <div class="flex-shrink-0">
-                        <div class="w-10 h-10 bg-red-600 text-white rounded-full flex items-center justify-center font-bold">5</div>
+                        <div class="w-10 h-10 bg-blue-600 text-white rounded-full flex items-center justify-center font-bold">5</div>
                     </div>
                     <div>
                         <h3 class="text-lg font-semibold text-gray-900 mb-2">Order Processing</h3>
@@ -70,7 +70,7 @@
 
                 <div class="flex gap-4">
                     <div class="flex-shrink-0">
-                        <div class="w-10 h-10 bg-red-600 text-white rounded-full flex items-center justify-center font-bold">6</div>
+                        <div class="w-10 h-10 bg-blue-600 text-white rounded-full flex items-center justify-center font-bold">6</div>
                     </div>
                     <div>
                         <h3 class="text-lg font-semibold text-gray-900 mb-2">Shipping & Delivery</h3>
@@ -87,37 +87,44 @@
             <div class="bg-gray-50 rounded-lg p-6 space-y-4">
                 <div>
                     <h3 class="font-semibold text-gray-900 mb-2">Bank Name:</h3>
-                    <p class="text-gray-700">[Bank Name]</p>
+                    <p class="text-gray-700">SUMITOMO MITSUI CORPORATION BANK</p>
                 </div>
 
                 <div>
                     <h3 class="font-semibold text-gray-900 mb-2">Account Name:</h3>
-                    <p class="text-gray-700">Asia Trading Co. Pvt. Limited</p>
+                    <p class="text-gray-700">ASIA TRADING CO,LTD</p>
                 </div>
 
                 <div>
                     <h3 class="font-semibold text-gray-900 mb-2">Account Number:</h3>
-                    <p class="text-gray-700 font-mono">[Account Number]</p>
+                    <p class="text-gray-700 font-mono">4469749</p>
+                </div>
+
+                <div>
+                    <h3 class="font-semibold text-gray-900 mb-2">Branch Number:</h3>
+                    <p class="text-gray-700 font-mono">022</p>
                 </div>
 
                 <div>
                     <h3 class="font-semibold text-gray-900 mb-2">SWIFT/BIC Code:</h3>
-                    <p class="text-gray-700 font-mono">[SWIFT Code]</p>
+                    <p class="text-gray-700 font-mono">SMBCJPJTXXX</p>
                 </div>
 
                 <div>
+                    <h3 class="font-semibold text-gray-900 mb-2">Bank Branch:</h3>
+                    <p class="text-gray-700">
+                        OYAMA TOCHIGI
+                    </p>
+                </div>
+                <div>
                     <h3 class="font-semibold text-gray-900 mb-2">Bank Address:</h3>
                     <p class="text-gray-700">
-                        [Bank Address]<br>
-                        Ibaraki-ken, Japan
+                        323-0025,SHIROYAMA-CHO<br>
+                        TOCHIGI-KEN,OYAMA-CITY,JAPAN
                     </p>
                 </div>
 
-                <div class="pt-4 border-t border-gray-200">
-                    <p class="text-sm text-gray-600">
-                        <strong>Note:</strong> Please include your order/inquiry number in the payment reference. After making payment, send the receipt to our email or WhatsApp for confirmation.
-                    </p>
-                </div>
+                
             </div>
         </div>
 
@@ -147,7 +154,7 @@
         <div class="mt-8 text-center">
             <p class="text-gray-600 mb-4">Need more information about the purchase process?</p>
             <a href="{{ route('contact') }}" 
-               class="inline-flex items-center gap-2 bg-red-600 hover:bg-red-700 text-white px-6 py-3 rounded-lg font-semibold transition">
+               class="inline-flex items-center gap-2 bg-blue-600 hover:bg-blue-700 text-white px-6 py-3 rounded-lg font-semibold transition">
                 <i class="fas fa-envelope"></i> Contact Us
             </a>
         </div>

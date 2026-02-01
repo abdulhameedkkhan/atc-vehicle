@@ -48,11 +48,22 @@
 
     <!-- User Information -->
     <div class="mb-6 pb-6 border-b border-gray-200">
-        <h3 class="text-lg font-semibold text-gray-900 mb-4">User Information</h3>
-        <div class="bg-gray-50 rounded-lg p-4">
-            <p class="text-sm text-gray-600 mb-1"><strong>Name:</strong> {{ $enquiry->user->name }}</p>
-            <p class="text-sm text-gray-600 mb-1"><strong>Email:</strong> {{ $enquiry->user->email }}</p>
-            <p class="text-sm text-gray-600"><strong>User ID:</strong> #{{ $enquiry->user->id }}</p>
+        <h3 class="text-lg font-semibold text-gray-900 mb-4">Customer Information</h3>
+        <div class="bg-gray-50 rounded-lg p-4 grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div>
+                <p class="text-sm text-gray-600 mb-1"><strong>Name:</strong> {{ $enquiry->name ?? ($enquiry->user ? $enquiry->user->name : 'N/A') }}</p>
+                <p class="text-sm text-gray-600 mb-1"><strong>Email:</strong> {{ $enquiry->email ?? ($enquiry->user ? $enquiry->user->email : 'N/A') }}</p>
+                <p class="text-sm text-gray-600"><strong>User Type:</strong> {{ $enquiry->user_id ? 'Registered User (#' . $enquiry->user_id . ')' : 'Guest' }}</p>
+            </div>
+            <div>
+                <p class="text-sm text-gray-600 mb-1"><strong>Phone:</strong> {{ $enquiry->phone ?? 'N/A' }}</p>
+                @if($enquiry->product_url)
+                <p class="text-sm text-gray-600 mb-1 overflow-hidden overflow-ellipsis">
+                    <strong>Product URL:</strong> 
+                    <a href="{{ $enquiry->product_url }}" target="_blank" class="text-indigo-600 hover:underline">{{ $enquiry->product_url }}</a>
+                </p>
+                @endif
+            </div>
         </div>
     </div>
 

@@ -7,11 +7,11 @@
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
 </head>
-<body class="bg-gradient-to-br from-gray-50 to-gray-100 min-h-screen flex items-center justify-center py-12 px-4 sm:px-6 lg:px-8">
+<body class="bg-gradient-to-br from-blue-50 to-indigo-100 min-h-screen flex items-center justify-center py-12 px-4 sm:px-6 lg:px-8">
     <div class="max-w-md w-full space-y-8">
         <div>
             <div class="flex justify-center">
-                <div class="w-16 h-16 bg-gradient-to-br from-red-600 to-red-800 rounded-lg flex items-center justify-center">
+                <div class="w-16 h-16 bg-gradient-to-br from-blue-600 to-blue-800 rounded-lg flex items-center justify-center shadow-lg">
                     <i class="fas fa-key text-white text-2xl"></i>
                 </div>
             </div>
@@ -40,7 +40,7 @@
             <div>
                 <label for="email" class="block text-sm font-medium text-gray-700 mb-2">Email Address *</label>
                 <input id="email" name="email" type="email" autocomplete="email" required 
-                       class="appearance-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-lg focus:outline-none focus:ring-red-500 focus:border-red-500 focus:z-10 sm:text-sm @error('email') border-red-500 @enderror" 
+                       class="appearance-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-lg focus:outline-none focus:ring-blue-500 focus:border-blue-500 focus:z-10 sm:text-sm @error('email') border-red-500 @enderror" 
                        placeholder="Enter your email" value="{{ old('email') }}">
                 @error('email')
                     <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
@@ -49,7 +49,7 @@
 
             <div>
                 <button type="submit" 
-                        class="group relative w-full flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-lg text-white bg-gradient-to-r from-red-600 to-red-700 hover:from-red-700 hover:to-red-800 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500 transition duration-150 ease-in-out">
+                        class="group relative w-full flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-lg text-white bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-700 hover:to-blue-800 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 transition duration-150 ease-in-out">
                     <i class="fas fa-paper-plane mr-2"></i>
                     Send Reset OTP
                 </button>
@@ -62,7 +62,7 @@
             </a>
             <p class="text-xs text-gray-500">
                 Remember your password?
-                <a href="{{ route('login') }}" class="text-red-600 hover:text-red-500 font-medium">
+                <a href="{{ route('login') }}" class="text-blue-600 hover:text-blue-500 font-medium">
                     Sign in
                 </a>
             </p>

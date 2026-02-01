@@ -12,13 +12,27 @@ class ProductEnquiryController extends Controller
 {
     public function store(Request $request, Product $product)
     {
-        $request->validate([
-            'message' => 'nullable|string|max:1000',
-        ]);
+        $isGuest = !Auth::check();
+        
+        $rules = [
+            'message' => 'required|string|max:1000',
+        ];
+
+        if ($isGuest) {
+            $rules['name'] = 'required|string|max:255';
+            $rules['email'] = 'required|email|max:255';
+            $rules['phone'] = 'nullable|string|max:20';
+        }
+
+        $request->validate($rules);
 
         ProductEnquiry::create([
             'user_id' => Auth::id(),
             'product_id' => $product->id,
+            'name' => $isGuest ? $request->name : Auth::user()->name,
+            'email' => $isGuest ? $request->email : Auth::user()->email,
+            'phone' => $request->phone,
+            'product_url' => url()->previous(), // Save the URL the user came from
             'message' => $request->message,
             'status' => 'pending',
         ]);

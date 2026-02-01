@@ -86,33 +86,33 @@
                 <!-- Active Filters Display -->
                 @if($searchTerm || $selectedBrand || $selectedCategory || $selectedPrice)
                 <div class="pt-4 border-t border-gray-200">
-                    <h4 class="text-xs font-bold text-gray-700 uppercase mb-3">Active Filters</h4>
+                    <h4 class="text-xs font-bold text-gray-700 uppercase mb-3 text-blue-600">Active Filters</h4>
                     <div class="flex flex-col gap-2">
                         @if($searchTerm)
-                        <span class="bg-blue-100 text-blue-800 px-3 py-1.5 rounded-full text-xs font-semibold flex items-center justify-between">
+                        <span class="bg-blue-100 text-blue-800 px-3 py-1.5 rounded-full text-xs font-semibold flex items-center justify-between border border-blue-100">
                             <span class="flex items-center gap-2">
                                 <i class="fas fa-search"></i> "{{ $searchTerm }}"
                             </span>
-                            <button wire:click="$set('searchTerm', '')" class="hover:text-red-600">
+                            <button wire:click="$set('searchTerm', '')" class="hover:text-red-600 transition">
                                 <i class="fas fa-times"></i>
                             </button>
                         </span>
                         @endif
 
                         @if($selectedBrand)
-                        <span class="bg-purple-100 text-purple-800 px-3 py-1.5 rounded-full text-xs font-semibold">
+                        <span class="bg-purple-100 text-purple-800 px-3 py-1.5 rounded-full text-xs font-semibold border border-purple-100">
                             <i class="fas fa-car mr-1"></i> {{ $selectedBrand }}
                         </span>
                         @endif
 
                         @if($selectedCategory)
-                        <span class="bg-green-100 text-green-800 px-3 py-1.5 rounded-full text-xs font-semibold">
+                        <span class="bg-green-100 text-green-800 px-3 py-1.5 rounded-full text-xs font-semibold border border-green-200">
                             <i class="fas fa-th-large mr-1"></i> {{ $selectedCategory }}
                         </span>
                         @endif
 
                         @if($selectedPrice)
-                        <span class="bg-amber-100 text-amber-800 px-3 py-1.5 rounded-full text-xs font-semibold">
+                        <span class="bg-amber-100 text-amber-800 px-3 py-1.5 rounded-full text-xs font-semibold border border-amber-200">
                             <i class="fas fa-dollar-sign mr-1"></i> 
                             @if($selectedPrice === '0-500') Under $500
                             @elseif($selectedPrice === '500-1000') $500 - $1,000
@@ -123,7 +123,7 @@
                         </span>
                         @endif
 
-                        <span class="bg-gray-100 text-gray-700 px-3 py-1.5 rounded-full text-xs font-semibold text-center">
+                        <span class="bg-[#1e3a8a] text-white px-3 py-1.5 rounded-full text-xs font-bold text-center shadow-md">
                             <i class="fas fa-box mr-1"></i> {{ $totalCount }} Found
                         </span>
                     </div>
@@ -140,7 +140,7 @@
             wire:loading
             class="fixed top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 z-[9999]"
         >
-            <div class="inline-flex items-center px-6 py-3 bg-blue-100 text-blue-800 rounded-lg shadow-lg">
+            <div class="inline-flex items-center px-6 py-3 bg-blue-100 text-blue-800 rounded-lg shadow-2xl">
                 <svg class="animate-spin -ml-1 mr-3 h-5 w-5 text-blue-800"
                      xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
                     <circle class="opacity-25" cx="12" cy="12" r="10"
@@ -148,21 +148,21 @@
                     <path class="opacity-75" fill="currentColor"
                           d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
                 </svg>
-                Loading products...
+                Processing...
             </div>
         </div>
 
         <!-- Products Grid -->
-        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 mb-8">
+        <div class="grid grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 mb-8">
         @forelse($products as $product)
-        <div class="bg-white rounded-xl shadow-lg overflow-hidden hover:shadow-2xl transition-all group">
+        <div class="bg-white rounded-xl shadow-lg overflow-hidden hover:shadow-2xl transition-all group border border-gray-100">
             <a href="{{ route('products.show', $product->hashid) }}">
-                <div class="relative overflow-hidden">
+                <div class="relative overflow-hidden h-48">
                     <img src="{{ $product->image_url }}" alt="{{ $product->name }}"
-                         class="w-full h-48 object-cover group-hover:scale-110 transition-transform duration-300">
+                         class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-300">
                     
                     <!-- Brand Badge -->
-                    <div class="absolute top-2 left-2 bg-gradient-to-r from-blue-600 to-purple-600 text-white px-3 py-1 rounded-full text-xs font-bold shadow-lg">
+                    <div class="absolute top-2 left-2 bg-gradient-to-r from-blue-600 to-purple-600 text-white px-3 py-1 rounded-full text-xs font-bold shadow-lg uppercase">
                         {{ $product->brand }}
                     </div>
 
@@ -177,15 +177,15 @@
             <div class="p-4">
                 <!-- Category -->
                 <div class="text-xs text-gray-500 mb-2 flex items-center">
-                    <i class="fas fa-tag mr-1"></i> {{ $product->category }}
+                    <i class="fas fa-tag mr-1 text-blue-600"></i> {{ $product->category }}
                 </div>
 
                 <!-- Product Name -->
-                <h3 class="font-bold text-lg mb-2 line-clamp-2 text-gray-800">{{ $product->name }}</h3>
+                <h3 class="font-bold text-lg mb-2 line-clamp-2 text-gray-800 group-hover:text-blue-600 transition">{{ $product->name }}</h3>
                 
                 @if($product->model)
                 <p class="text-gray-500 text-sm mb-2 flex items-center">
-                    <i class="fas fa-car-side mr-1"></i> Model: {{ $product->model }}
+                    <i class="fas fa-car-side mr-2 text-purple-600"></i> {{ $product->model }}
                 </p>
                 @endif
 
@@ -196,8 +196,8 @@
                 <p class="text-gray-600 font-semibold text-lg mb-3">Price on Request</p>
                 @endif
 
-                <!-- Stock Status -->
-                <div class="flex items-center justify-between mb-3">
+                <!-- Stock Status & Button -->
+                <div class="flex flex-col gap-3">
                     <span class="text-xs {{ $product->stock_quantity > 0 ? 'text-green-600' : 'text-red-600' }} font-semibold flex items-center">
                         <i class="fas fa-box mr-1"></i>
                         @if($product->stock_quantity > 0)
@@ -206,20 +206,20 @@
                             Out of stock
                         @endif
                     </span>
-                </div>
 
-                <!-- View Details Button -->
-                <a href="{{ route('products.show', $product->hashid) }}" 
-                   class="block w-full bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white text-center py-2 rounded-lg transition font-semibold">
-                    View Details <i class="fas fa-arrow-right ml-1"></i>
-                </a>
+                    <a href="{{ route('products.show', $product->hashid) }}" 
+                       class="block w-full bg-[#1e3a8a] hover:bg-blue-900 text-white text-center py-2.5 rounded-lg transition font-bold shadow-md hover:shadow-lg">
+                        View Details <i class="fas fa-arrow-right ml-1"></i>
+                    </a>
+                </div>
             </div>
         </div>
         @empty
-        <div class="md:col-span-2 lg:col-span-3 xl:col-span-4 text-center py-20">
+        <div class="col-span-full text-center py-20 bg-white rounded-2xl shadow-xl border border-gray-100">
             <i class="fas fa-box-open text-gray-300 text-6xl mb-4"></i>
-            <p class="text-gray-600 text-xl">No products found matching your criteria.</p>
-            <button wire:click="resetFilters" class="mt-4 bg-blue-600 hover:bg-blue-700 text-white px-6 py-2 rounded-lg font-semibold transition">
+            <p class="text-gray-600 text-xl font-bold">No products found</p>
+            <p class="text-gray-400 text-sm mt-1">Try adjusting your filters or search terms</p>
+            <button wire:click="resetFilters" class="mt-6 bg-blue-600 hover:bg-blue-700 text-white px-8 py-2 rounded-lg font-semibold transition">
                 <i class="fas fa-redo mr-2"></i> Reset Filters
             </button>
         </div>
@@ -238,15 +238,14 @@
         <p class="text-gray-500 text-sm mt-3">Showing {{ $products->count() }} of {{ $totalCount }} products</p>
     </div>
     @endif
-
-        <!-- Results Summary -->
-        @if($products->count() > 0)
-        <div class="text-center text-gray-600 mb-8">
-            <p class="text-lg">
-                <i class="fas fa-check-circle text-green-500 mr-2"></i>
-                Displaying <strong>{{ $products->count() }}</strong> of <strong>{{ $totalCount }}</strong> products
-            </p>
-        </div>
-        @endif
+    <!-- Results Summary -->
+    @if($products->count() > 0)
+    <div class="text-center text-gray-600 mb-8 py-6 border-t border-gray-100">
+        <p class="text-lg">
+            <i class="fas fa-check-circle text-green-500 mr-2"></i>
+            Displaying <strong>{{ $products->count() }}</strong> of <strong>{{ $totalCount }}</strong> products
+        </p>
     </div>
+    @endif
+</div>
 </div>

@@ -65,7 +65,7 @@
                     <div class="grid grid-cols-4 gap-2 mt-4">
                         @foreach($allImages as $index => $image)
                         <button onclick="goToSlide({{ $index }}); openImageModal({{ $index }});" 
-                                class="relative overflow-hidden rounded-lg border-2 transition-all {{ $index === 0 ? 'border-indigo-600' : 'border-transparent hover:border-gray-300' }} cursor-pointer"
+                                class="relative overflow-hidden rounded-lg border-2 transition-all {{ $index === 0 ? 'border-[#1e3a8a]' : 'border-transparent hover:border-gray-300' }} cursor-pointer"
                                 id="thumbnail{{ $index }}"
                                 style="padding-top: 100%;">
                             <img src="{{ $image }}" 
@@ -103,128 +103,113 @@
                     @endif
                 </div>
                 
-                @if($product->price)
-                <p class="text-3xl font-bold text-indigo-600 mb-6">
-                    ${{ number_format($product->price, 2) }}
-                </p>
-                @else
-                <p class="text-xl text-gray-600 mb-6">Price on inquiry</p>
-                @endif
+                <div class="flex flex-wrap items-end gap-6 mb-8 bg-blue-50/50 p-6 rounded-2xl border border-blue-100">
+                    <div>
+                        <h4 class="text-xs font-bold text-gray-500 uppercase tracking-widest mb-1">Product Vehicle Cost</h4>
+                        @if($product->price)
+                        <p class="text-4xl font-black text-[#1e3a8a]">
+                            ${{ number_format($product->price, 2) }}
+                        </p>
+                        @else
+                        <p class="text-xl font-bold text-gray-600">Price on inquiry</p>
+                        @endif
+                    </div>
+                    
+                    <a href="https://wa.me/819048043444?text=Hi, I'm interested in {{ urlencode($product->name) }}. Product ID: {{ $product->hashid }}. View Product: {{ urlencode(url()->current()) }}" 
+                       target="_blank"
+                       class="bg-[#25D366] hover:bg-[#128C7E] text-white px-6 py-3 rounded-xl font-bold transition-all flex items-center gap-2 shadow-lg hover:shadow-green-200/50 transform hover:-translate-y-1 mb-1">
+                        <i class="fab fa-whatsapp text-xl"></i>
+                        <span>More Info</span>
+                    </a>
+                </div>
 
-                <div class="bg-gray-50 rounded-lg p-6 mb-6">
-                    <h3 class="font-semibold text-lg mb-4">Product Details</h3>
-                    <div class="space-y-3">
-                        @if($product->part_number)
-                        <div class="flex justify-between">
-                            <span class="text-gray-600">Part Number:</span>
-                            <span class="font-medium">{{ $product->part_number }}</span>
-                        </div>
-                        @endif
-                        @if($product->model)
-                        <div class="flex justify-between">
-                            <span class="text-gray-600">Model:</span>
-                            <span class="font-medium">{{ $product->model }}</span>
-                        </div>
-                        @endif
-                        <div class="flex justify-between">
-                            <span class="text-gray-600">Category:</span>
-                            <span class="font-medium">{{ $product->category }}</span>
-                        </div>
-                        <div class="flex justify-between">
-                            <span class="text-gray-600">Stock:</span>
-                            <span class="font-medium {{ $product->stock_quantity > 0 ? 'text-green-600' : 'text-red-600' }}">
-                                {{ $product->stock_quantity > 0 ? $product->stock_quantity . ' available' : 'Out of stock' }}
-                            </span>
-                        </div>
+                <!-- General Details Table -->
+                <div class="bg-white rounded-xl shadow-md border border-gray-100 overflow-hidden mb-8">
+                    <div class="bg-gray-50 px-6 py-4 border-b border-gray-100">
+                        <h3 class="font-bold text-gray-800 flex items-center gap-2">
+                            <i class="fas fa-info-circle text-[#1e3a8a]"></i> Product Information
+                        </h3>
+                    </div>
+                    <div class="overflow-x-auto">
+                        <table class="w-full text-left border-collapse">
+                            <tbody class="divide-y divide-gray-100">
+                                <tr class="hover:bg-gray-50 transition">
+                                    <th class="py-4 px-6 bg-gray-50/50 text-gray-600 font-semibold w-1/3">Category</th>
+                                    <td class="py-4 px-6 text-gray-800 font-medium">{{ $product->category }}</td>
+                                </tr>
+                                <tr class="hover:bg-gray-50 transition">
+                                    <th class="py-4 px-6 bg-gray-50/50 text-gray-600 font-semibold">Brand</th>
+                                    <td class="py-4 px-6">
+                                        <span class="px-3 py-1 bg-blue-50 text-[#1e3a8a] rounded-full text-xs font-bold border border-blue-100">
+                                            {{ $product->brand }}
+                                        </span>
+                                    </td>
+                                </tr>
+                                @if($product->model)
+                                <tr class="hover:bg-gray-50 transition">
+                                    <th class="py-4 px-6 bg-gray-50/50 text-gray-600 font-semibold">Model</th>
+                                    <td class="py-4 px-6 text-gray-800 font-medium">{{ $product->model }}</td>
+                                </tr>
+                                @endif
+                                @if($product->part_number)
+                                <tr class="hover:bg-gray-50 transition">
+                                    <th class="py-4 px-6 bg-gray-50/50 text-gray-600 font-semibold">Part Number</th>
+                                    <td class="py-4 px-6 text-gray-800 font-mono text-blue-600">{{ $product->part_number }}</td>
+                                </tr>
+                                @endif
+                                <tr class="hover:bg-gray-50 transition">
+                                    <th class="py-4 px-6 bg-gray-50/50 text-gray-600 font-semibold">Status</th>
+                                    <td class="py-4 px-6">
+                                        <span class="inline-flex items-center gap-1.5 {{ $product->stock_quantity > 0 ? 'text-green-600' : 'text-red-600' }} font-bold">
+                                            <span class="w-2 h-2 rounded-full {{ $product->stock_quantity > 0 ? 'bg-green-500 animate-pulse' : 'bg-red-500' }}"></span>
+                                            {{ $product->stock_quantity > 0 ? $product->stock_quantity . ' In Stock' : 'Out of Stock' }}
+                                        </span>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
                     </div>
                 </div>
 
-                <!-- Vehicle Specifications -->
+                <!-- Vehicle Specifications Table -->
                 @if($product->stock_id || $product->chassis_number || $product->model_code || $product->year_month || $product->grade || $product->body_style || $product->mileage || $product->transmission || $product->engine_cc || $product->fuel_type || $product->color || $product->doors || $product->seats || $product->dimension)
-                <div class="bg-gray-50 rounded-lg p-6 mb-6">
-                    <h3 class="font-semibold text-lg mb-4 flex items-center gap-2">
-                        <i class="fas fa-car text-indigo-600"></i>
-                        Vehicle Specifications
-                    </h3>
-                    <div class="space-y-3">
-                        @if($product->stock_id)
-                        <div class="flex justify-between">
-                            <span class="text-gray-600">Stock ID:</span>
-                            <span class="font-medium">{{ $product->stock_id }}</span>
-                        </div>
-                        @endif
-                        @if($product->chassis_number)
-                        <div class="flex justify-between">
-                            <span class="text-gray-600">Chassis Number:</span>
-                            <span class="font-medium">{{ $product->chassis_number }}</span>
-                        </div>
-                        @endif
-                        @if($product->model_code)
-                        <div class="flex justify-between">
-                            <span class="text-gray-600">Model Code:</span>
-                            <span class="font-medium">{{ $product->model_code }}</span>
-                        </div>
-                        @endif
-                        @if($product->year_month)
-                        <div class="flex justify-between">
-                            <span class="text-gray-600">Year/Month:</span>
-                            <span class="font-medium">{{ $product->year_month }}</span>
-                        </div>
-                        @endif
-                        @if($product->grade)
-                        <div class="flex justify-between">
-                            <span class="text-gray-600">Grade:</span>
-                            <span class="font-medium">{{ $product->grade }}</span>
-                        </div>
-                        @endif
-                        @if($product->body_style)
-                        <div class="flex justify-between">
-                            <span class="text-gray-600">Body Style:</span>
-                            <span class="font-medium">{{ $product->body_style }}</span>
-                        </div>
-                        @endif
-                        @if($product->mileage)
-                        <div class="flex justify-between">
-                            <span class="text-gray-600">Mileage:</span>
-                            <span class="font-medium">{{ number_format($product->mileage) }} km</span>
-                        </div>
-                        @endif
-                        @if($product->transmission)
-                        <div class="flex justify-between">
-                            <span class="text-gray-600">Transmission:</span>
-                            <span class="font-medium">{{ $product->transmission }}</span>
-                        </div>
-                        @endif
-                        @if($product->engine_cc)
-                        <div class="flex justify-between">
-                            <span class="text-gray-600">Engine CC:</span>
-                            <span class="font-medium">{{ number_format($product->engine_cc) }} cc</span>
-                        </div>
-                        @endif
-                        @if($product->fuel_type)
-                        <div class="flex justify-between">
-                            <span class="text-gray-600">Fuel Type:</span>
-                            <span class="font-medium">{{ $product->fuel_type }}</span>
-                        </div>
-                        @endif
-                        @if($product->color)
-                        <div class="flex justify-between">
-                            <span class="text-gray-600">Color:</span>
-                            <span class="font-medium">{{ $product->color }}</span>
-                        </div>
-                        @endif
-                        @if($product->doors || $product->seats)
-                        <div class="flex justify-between">
-                            <span class="text-gray-600">Doors / Seats:</span>
-                            <span class="font-medium">{{ $product->doors ?? 'N/A' }} / {{ $product->seats ?? 'N/A' }}</span>
-                        </div>
-                        @endif
-                        @if($product->dimension)
-                        <div class="flex justify-between">
-                            <span class="text-gray-600">Dimension:</span>
-                            <span class="font-medium">{{ $product->dimension }}</span>
-                        </div>
-                        @endif
+                <div class="bg-white rounded-xl shadow-md border border-gray-100 overflow-hidden mb-8">
+                    <div class="bg-gray-50 px-6 py-4 border-b border-gray-100">
+                        <h3 class="font-bold text-gray-800 flex items-center gap-2">
+                            <i class="fas fa-car text-[#1e3a8a]"></i> Vehicle Specifications
+                        </h3>
+                    </div>
+                    <div class="overflow-x-auto">
+                        <table class="w-full text-left border-collapse">
+                            <tbody class="divide-y divide-gray-100">
+                                @php
+                                    $specs = [
+                                        'Stock ID' => $product->stock_id,
+                                        'Chassis Number' => $product->chassis_number,
+                                        'Model Code' => $product->model_code,
+                                        'Year/Month' => $product->year_month,
+                                        'Grade' => $product->grade,
+                                        'Body Style' => $product->body_style,
+                                        'Mileage' => $product->mileage ? number_format($product->mileage) . ' km' : null,
+                                        'Transmission' => $product->transmission,
+                                        'Engine CC' => $product->engine_cc ? number_format($product->engine_cc) . ' cc' : null,
+                                        'Fuel Type' => $product->fuel_type,
+                                        'Color' => $product->color,
+                                        'Doors / Seats' => ($product->doors || $product->seats) ? ($product->doors ?? 'N/A') . ' / ' . ($product->seats ?? 'N/A') : null,
+                                        'Dimension' => $product->dimension,
+                                    ];
+                                @endphp
+
+                                @foreach($specs as $label => $value)
+                                    @if($value)
+                                    <tr class="hover:bg-gray-50 transition">
+                                        <th class="py-3 px-6 bg-gray-50/50 text-gray-500 font-semibold text-xs uppercase tracking-wider w-1/3">{{ $label }}</th>
+                                        <td class="py-3 px-6 text-gray-800 font-bold text-sm">{{ $value }}</td>
+                                    </tr>
+                                    @endif
+                                @endforeach
+                            </tbody>
+                        </table>
                     </div>
                 </div>
                 @endif
@@ -235,8 +220,8 @@
                     <h3 class="font-semibold text-lg mb-4">Additional Features</h3>
                     <div class="flex flex-wrap gap-2">
                         @foreach($product->additional_features as $feature)
-                        <span class="px-3 py-1 bg-indigo-100 text-indigo-800 rounded-full text-sm font-medium">
-                            <i class="fas fa-check-circle mr-1"></i>{{ $feature }}
+                        <span class="px-3 py-1 bg-blue-50 text-[#1e3a8a] rounded-full text-sm font-medium border border-blue-100">
+                            <i class="fas fa-check-circle mr-1 text-green-500"></i>{{ $feature }}
                         </span>
                         @endforeach
                     </div>
@@ -250,57 +235,74 @@
                 </div>
                 @endif
 
-                @auth
-                    <!-- Enquiry Form -->
-                    <div class="bg-gray-50 rounded-lg p-6 mb-6">
-                        <h3 class="font-semibold text-lg mb-4">Submit Enquiry</h3>
+                <!-- Enquiry Form -->
+                <div class="bg-white rounded-xl shadow-md border border-gray-100 overflow-hidden mb-8">
+                    <div class="bg-gray-50 px-6 py-4 border-b border-gray-100">
+                        <h3 class="font-bold text-gray-800 flex items-center gap-2">
+                            <i class="fas fa-paper-plane text-[#1e3a8a]"></i> Quick Enquiry
+                        </h3>
+                    </div>
+                    <div class="p-6">
                         @if(session('success'))
-                        <div class="mb-4 bg-green-50 border border-green-200 text-green-800 px-4 py-3 rounded-lg">
+                        <div class="mb-6 bg-green-50 border border-green-200 text-green-800 px-4 py-3 rounded-xl flex items-center gap-3">
+                            <i class="fas fa-check-circle text-green-500"></i>
                             {{ session('success') }}
                         </div>
                         @endif
-                        <form action="{{ route('products.enquiry.store', $product->hashid) }}" method="POST">
+
+                        <form action="{{ route('products.enquiry.store', $product->hashid) }}" method="POST" class="space-y-4">
                             @csrf
-                            <div class="mb-4">
-                                <label for="message" class="block text-sm font-medium text-gray-700 mb-2">Message (Optional)</label>
-                                <textarea id="message" name="message" rows="4" 
-                                          class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500"
-                                          placeholder="Tell us about your requirements..."></textarea>
+                            
+                            @guest
+                            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                <div>
+                                    <label class="block text-xs font-bold text-gray-500 uppercase mb-1 tracking-wider">Full Name *</label>
+                                    <input type="text" name="name" required 
+                                           class="w-full px-4 py-2.5 bg-gray-50 border border-gray-200 rounded-lg focus:ring-2 focus:ring-[#1e3a8a] focus:border-transparent transition text-sm"
+                                           placeholder="Enter your name">
+                                </div>
+                                <div>
+                                    <label class="block text-xs font-bold text-gray-500 uppercase mb-1 tracking-wider">Email Address *</label>
+                                    <input type="email" name="email" required 
+                                           class="w-full px-4 py-2.5 bg-gray-50 border border-gray-200 rounded-lg focus:ring-2 focus:ring-[#1e3a8a] focus:border-transparent transition text-sm"
+                                           placeholder="Enter your email">
+                                </div>
                             </div>
+                            @endguest
+
+                            <div>
+                                <label class="block text-xs font-bold text-gray-500 uppercase mb-1 tracking-wider">Phone Number (Optional)</label>
+                                <input type="text" name="phone" 
+                                       class="w-full px-4 py-2.5 bg-gray-50 border border-gray-200 rounded-lg focus:ring-2 focus:ring-[#1e3a8a] focus:border-transparent transition text-sm"
+                                       placeholder="e.g. +81 90-1234-5678">
+                            </div>
+
+                            <div>
+                                <label class="block text-xs font-bold text-gray-500 uppercase mb-1 tracking-wider">Message *</label>
+                                <textarea name="message" rows="4" required 
+                                          class="w-full px-4 py-2.5 bg-gray-50 border border-gray-200 rounded-lg focus:ring-2 focus:ring-[#1e3a8a] focus:border-transparent transition text-sm"
+                                          placeholder="I'm interested in this vehicle. Please provide more details about shipping and final price."></textarea>
+                            </div>
+
                             <button type="submit"
-                                    class="w-full bg-gradient-to-r from-indigo-600 to-purple-600 text-white px-6 py-3 rounded-lg font-semibold hover:from-indigo-700 hover:to-purple-700 transition">
-                                <i class="fas fa-paper-plane mr-2"></i> Submit Enquiry
+                                    class="w-full bg-[#1e3a8a] hover:bg-blue-900 text-white px-6 py-4 rounded-xl font-bold transition-all shadow-lg flex items-center justify-center gap-2 transform active:scale-95">
+                                <i class="fas fa-paper-plane"></i> Submit Enquiry
                             </button>
                         </form>
+                        
+                        @guest
+                        <p class="mt-4 text-center text-sm text-gray-500">
+                            <!-- Already have an account? <a href="{{ route('login') }}" class="text-[#1e3a8a] font-bold hover:underline">Login here</a> -->
+                        </p>
+                        @else
+                        <div class="mt-4 flex justify-center">
+                            <a href="{{ route('enquiries.index') }}" class="text-sm font-bold text-gray-500 hover:text-[#1e3a8a] transition flex items-center gap-2">
+                                <i class="fas fa-list"></i> View My Previous Enquiries
+                            </a>
+                        </div>
+                        @endguest
                     </div>
-
-                    <div class="flex gap-4">
-                        <a href="{{ route('enquiries.index') }}" 
-                           class="flex-1 bg-gray-600 text-white px-6 py-3 rounded-lg font-semibold text-center hover:bg-gray-700 transition flex items-center justify-center gap-2">
-                            <i class="fas fa-list"></i> My Enquiries
-                        </a>
-                        <a href="https://wa.me/819048043444?text=Hi, I'm interested in {{ urlencode($product->name) }}. Product ID: {{ $product->hashid }}" 
-                           target="_blank"
-                           class="bg-gradient-to-r from-green-500 to-green-600 text-white px-6 py-3 rounded-lg font-semibold hover:from-green-600 hover:to-green-700 transition flex items-center gap-2 shadow-lg">
-                            <i class="fab fa-whatsapp text-xl"></i> WhatsApp
-                        </a>
-                    </div>
-                @else
-                    <div class="bg-yellow-50 border border-yellow-200 rounded-lg p-6 mb-6">
-                        <p class="text-yellow-800 mb-4">Please login to submit an enquiry for this product.</p>
-                        <a href="{{ route('login') }}" 
-                           class="w-full bg-gradient-to-r from-indigo-600 to-purple-600 text-white px-6 py-3 rounded-lg font-semibold text-center hover:from-indigo-700 hover:to-purple-700 transition flex items-center justify-center gap-2">
-                            <i class="fas fa-sign-in-alt"></i> Login to Enquire
-                        </a>
-                    </div>
-                    <div class="flex gap-4">
-                        <a href="https://wa.me/819048043444?text=Hi, I'm interested in {{ urlencode($product->name) }}. Product ID: {{ $product->hashid }}" 
-                           target="_blank"
-                           class="flex-1 bg-gradient-to-r from-green-500 to-green-600 text-white px-6 py-3 rounded-lg font-semibold hover:from-green-600 hover:to-green-700 transition flex items-center justify-center gap-2 shadow-lg">
-                            <i class="fab fa-whatsapp text-xl"></i> WhatsApp
-                        </a>
-                    </div>
-                @endauth
+                </div>
             </div>
         </div>
     </div>

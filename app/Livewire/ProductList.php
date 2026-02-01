@@ -5,6 +5,7 @@ namespace App\Livewire;
 use Livewire\Component;
 use App\Models\Product;
 use Livewire\Attributes\Url;
+use Livewire\Attributes\On;
 
 class ProductList extends Component
 {
@@ -20,12 +21,19 @@ class ProductList extends Component
     #[Url(as: 'price')]
     public $selectedPrice = '';
     
-    public $perPage = 8;
+    public $perPage = 10;
     public $hasMorePages = true;
+
+    #[On('filter-brand')]
+    public function filterBrand($brand)
+    {
+        $this->selectedBrand = $brand;
+        $this->perPage = 10;
+    }
 
     public function loadMore()
     {
-        $this->perPage += 8;
+        $this->perPage += 10;
     }
 
     public function resetFilters()
@@ -34,27 +42,27 @@ class ProductList extends Component
         $this->selectedBrand = '';
         $this->selectedCategory = '';
         $this->selectedPrice = '';
-        $this->perPage = 8;
+        $this->perPage = 10;
     }
 
     public function updatedSearchTerm()
     {
-        $this->perPage = 8;
+        $this->perPage = 10;
     }
 
     public function updatedSelectedBrand()
     {
-        $this->perPage = 8;
+        $this->perPage = 10;
     }
 
     public function updatedSelectedCategory()
     {
-        $this->perPage = 8;
+        $this->perPage = 10;
     }
 
     public function updatedSelectedPrice()
     {
-        $this->perPage = 8;
+        $this->perPage = 10;
     }
 
     public function render()

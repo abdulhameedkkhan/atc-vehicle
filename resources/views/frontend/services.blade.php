@@ -4,10 +4,10 @@
 
 @section('content')
 <!-- Page Header -->
-<section class="bg-gradient-to-r from-indigo-600 to-purple-600 text-white py-16">
+<section class="bg-gradient-to-r from-[#1e3a8a] to-[#1e40af] text-white py-16">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <h1 class="text-4xl md:text-5xl font-bold mb-4">Our Services</h1>
-        <p class="text-xl text-indigo-100">Complete vehicle sourcing and auto parts solutions from Japan</p>
+        <p class="text-xl text-blue-100">Complete vehicle sourcing and auto parts solutions from Japan</p>
     </div>
 </section>
 
@@ -26,7 +26,7 @@
         <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 mb-12">
             <!-- Step 1 -->
             <div class="bg-white p-6 rounded-xl shadow-lg text-center">
-                <div class="w-16 h-16 bg-indigo-600 text-white rounded-full flex items-center justify-center text-2xl font-bold mx-auto mb-4">
+                <div class="w-16 h-16 bg-[#1e3a8a] text-white rounded-full flex items-center justify-center text-2xl font-bold mx-auto mb-4">
                     1
                 </div>
                 <h3 class="text-xl font-bold text-gray-900 mb-3">Vehicle Sourcing</h3>
@@ -69,7 +69,7 @@
             </div>
         </div>
 
-        <div class="bg-indigo-50 border-2 border-indigo-200 rounded-2xl p-8 text-center">
+        <div class="bg-blue-50 border-2 border-blue-200 rounded-2xl p-8 text-center">
             <p class="text-lg text-gray-700 max-w-4xl mx-auto">
                 <strong>Our Goal:</strong> To deliver reliable Japanese vehicles and high-quality used parts, on time and exactly as required.
             </p>
@@ -92,10 +92,10 @@
         <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
             <!-- Service 1 -->
             <div class="bg-white rounded-xl shadow-lg overflow-hidden hover:shadow-2xl transition group">
-                <div class="h-2 bg-gradient-to-r from-indigo-500 to-purple-500"></div>
+                <div class="h-2 bg-gradient-to-r from-blue-600 to-blue-800"></div>
                 <div class="p-8">
-                    <div class="w-16 h-16 bg-indigo-100 rounded-full flex items-center justify-center mb-6 group-hover:bg-indigo-600 transition">
-                        <svg class="w-8 h-8 text-indigo-600 group-hover:text-white transition" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <div class="w-16 h-16 bg-blue-50 rounded-full flex items-center justify-center mb-6 group-hover:bg-[#1e3a8a] transition shadow-inner">
+                        <svg class="w-8 h-8 text-[#1e3a8a] group-hover:text-white transition" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"/>
                         </svg>
                     </div>
@@ -273,10 +273,10 @@
 
             <!-- Service 6 -->
             <div class="bg-white rounded-xl shadow-lg overflow-hidden hover:shadow-2xl transition group">
-                <div class="h-2 bg-gradient-to-r from-red-500 to-pink-500"></div>
+                <div class="h-2 bg-gradient-to-r from-blue-500 to-indigo-500"></div>
                 <div class="p-8">
-                    <div class="w-16 h-16 bg-red-100 rounded-full flex items-center justify-center mb-6 group-hover:bg-red-600 transition">
-                        <svg class="w-8 h-8 text-red-600 group-hover:text-white transition" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <div class="w-16 h-16 bg-blue-50 rounded-full flex items-center justify-center mb-6 group-hover:bg-blue-600 transition shadow-inner">
+                        <svg class="w-8 h-8 text-blue-600 group-hover:text-white transition" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M18.364 5.636l-3.536 3.536m0 5.656l3.536 3.536M9.172 9.172L5.636 5.636m3.536 9.192l-3.536 3.536M21 12a9 9 0 11-18 0 9 9 0 0118 0zm-5 0a4 4 0 11-8 0 4 4 0 018 0z"/>
                         </svg>
                     </div>
@@ -323,8 +323,8 @@
         </div>
         <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
             <div class="bg-white p-8 rounded-xl shadow-lg text-center">
-                <div class="w-16 h-16 bg-indigo-100 rounded-full flex items-center justify-center mx-auto mb-4">
-                    <svg class="w-8 h-8 text-indigo-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <div class="w-16 h-16 bg-blue-50 rounded-full flex items-center justify-center mx-auto mb-4 hover:scale-110 transition shadow-inner">
+                    <svg class="w-8 h-8 text-[#1e3a8a]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 10h18M7 15h1m4 0h1m-7 4h12a3 3 0 003-3V8a3 3 0 00-3-3H6a3 3 0 00-3 3v8a3 3 0 003 3z"/>
                     </svg>
                 </div>
@@ -332,8 +332,8 @@
                 <p class="text-gray-600">Secure wire transfer directly to our account</p>
             </div>
             <div class="bg-white p-8 rounded-xl shadow-lg text-center">
-                <div class="w-16 h-16 bg-purple-100 rounded-full flex items-center justify-center mx-auto mb-4">
-                    <svg class="w-8 h-8 text-purple-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <div class="w-16 h-16 bg-blue-50 rounded-full flex items-center justify-center mx-auto mb-4 hover:scale-110 transition shadow-inner">
+                    <svg class="w-8 h-8 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 10h18M7 15h1m4 0h1m-7 4h12a3 3 0 003-3V8a3 3 0 00-3-3H6a3 3 0 00-3 3v8a3 3 0 003 3z"/>
                     </svg>
                 </div>
@@ -341,8 +341,8 @@
                 <p class="text-gray-600">All major credit cards accepted</p>
             </div>
             <div class="bg-white p-8 rounded-xl shadow-lg text-center">
-                <div class="w-16 h-16 bg-cyan-100 rounded-full flex items-center justify-center mx-auto mb-4">
-                    <svg class="w-8 h-8 text-cyan-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <div class="w-16 h-16 bg-blue-50 rounded-full flex items-center justify-center mx-auto mb-4 hover:scale-110 transition shadow-inner">
+                    <svg class="w-8 h-8 text-blue-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 9V7a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2m2 4h10a2 2 0 002-2v-6a2 2 0 00-2-2H9a2 2 0 00-2 2v6a2 2 0 002 2zm7-5a2 2 0 11-4 0 2 2 0 014 0z"/>
                     </svg>
                 </div>
@@ -354,15 +354,15 @@
 </section>
 
 <!-- CTA Section -->
-<section class="bg-gradient-to-r from-indigo-600 to-purple-600 text-white py-16">
+<section class="bg-gradient-to-r from-[#1e3a8a] to-[#1e40af] text-white py-16">
     <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
         <h2 class="text-3xl md:text-4xl font-bold mb-6">
             Ready to Order Quality Parts?
         </h2>
-        <p class="text-xl mb-8 text-indigo-100">
+        <p class="text-xl mb-8 text-blue-100">
             Contact us today to discuss your requirements
         </p>
-        <a href="{{ route('contact') }}" class="inline-block bg-white text-indigo-600 px-8 py-4 rounded-lg font-semibold text-lg hover:bg-gray-100 transition">
+        <a href="{{ route('contact') }}" class="inline-block bg-white text-[#1e3a8a] px-8 py-4 rounded-lg font-semibold text-lg hover:bg-gray-100 transition shadow-xl">
             Get in Touch
         </a>
     </div>

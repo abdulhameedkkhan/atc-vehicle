@@ -7,11 +7,11 @@
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
 </head>
-<body class="bg-gradient-to-br from-gray-50 to-gray-100 min-h-screen flex items-center justify-center py-12 px-4 sm:px-6 lg:px-8">
+<body class="bg-gradient-to-br from-blue-50 to-indigo-100 min-h-screen flex items-center justify-center py-12 px-4 sm:px-6 lg:px-8">
     <div class="max-w-md w-full space-y-8">
         <div>
             <div class="flex justify-center">
-                <div class="w-16 h-16 bg-gradient-to-br from-red-600 to-red-800 rounded-lg flex items-center justify-center">
+                <div class="w-16 h-16 bg-gradient-to-br from-blue-600 to-blue-800 rounded-lg flex items-center justify-center shadow-lg">
                     <i class="fas fa-shield-alt text-white text-2xl"></i>
                 </div>
             </div>
@@ -40,7 +40,7 @@
             <div>
                 <label for="otp" class="block text-sm font-medium text-gray-700 mb-2">Enter OTP *</label>
                 <input id="otp" name="otp" type="text" maxlength="6" pattern="[0-9]{6}" required 
-                       class="appearance-none relative block w-full px-4 py-3 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-lg focus:outline-none focus:ring-red-500 focus:border-red-500 text-center text-2xl tracking-widest font-bold @error('otp') border-red-500 @enderror" 
+                       class="appearance-none relative block w-full px-4 py-3 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-lg focus:outline-none focus:ring-blue-500 focus:border-blue-500 text-center text-2xl tracking-widest font-bold @error('otp') border-red-500 @enderror" 
                        placeholder="000000" value="{{ old('otp') }}">
                 @error('otp')
                     <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
@@ -50,7 +50,7 @@
 
             <div class="space-y-3">
                 <button type="submit" 
-                        class="group relative w-full flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-lg text-white bg-gradient-to-r from-red-600 to-red-700 hover:from-red-700 hover:to-red-800 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500 transition duration-150 ease-in-out">
+                        class="group relative w-full flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-lg text-white bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-700 hover:to-blue-800 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 transition duration-150 ease-in-out">
                     <i class="fas fa-check-circle mr-2"></i>
                     Verify Email
                 </button>
@@ -58,7 +58,7 @@
                 <form action="{{ route('resend-otp') }}" method="POST">
                     @csrf
                     <button type="submit" 
-                            class="w-full flex justify-center py-2 px-4 border border-gray-300 text-sm font-medium rounded-lg text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500 transition">
+                            class="w-full flex justify-center py-2 px-4 border border-gray-300 text-sm font-medium rounded-lg text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 transition">
                         <i class="fas fa-redo mr-2"></i>
                         Resend OTP
                     </button>

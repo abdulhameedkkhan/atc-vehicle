@@ -13,6 +13,10 @@ class ProductEnquiry extends Model
     protected $fillable = [
         'user_id',
         'product_id',
+        'name',
+        'email',
+        'phone',
+        'product_url',
         'message',
         'status',
         'admin_response',

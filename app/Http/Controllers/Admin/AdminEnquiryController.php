@@ -105,9 +105,9 @@ class AdminEnquiryController extends Controller
                     '<option value="delivered" ' . ($enquiry->status === 'delivered' ? 'selected' : '') . '>Delivered</option>' .
                     '</select></form>';
 
-                // Handle null relationships
-                $userName = $enquiry->user ? e($enquiry->user->name) : 'Deleted User';
-                $userEmail = $enquiry->user ? e($enquiry->user->email) : 'N/A';
+                // Handle guest vs registered user info
+                $userName = e($enquiry->name ?? ($enquiry->user ? $enquiry->user->name : 'N/A'));
+                $userEmail = e($enquiry->email ?? ($enquiry->user ? $enquiry->user->email : 'N/A'));
                 $productName = $enquiry->product ? e(Str::limit($enquiry->product->name, 30)) : 'Deleted Product';
                 $productBrand = $enquiry->product ? e($enquiry->product->brand) : 'N/A';
                 $productImage = $enquiry->product ? $enquiry->product->image_url : asset('images/placeholder.jpg');

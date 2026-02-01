@@ -30,6 +30,10 @@ Route::get('/how-to-buy', function () {
     return view('frontend.how-to-buy');
 })->name('how-to-buy');
 
+Route::get('/testimonials', function () {
+    return view('frontend.testimonials');
+})->name('testimonials');
+
 // Authentication Routes
 Route::middleware('guest')->group(function () {
     Route::get('/login', [AuthController::class, 'showLoginForm'])->name('login');
@@ -65,9 +69,10 @@ Route::middleware('auth')->group(function () {
 Route::get('/products', [ProductController::class, 'index'])->name('products.index');
 Route::get('/products/{product}', [ProductController::class, 'show'])->name('products.show');
 
-// Product Enquiry Routes (Authenticated users only)
+// Product Enquiry Routes
+Route::post('/products/{product}/enquiry', [ProductEnquiryController::class, 'store'])->name('products.enquiry.store');
+
 Route::middleware('auth')->group(function () {
-    Route::post('/products/{product}/enquiry', [ProductEnquiryController::class, 'store'])->name('products.enquiry.store');
     Route::get('/enquiries', [ProductEnquiryController::class, 'index'])->name('enquiries.index');
     Route::get('/enquiries/datatable', [ProductEnquiryController::class, 'datatable'])->name('enquiries.datatable');
     Route::get('/enquiries/{enquiry}', [ProductEnquiryController::class, 'show'])->name('enquiries.show');
