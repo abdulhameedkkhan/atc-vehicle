@@ -3,7 +3,9 @@
 namespace App\Livewire;
 
 use Livewire\Component;
+use App\Models\Brand;
 use App\Models\CarPart;
+use App\Models\PartCategory;
 use Livewire\Attributes\Url;
 
 class CarPartList extends Component
@@ -61,6 +63,23 @@ class CarPartList extends Component
     {
         $query = CarPart::where('is_available', true);
 
+        // Only show car parts that are not expired deals
+        $now = now();
+        $query->where(function ($q) use ($now) {
+            $q->where('is_deal', false)
+              ->orWhere(function ($q2) use ($now) {
+                  $q2->where('is_deal', true)
+                     ->where(function ($q3) use ($now) {
+                         $q3->whereNull('deal_starts_at')
+                            ->orWhere('deal_starts_at', '<=', $now);
+                     })
+                     ->where(function ($q3) use ($now) {
+                         $q3->whereNull('deal_ends_at')
+                            ->orWhere('deal_ends_at', '>=', $now);
+                     });
+              });
+        });
+
         // Search filter
         if ($this->searchTerm) {
             $query->where(function($q) {
@@ -110,6 +129,8 @@ class CarPartList extends Component
         return view('livewire.car-part-list', [
             'carParts' => $carParts,
             'totalCount' => $totalCount,
+            'brands' => Brand::orderBy('name')->get(),
+            'partCategories' => PartCategory::orderBy('name')->get(),
         ]);
     }
 }

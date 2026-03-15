@@ -43,24 +43,32 @@
                 <!-- Brand -->
                 <div>
                     <label for="brand" class="block text-sm font-medium text-gray-700 mb-2">Brand *</label>
-                    <input type="text" name="brand" id="brand" value="{{ old('brand', $carPart->brand) }}" required
-                           class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500">
+                    <select name="brand" id="brand" required
+                            class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500">
+                        <option value="">Select Brand</option>
+                        @php $currentBrand = old('brand', $carPart->brand); @endphp
+                        @foreach($brands as $brand)
+                            <option value="{{ $brand->name }}" {{ $currentBrand == $brand->name ? 'selected' : '' }}>{{ $brand->name }}</option>
+                        @endforeach
+                        @if($currentBrand && !$brands->pluck('name')->contains($currentBrand))
+                            <option value="{{ $currentBrand }}" selected>{{ $currentBrand }} (current)</option>
+                        @endif
+                    </select>
                 </div>
 
-                <!-- Category -->
+                <!-- Category (Part Category) -->
                 <div>
                     <label for="category" class="block text-sm font-medium text-gray-700 mb-2">Category *</label>
                     <select name="category" id="category" required
                             class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500">
                         <option value="">Select Category</option>
-                        <option value="Engine Parts" {{ old('category', $carPart->category) == 'Engine Parts' ? 'selected' : '' }}>Engine Parts</option>
-                        <option value="Brake System" {{ old('category', $carPart->category) == 'Brake System' ? 'selected' : '' }}>Brake System</option>
-                        <option value="Transmission" {{ old('category', $carPart->category) == 'Transmission' ? 'selected' : '' }}>Transmission</option>
-                        <option value="Body Parts" {{ old('category', $carPart->category) == 'Body Parts' ? 'selected' : '' }}>Body Parts</option>
-                        <option value="Lighting" {{ old('category', $carPart->category) == 'Lighting' ? 'selected' : '' }}>Lighting</option>
-                        <option value="Fuel System" {{ old('category', $carPart->category) == 'Fuel System' ? 'selected' : '' }}>Fuel System</option>
-                        <option value="HVAC" {{ old('category', $carPart->category) == 'HVAC' ? 'selected' : '' }}>HVAC</option>
-                        <option value="Other" {{ old('category', $carPart->category) == 'Other' ? 'selected' : '' }}>Other</option>
+                        @php $currentCategory = old('category', $carPart->category); @endphp
+                        @foreach($partCategories as $partCategory)
+                            <option value="{{ $partCategory->name }}" {{ $currentCategory == $partCategory->name ? 'selected' : '' }}>{{ $partCategory->name }}</option>
+                        @endforeach
+                        @if($currentCategory && !$partCategories->pluck('name')->contains($currentCategory))
+                            <option value="{{ $currentCategory }}" selected>{{ $currentCategory }} (current)</option>
+                        @endif
                     </select>
                 </div>
             </div>
@@ -116,6 +124,35 @@
                            class="rounded border-gray-300 text-indigo-600 focus:ring-indigo-500">
                     <span class="ml-2 text-sm text-gray-700">Car part is available</span>
                 </label>
+            </div>
+
+            <!-- Deal Settings -->
+            <div class="mb-6 p-4 bg-yellow-50 rounded-lg border border-yellow-200">
+                <h3 class="text-sm font-semibold text-yellow-800 mb-3 flex items-center gap-2">
+                    <i class="fas fa-bolt"></i> Deal Settings (optional)
+                </h3>
+                <div class="space-y-3">
+                    <label class="inline-flex items-center gap-2 text-sm text-gray-800">
+                        <input type="checkbox" name="is_deal" value="1" {{ old('is_deal', $carPart->is_deal) ? 'checked' : '' }}
+                               class="rounded border-gray-300 text-yellow-600 focus:ring-yellow-500">
+                        <span>Put this car part on deal for a specific time</span>
+                    </label>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <div>
+                            <label for="deal_starts_at" class="block text-xs font-medium text-gray-600 mb-1">Deal Start</label>
+                            <input type="datetime-local" name="deal_starts_at" id="deal_starts_at"
+                                   value="{{ old('deal_starts_at', optional($carPart->deal_starts_at)->format('Y-m-d\\TH:i')) }}"
+                                   class="w-full px-3 py-2 border border-gray-300 rounded-lg text-sm focus:ring-2 focus:ring-yellow-500 focus:border-yellow-500">
+                        </div>
+                        <div>
+                            <label for="deal_ends_at" class="block text-xs font-medium text-gray-600 mb-1">Deal End</label>
+                            <input type="datetime-local" name="deal_ends_at" id="deal_ends_at"
+                                   value="{{ old('deal_ends_at', optional($carPart->deal_ends_at)->format('Y-m-d\\TH:i')) }}"
+                                   class="w-full px-3 py-2 border border-gray-300 rounded-lg text-sm focus:ring-2 focus:ring-yellow-500 focus:border-yellow-500">
+                        </div>
+                    </div>
+                    <p class="text-xs text-gray-500">After deal end time, this car part will automatically disappear from the website (still visible in admin).</p>
+                </div>
             </div>
 
             <!-- Current Main Image -->
@@ -213,6 +250,21 @@
                         reader.readAsDataURL(file);
                     }
                 }
+
+                function validateVideoSize(input) {
+                    const maxSize = 10 * 1024 * 1024; // 10MB
+                    const warning = document.getElementById('videoSizeWarning');
+                    if (input.files && input.files[0]) {
+                        if (input.files[0].size > maxSize) {
+                            warning.textContent = '❌ Error: Video is too large! Maximum allowed size is 10MB.';
+                            warning.classList.remove('hidden');
+                            input.value = ''; // Clear input to prevent submission
+                        } else {
+                            warning.classList.add('hidden');
+                            warning.textContent = '';
+                        }
+                    }
+                }
             </script>
 
             <!-- Current Video -->
@@ -229,7 +281,12 @@
             <div class="mb-6">
                 <label for="video" class="block text-sm font-medium text-gray-700 mb-2">Update Car Part Video</label>
                 <input type="file" name="video" id="video" accept="video/*"
-                       class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500">
+                       class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500"
+                       onchange="validateVideoSize(this)">
+                @error('video')
+                    <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
+                @enderror
+                <p id="videoSizeWarning" class="mt-1 text-sm text-red-600 font-bold hidden"></p>
                 <p class="mt-1 text-sm text-gray-500">Leave blank to keep current video. Max size: 10MB</p>
             </div>
 

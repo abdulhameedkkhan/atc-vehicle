@@ -42,25 +42,24 @@
                 <!-- Brand -->
                 <div>
                     <label for="brand" class="block text-sm font-medium text-gray-700 mb-2">Brand *</label>
-                    <input type="text" name="brand" id="brand" value="{{ old('brand') }}" required
-                           class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500"
-                           placeholder="TOYOTA, NISSAN, etc.">
+                    <select name="brand" id="brand" required
+                            class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500">
+                        <option value="">Select Brand</option>
+                        @foreach($brands as $brand)
+                            <option value="{{ $brand->name }}" {{ old('brand') == $brand->name ? 'selected' : '' }}>{{ $brand->name }}</option>
+                        @endforeach
+                    </select>
                 </div>
 
-                <!-- Category -->
+                <!-- Category (Part Category) -->
                 <div>
                     <label for="category" class="block text-sm font-medium text-gray-700 mb-2">Category *</label>
                     <select name="category" id="category" required
                             class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500">
                         <option value="">Select Category</option>
-                        <option value="Engine Parts">Engine Parts</option>
-                        <option value="Brake System">Brake System</option>
-                        <option value="Transmission">Transmission</option>
-                        <option value="Body Parts">Body Parts</option>
-                        <option value="Lighting">Lighting</option>
-                        <option value="Fuel System">Fuel System</option>
-                        <option value="HVAC">HVAC</option>
-                        <option value="Other">Other</option>
+                        @foreach($partCategories as $partCategory)
+                            <option value="{{ $partCategory->name }}" {{ old('category') == $partCategory->name ? 'selected' : '' }}>{{ $partCategory->name }}</option>
+                        @endforeach
                     </select>
                 </div>
             </div>
@@ -107,6 +106,35 @@
                 <label for="stock_quantity" class="block text-sm font-medium text-gray-700 mb-2">Stock Quantity</label>
                 <input type="number" name="stock_quantity" id="stock_quantity" value="{{ old('stock_quantity', 0) }}"
                        class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500">
+            </div>
+
+            <!-- Deal Settings -->
+            <div class="mb-6 p-4 bg-yellow-50 rounded-lg border border-yellow-200">
+                <h3 class="text-sm font-semibold text-yellow-800 mb-3 flex items-center gap-2">
+                    <i class="fas fa-bolt"></i> Deal Settings (optional)
+                </h3>
+                <div class="space-y-3">
+                    <label class="inline-flex items-center gap-2 text-sm text-gray-800">
+                        <input type="checkbox" name="is_deal" value="1" {{ old('is_deal') ? 'checked' : '' }}
+                               class="rounded border-gray-300 text-yellow-600 focus:ring-yellow-500">
+                        <span>Put this car part on deal for a specific time</span>
+                    </label>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <div>
+                            <label for="deal_starts_at" class="block text-xs font-medium text-gray-600 mb-1">Deal Start</label>
+                            <input type="datetime-local" name="deal_starts_at" id="deal_starts_at"
+                                   value="{{ old('deal_starts_at') }}"
+                                   class="w-full px-3 py-2 border border-gray-300 rounded-lg text-sm focus:ring-2 focus:ring-yellow-500 focus:border-yellow-500">
+                        </div>
+                        <div>
+                            <label for="deal_ends_at" class="block text-xs font-medium text-gray-600 mb-1">Deal End</label>
+                            <input type="datetime-local" name="deal_ends_at" id="deal_ends_at"
+                                   value="{{ old('deal_ends_at') }}"
+                                   class="w-full px-3 py-2 border border-gray-300 rounded-lg text-sm focus:ring-2 focus:ring-yellow-500 focus:border-yellow-500">
+                        </div>
+                    </div>
+                    <p class="text-xs text-gray-500">After deal end time, this car part will automatically disappear from the website (still visible in admin).</p>
+                </div>
             </div>
 
             <!-- Main Image -->
@@ -177,13 +205,33 @@
                         reader.readAsDataURL(file);
                     }
                 }
+
+                function validateVideoSize(input) {
+                    const maxSize = 10 * 1024 * 1024; // 10MB
+                    const warning = document.getElementById('videoSizeWarning');
+                    if (input.files && input.files[0]) {
+                        if (input.files[0].size > maxSize) {
+                            warning.textContent = '❌ Error: Video is too large! Maximum allowed size is 10MB.';
+                            warning.classList.remove('hidden');
+                            input.value = ''; // Clear input to prevent submission
+                        } else {
+                            warning.classList.add('hidden');
+                            warning.textContent = '';
+                        }
+                    }
+                }
             </script>
 
             <!-- Video -->
             <div class="mb-6">
                 <label for="video" class="block text-sm font-medium text-gray-700 mb-2">Car Part Video</label>
                 <input type="file" name="video" id="video" accept="video/*"
-                       class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500">
+                       class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500"
+                       onchange="validateVideoSize(this)">
+                @error('video')
+                    <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
+                @enderror
+                <p id="videoSizeWarning" class="mt-1 text-sm text-red-600 font-bold hidden"></p>
                 <p class="mt-1 text-sm text-gray-500">Max size: 10MB (MP4, AVI, MOV)</p>
             </div>
 

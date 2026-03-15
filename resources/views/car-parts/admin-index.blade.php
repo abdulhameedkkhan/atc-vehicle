@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Manage Car Parts - ATC Japan</title>
-    <script src="https://cdn.tailwindcss.com"></script>
+    @vite(['resources/css/app.css', 'resources/js/app.js'])
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
     <!-- DataTables CSS -->
     <link rel="stylesheet" href="https://cdn.datatables.net/1.13.7/css/jquery.dataTables.min.css">
@@ -236,7 +236,7 @@ $(document).ready(function() {
             { data: 'status', name: 'is_available', orderable: true, searchable: false },
             { data: 'actions', name: 'actions', orderable: false, searchable: false },
         ],
-        order: [[1, 'desc']],
+        order: [[0, 'desc']],
         pageLength: 15,
         responsive: true,
         language: {

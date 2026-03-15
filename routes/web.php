@@ -9,6 +9,8 @@ use App\Http\Controllers\ContactController;
 use App\Http\Controllers\ProductEnquiryController;
 use App\Http\Controllers\Admin\AdminEnquiryController;
 use App\Http\Controllers\UserDashboardController;
+use App\Models\Product;
+use App\Models\CarPart;
 
 // Frontend Pages
 Route::get('/', function () {
@@ -33,6 +35,42 @@ Route::get('/how-to-buy', function () {
 Route::get('/testimonials', function () {
     return view('frontend.testimonials');
 })->name('testimonials');
+
+// Deals page (active deals for products & car parts)
+Route::redirect('/deal', '/deals');
+Route::get('/deals', function () {
+    $now = now();
+
+    $dealProducts = Product::where('is_available', true)
+        ->where('is_deal', true)
+        ->where(function ($q) use ($now) {
+            $q->whereNull('deal_starts_at')
+              ->orWhere('deal_starts_at', '<=', $now);
+        })
+        ->where(function ($q) use ($now) {
+            $q->whereNull('deal_ends_at')
+              ->orWhere('deal_ends_at', '>=', $now);
+        })
+        ->latest()
+        ->take(24)
+        ->get();
+
+    $dealCarParts = CarPart::where('is_available', true)
+        ->where('is_deal', true)
+        ->where(function ($q) use ($now) {
+            $q->whereNull('deal_starts_at')
+              ->orWhere('deal_starts_at', '<=', $now);
+        })
+        ->where(function ($q) use ($now) {
+            $q->whereNull('deal_ends_at')
+              ->orWhere('deal_ends_at', '>=', $now);
+        })
+        ->latest()
+        ->take(24)
+        ->get();
+
+    return view('frontend.deals', compact('dealProducts', 'dealCarParts'));
+})->name('deals');
 
 // Authentication Routes
 Route::middleware('guest')->group(function () {
@@ -93,6 +131,7 @@ Route::middleware(['auth', 'role:admin'])->group(function () {
         Route::get('/products/{product}/edit', [ProductController::class, 'edit'])->name('products.edit');
         Route::put('/products/{product}', [ProductController::class, 'update'])->name('products.update');
         Route::delete('/products/{product}', [ProductController::class, 'destroy'])->name('products.destroy');
+        Route::put('/products/{product}/toggle-visibility', [ProductController::class, 'toggleVisibility'])->name('products.toggle-visibility');
         Route::get('/products/datatable', [ProductController::class, 'datatable'])->name('products.datatable');
         
         // Car Parts Management Routes (Admin only)

@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Dashboard - ATC Japan</title>
-    <script src="https://cdn.tailwindcss.com"></script>
+    @vite(['resources/css/app.css', 'resources/js/app.js'])
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
 </head>
 <body class="bg-gradient-to-br from-gray-50 to-gray-100 min-h-screen">
@@ -193,56 +193,6 @@
                 </div>
             </div>
 
-            <!-- User Info Card -->
-            <div class="bg-white overflow-hidden shadow-xl rounded-2xl border border-gray-100">
-                <div class="px-6 py-6 sm:p-8">
-                    <h2 class="text-2xl font-bold text-gray-900 mb-6 flex items-center gap-2">
-                        <i class="fas fa-user-circle text-indigo-600"></i>
-                        User Information
-                    </h2>
-                    
-                    <dl class="grid grid-cols-1 gap-x-4 gap-y-6 sm:grid-cols-2">
-                        <div>
-                            <dt class="text-sm font-medium text-gray-500">Name</dt>
-                            <dd class="mt-1 text-sm text-gray-900">{{ Auth::user()->name }}</dd>
-                        </div>
-                        <div>
-                            <dt class="text-sm font-medium text-gray-500">Email</dt>
-                            <dd class="mt-1 text-sm text-gray-900">{{ Auth::user()->email }}</dd>
-                        </div>
-                        <div>
-                            <dt class="text-sm font-medium text-gray-500">Roles</dt>
-                            <dd class="mt-1">
-                                @foreach(Auth::user()->roles as $role)
-                                <span class="px-3 py-1 text-sm font-semibold rounded-full mr-2
-                                    @if($role->name === 'admin') bg-red-100 text-red-800
-                                    @elseif($role->name === 'manager') bg-blue-100 text-blue-800
-                                    @else bg-green-100 text-green-800
-                                    @endif">
-                                    {{ ucfirst($role->name) }}
-                                </span>
-                                @endforeach
-                            </dd>
-                        </div>
-                        <div>
-                            <dt class="text-sm font-medium text-gray-500">Permissions</dt>
-                            <dd class="mt-1">
-                                <div class="flex flex-wrap gap-2">
-                                    @foreach(Auth::user()->getAllPermissions() as $permission)
-                                    <span class="px-2 py-1 text-xs bg-gray-100 text-gray-700 rounded">
-                                        {{ $permission->name }}
-                                    </span>
-                                    @endforeach
-                                </div>
-                            </dd>
-                        </div>
-                        <div>
-                            <dt class="text-sm font-medium text-gray-500">Member Since</dt>
-                            <dd class="mt-1 text-sm text-gray-900">{{ Auth::user()->created_at->format('M d, Y') }}</dd>
-                        </div>
-                    </dl>
-                </div>
-            </div>
 
             @if(Auth::user()->hasRole('admin'))
             <div class="mt-6 bg-red-50 border border-red-200 rounded-lg p-4">
@@ -288,139 +238,6 @@
             </div>
             @endif
 
-            <!-- Permission-based Actions -->
-            <div class="mt-6 bg-white overflow-hidden shadow-xl rounded-2xl border border-gray-100">
-                <div class="px-6 py-6 sm:p-8">
-                    <h2 class="text-2xl font-bold text-gray-900 mb-6 flex items-center gap-2">
-                        <i class="fas fa-tasks text-indigo-600"></i>
-                        Available Actions
-                    </h2>
-                    <div class="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
-                        @can('create users')
-                        <a href="{{ route('users.index') }}" class="group p-6 border-2 border-gray-200 rounded-xl bg-gradient-to-br from-green-50 to-emerald-50 hover:from-green-100 hover:to-emerald-100 hover:border-green-300 transition-all duration-300 cursor-pointer block shadow-sm hover:shadow-lg">
-                            <div class="flex items-center justify-between mb-3">
-                                <div class="w-12 h-12 bg-gradient-to-br from-green-500 to-emerald-600 rounded-lg flex items-center justify-center">
-                                    <i class="fas fa-users text-white text-xl"></i>
-                                </div>
-                                <i class="fas fa-arrow-right text-green-600 group-hover:translate-x-1 transition-transform"></i>
-                            </div>
-                            <h3 class="font-bold text-gray-900 text-lg mb-1">Manage Users</h3>
-                            <p class="text-sm text-gray-600">Create, edit, and manage user accounts</p>
-                        </a>
-                        @endcan
-                        
-                        @can('edit users')
-                        <div class="p-4 border border-gray-200 rounded-lg bg-blue-50">
-                            <h3 class="font-semibold text-gray-900">Edit Users</h3>
-                            <p class="text-sm text-gray-600 mt-1">You can edit user information</p>
-                        </div>
-                        @endcan
-                        
-                        @can('delete users')
-                        <div class="p-4 border border-gray-200 rounded-lg bg-red-50">
-                            <h3 class="font-semibold text-gray-900">Delete Users</h3>
-                            <p class="text-sm text-gray-600 mt-1">You can delete users</p>
-                        </div>
-                        @endcan
-                        
-                        @can('manage roles')
-                        <div class="p-4 border border-gray-200 rounded-lg bg-purple-50">
-                            <h3 class="font-semibold text-gray-900">Manage Roles</h3>
-                            <p class="text-sm text-gray-600 mt-1">You can manage user roles</p>
-                        </div>
-                        @endcan
-                        
-                        @can('create posts')
-                        <div class="p-4 border border-gray-200 rounded-lg bg-yellow-50">
-                            <h3 class="font-semibold text-gray-900">Create Posts</h3>
-                            <p class="text-sm text-gray-600 mt-1">You can create new posts</p>
-                        </div>
-                        @endcan
-                        
-                        @can('publish posts')
-                        <div class="p-4 border border-gray-200 rounded-lg bg-indigo-50">
-                            <h3 class="font-semibold text-gray-900">Publish Posts</h3>
-                            <p class="text-sm text-gray-600 mt-1">You can publish posts</p>
-                        </div>
-                        @endcan
-                        
-                        @can('view reports')
-                        <div class="p-4 border border-gray-200 rounded-lg bg-teal-50">
-                            <h3 class="font-semibold text-gray-900">View Reports</h3>
-                            <p class="text-sm text-gray-600 mt-1">You can view reports</p>
-                        </div>
-                        @endcan
-                        
-                        @if(Auth::user()->hasRole('admin'))
-                        <a href="{{ route('products.index', ['admin' => 1]) }}" class="group p-6 border-2 border-gray-200 rounded-xl bg-gradient-to-br from-orange-50 to-amber-50 hover:from-orange-100 hover:to-amber-100 hover:border-orange-300 transition-all duration-300 cursor-pointer block shadow-sm hover:shadow-lg">
-                            <div class="flex items-center justify-between mb-3">
-                                <div class="w-12 h-12 bg-gradient-to-br from-orange-500 to-amber-600 rounded-lg flex items-center justify-center">
-                                    <i class="fas fa-box-open text-white text-xl"></i>
-                                </div>
-                                <i class="fas fa-arrow-right text-orange-600 group-hover:translate-x-1 transition-transform"></i>
-                            </div>
-                            <h3 class="font-bold text-gray-900 text-lg mb-1">Manage Products</h3>
-                            <p class="text-sm text-gray-600">View, edit, and delete all products</p>
-                        </a>
-                        
-                        <a href="{{ route('admin.products.create') }}" class="group p-6 border-2 border-gray-200 rounded-xl bg-gradient-to-br from-indigo-50 to-purple-50 hover:from-indigo-100 hover:to-purple-100 hover:border-indigo-300 transition-all duration-300 cursor-pointer block shadow-sm hover:shadow-lg">
-                            <div class="flex items-center justify-between mb-3">
-                                <div class="w-12 h-12 bg-gradient-to-br from-indigo-500 to-purple-600 rounded-lg flex items-center justify-center">
-                                    <i class="fas fa-plus-circle text-white text-xl"></i>
-                                </div>
-                                <i class="fas fa-arrow-right text-indigo-600 group-hover:translate-x-1 transition-transform"></i>
-                            </div>
-                            <h3 class="font-bold text-gray-900 text-lg mb-1">Add New Product</h3>
-                            <p class="text-sm text-gray-600">Create product with images and videos</p>
-                        </a>
-                        
-                        <a href="{{ route('products.index') }}" class="group p-6 border-2 border-gray-200 rounded-xl bg-gradient-to-br from-blue-50 to-cyan-50 hover:from-blue-100 hover:to-cyan-100 hover:border-blue-300 transition-all duration-300 cursor-pointer block shadow-sm hover:shadow-lg">
-                            <div class="flex items-center justify-between mb-3">
-                                <div class="w-12 h-12 bg-gradient-to-br from-blue-500 to-cyan-600 rounded-lg flex items-center justify-center">
-                                    <i class="fas fa-eye text-white text-xl"></i>
-                                </div>
-                                <i class="fas fa-arrow-right text-blue-600 group-hover:translate-x-1 transition-transform"></i>
-                            </div>
-                            <h3 class="font-bold text-gray-900 text-lg mb-1">View Public Products</h3>
-                            <p class="text-sm text-gray-600">See how products appear to customers</p>
-                        </a>
-
-                        <a href="{{ route('car-parts.index', ['admin' => 1]) }}" class="group p-6 border-2 border-gray-200 rounded-xl bg-gradient-to-br from-teal-50 to-cyan-50 hover:from-teal-100 hover:to-cyan-100 hover:border-teal-300 transition-all duration-300 cursor-pointer block shadow-sm hover:shadow-lg">
-                            <div class="flex items-center justify-between mb-3">
-                                <div class="w-12 h-12 bg-gradient-to-br from-teal-500 to-cyan-600 rounded-lg flex items-center justify-center">
-                                    <i class="fas fa-cogs text-white text-xl"></i>
-                                </div>
-                                <i class="fas fa-arrow-right text-teal-600 group-hover:translate-x-1 transition-transform"></i>
-                            </div>
-                            <h3 class="font-bold text-gray-900 text-lg mb-1">Manage Car Parts</h3>
-                            <p class="text-sm text-gray-600">View, edit, and delete all car parts</p>
-                        </a>
-
-                        <a href="{{ route('admin.car-parts.create') }}" class="group p-6 border-2 border-gray-200 rounded-xl bg-gradient-to-br from-indigo-50 to-purple-50 hover:from-indigo-100 hover:to-purple-100 hover:border-indigo-300 transition-all duration-300 cursor-pointer block shadow-sm hover:shadow-lg">
-                            <div class="flex items-center justify-between mb-3">
-                                <div class="w-12 h-12 bg-gradient-to-br from-indigo-500 to-purple-600 rounded-lg flex items-center justify-center">
-                                    <i class="fas fa-plus-circle text-white text-xl"></i>
-                                </div>
-                                <i class="fas fa-arrow-right text-indigo-600 group-hover:translate-x-1 transition-transform"></i>
-                            </div>
-                            <h3 class="font-bold text-gray-900 text-lg mb-1">Add New Car Part</h3>
-                            <p class="text-sm text-gray-600">Create car part with images and videos</p>
-                        </a>
-
-                        <a href="{{ route('car-parts.index') }}" class="group p-6 border-2 border-gray-200 rounded-xl bg-gradient-to-br from-blue-50 to-cyan-50 hover:from-blue-100 hover:to-cyan-100 hover:border-blue-300 transition-all duration-300 cursor-pointer block shadow-sm hover:shadow-lg">
-                            <div class="flex items-center justify-between mb-3">
-                                <div class="w-12 h-12 bg-gradient-to-br from-blue-500 to-cyan-600 rounded-lg flex items-center justify-center">
-                                    <i class="fas fa-eye text-white text-xl"></i>
-                                </div>
-                                <i class="fas fa-arrow-right text-blue-600 group-hover:translate-x-1 transition-transform"></i>
-                            </div>
-                            <h3 class="font-bold text-gray-900 text-lg mb-1">View Public Car Parts</h3>
-                            <p class="text-sm text-gray-600">See how car parts appear to customers</p>
-                        </a>
-                        @endif
-                    </div>
-                </div>
-            </div>
             
             <!-- Quick Stats for Admin -->
             @if(Auth::user()->hasRole('admin'))

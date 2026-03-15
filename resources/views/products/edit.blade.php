@@ -43,23 +43,32 @@
                 <!-- Brand -->
                 <div>
                     <label for="brand" class="block text-sm font-medium text-gray-700 mb-2">Brand *</label>
-                    <input type="text" name="brand" id="brand" value="{{ old('brand', $product->brand) }}" required
-                           class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500">
+                    <select name="brand" id="brand" required
+                            class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500">
+                        <option value="">Select Brand</option>
+                        @foreach($brands as $brand)
+                            <option value="{{ $brand->name }}" {{ old('brand', $product->brand) == $brand->name ? 'selected' : '' }}>{{ $brand->name }}</option>
+                        @endforeach
+                        @php $currentBrand = old('brand', $product->brand); @endphp
+                        @if($currentBrand && !$brands->pluck('name')->contains($currentBrand))
+                            <option value="{{ $currentBrand }}" selected>{{ $currentBrand }} (current)</option>
+                        @endif
+                    </select>
                 </div>
 
-                <!-- Category -->
+                <!-- Category (Vehicle Type) -->
                 <div>
-                    <label for="category" class="block text-sm font-medium text-gray-700 mb-2">Category *</label>
+                    <label for="category" class="block text-sm font-medium text-gray-700 mb-2">Category (Vehicle Type) *</label>
                     <select name="category" id="category" required
                             class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500">
-                        <option value="">Select Category</option>
-                        <option value="Parts" {{ old('category', $product->category) == 'Parts' ? 'selected' : '' }}>Parts</option>
-                        <option value="Vehicles" {{ old('category', $product->category) == 'Vehicles' ? 'selected' : '' }}>Vehicles</option>
-                        <option value="Engines" {{ old('category', $product->category) == 'Engines' ? 'selected' : '' }}>Engines</option>
-                        <option value="Transmissions" {{ old('category', $product->category) == 'Transmissions' ? 'selected' : '' }}>Transmissions</option>
-                        <option value="Body Parts" {{ old('category', $product->category) == 'Body Parts' ? 'selected' : '' }}>Body Parts</option>
-                        <option value="Interior" {{ old('category', $product->category) == 'Interior' ? 'selected' : '' }}>Interior</option>
-                        <option value="Other" {{ old('category', $product->category) == 'Other' ? 'selected' : '' }}>Other</option>
+                        <option value="">Select Vehicle Type</option>
+                        @php $currentCategory = old('category', $product->category); @endphp
+                        @foreach($categories as $category)
+                            <option value="{{ $category->name }}" {{ $currentCategory == $category->name ? 'selected' : '' }}>{{ $category->name }}</option>
+                        @endforeach
+                        @if($currentCategory && !$categories->pluck('name')->contains($currentCategory))
+                            <option value="{{ $currentCategory }}" selected>{{ $currentCategory }} (current)</option>
+                        @endif
                     </select>
                 </div>
             </div>
@@ -76,6 +85,25 @@
                 <div>
                     <label for="price" class="block text-sm font-medium text-gray-700 mb-2">Price</label>
                     <input type="number" step="0.01" name="price" id="price" value="{{ old('price', $product->price) }}"
+                           class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500">
+                </div>
+            </div>
+
+            <!-- CNF/FOB Price (optional - calculate & mention) -->
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
+                <div>
+                    <label for="cnf_fob_type" class="block text-sm font-medium text-gray-700 mb-2">CNF/FOB Price: Type</label>
+                    <select name="cnf_fob_type" id="cnf_fob_type"
+                            class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500">
+                        <option value="">— Select —</option>
+                        <option value="CNF" {{ old('cnf_fob_type', $product->cnf_fob_type) == 'CNF' ? 'selected' : '' }}>CNF</option>
+                        <option value="FOB" {{ old('cnf_fob_type', $product->cnf_fob_type) == 'FOB' ? 'selected' : '' }}>FOB</option>
+                    </select>
+                </div>
+                <div>
+                    <label for="cnf_fob_price" class="block text-sm font-medium text-gray-700 mb-2">CNF/FOB Price: Amount</label>
+                    <input type="number" step="0.01" name="cnf_fob_price" id="cnf_fob_price" value="{{ old('cnf_fob_price', $product->cnf_fob_price) }}"
+                           placeholder="Enter calculated price"
                            class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500">
                 </div>
             </div>
@@ -98,6 +126,47 @@
                         <option value="New" {{ old('condition', $product->condition) == 'New' ? 'selected' : '' }}>New</option>
                         <option value="Refurbished" {{ old('condition', $product->condition) == 'Refurbished' ? 'selected' : '' }}>Refurbished</option>
                     </select>
+                </div>
+            </div>
+
+            <!-- Status -->
+            <div class="mb-6">
+                <label for="status" class="block text-sm font-medium text-gray-700 mb-2">Status</label>
+                <select name="status" id="status"
+                        class="w-full max-w-xs px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500">
+                    <option value="stock" {{ old('status', $product->status ?? 'stock') == 'stock' ? 'selected' : '' }}>Stock</option>
+                    <option value="reserved" {{ old('status', $product->status ?? '') == 'reserved' ? 'selected' : '' }}>Reserved</option>
+                    <option value="sold" {{ old('status', $product->status ?? '') == 'sold' ? 'selected' : '' }}>Sold</option>
+                    <option value="ship" {{ old('status', $product->status ?? '') == 'ship' ? 'selected' : '' }}>Ship</option>
+                </select>
+            </div>
+
+            <!-- Deal Settings -->
+            <div class="mb-6 p-4 bg-yellow-50 rounded-lg border border-yellow-200">
+                <h3 class="text-sm font-semibold text-yellow-800 mb-3 flex items-center gap-2">
+                    <i class="fas fa-bolt"></i> Deal Settings (optional)
+                </h3>
+                <div class="space-y-3">
+                    <label class="inline-flex items-center gap-2 text-sm text-gray-800">
+                        <input type="checkbox" name="is_deal" value="1" {{ old('is_deal', $product->is_deal) ? 'checked' : '' }}
+                               class="rounded border-gray-300 text-yellow-600 focus:ring-yellow-500">
+                        <span>Put this product on deal for a specific time</span>
+                    </label>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <div>
+                            <label for="deal_starts_at" class="block text-xs font-medium text-gray-600 mb-1">Deal Start</label>
+                            <input type="datetime-local" name="deal_starts_at" id="deal_starts_at"
+                                   value="{{ old('deal_starts_at', optional($product->deal_starts_at)->format('Y-m-d\\TH:i')) }}"
+                                   class="w-full px-3 py-2 border border-gray-300 rounded-lg text-sm focus:ring-2 focus:ring-yellow-500 focus:border-yellow-500">
+                        </div>
+                        <div>
+                            <label for="deal_ends_at" class="block text-xs font-medium text-gray-600 mb-1">Deal End</label>
+                            <input type="datetime-local" name="deal_ends_at" id="deal_ends_at"
+                                   value="{{ old('deal_ends_at', optional($product->deal_ends_at)->format('Y-m-d\\TH:i')) }}"
+                                   class="w-full px-3 py-2 border border-gray-300 rounded-lg text-sm focus:ring-2 focus:ring-yellow-500 focus:border-yellow-500">
+                        </div>
+                    </div>
+                    <p class="text-xs text-gray-500">After deal end time, this product will automatically disappear from the website (still visible in admin).</p>
                 </div>
             </div>
 
@@ -182,7 +251,10 @@
                         <label for="engine_cc" class="block text-sm font-medium text-gray-700 mb-2">Engine CC</label>
                         <input type="number" name="engine_cc" id="engine_cc" value="{{ old('engine_cc', $product->engine_cc) }}"
                                class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500"
-                               placeholder="e.g., 660">
+                               placeholder="e.g., 660" min="0" max="99999">
+                        @error('engine_cc')
+                            <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
+                        @enderror
                     </div>
 
                     <!-- Fuel Type -->
@@ -376,6 +448,21 @@
                     }
                 }
 
+                function validateVideoSize(input) {
+                    const maxSize = 10 * 1024 * 1024; // 10MB
+                    const warning = document.getElementById('videoSizeWarning');
+                    if (input.files && input.files[0]) {
+                        if (input.files[0].size > maxSize) {
+                            warning.textContent = '❌ Error: Video is too large! Maximum allowed size is 10MB.';
+                            warning.classList.remove('hidden');
+                            input.value = ''; // Clear input to prevent submission
+                        } else {
+                            warning.classList.add('hidden');
+                            warning.textContent = '';
+                        }
+                    }
+                }
+
                 function addFeature() {
                     const container = document.getElementById('additionalFeaturesContainer');
                     const div = document.createElement('div');
@@ -429,7 +516,12 @@
             <div class="mb-6">
                 <label for="video" class="block text-sm font-medium text-gray-700 mb-2">Update Product Video</label>
                 <input type="file" name="video" id="video" accept="video/*"
-                       class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500">
+                       class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500"
+                       onchange="validateVideoSize(this)">
+                @error('video')
+                    <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
+                @enderror
+                <p id="videoSizeWarning" class="mt-1 text-sm text-red-600 font-bold hidden"></p>
                 <p class="mt-1 text-sm text-gray-500">Leave blank to keep current video. Max size: 10MB</p>
             </div>
 

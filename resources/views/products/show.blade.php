@@ -5,6 +5,12 @@
 @section('content')
 <!-- Product Detail Section -->
 <section class="py-12">
+    @php
+        $allImages = [$product->image_url];
+        if($product->images_urls && count($product->images_urls) > 0) {
+            $allImages = array_merge($allImages, $product->images_urls);
+        }
+    @endphp
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div class="mb-4">
             <a href="{{ route('products.index') }}" class="text-indigo-600 hover:text-indigo-800">
@@ -17,13 +23,6 @@
             <div>
                 <!-- Image Slider -->
                 <div class="mb-4">
-                    @php
-                        $allImages = [$product->image_url];
-                        if($product->images_urls && count($product->images_urls) > 0) {
-                            $allImages = array_merge($allImages, $product->images_urls);
-                        }
-                    @endphp
-                    
                     <div class="relative" id="productImageSlider">
                         <!-- Main Image Display -->
                         <div class="relative overflow-hidden rounded-lg shadow-lg bg-gray-100 cursor-zoom-in group" style="padding-top: 75%;">
@@ -60,19 +59,28 @@
                         @endif
                     </div>
                     
-                    <!-- Thumbnail Images -->
+                    <!-- Thumbnail strip - single row with slider -->
                     @if(count($allImages) > 1)
-                    <div class="grid grid-cols-4 gap-2 mt-4">
-                        @foreach($allImages as $index => $image)
-                        <button onclick="goToSlide({{ $index }}); openImageModal({{ $index }});" 
-                                class="relative overflow-hidden rounded-lg border-2 transition-all {{ $index === 0 ? 'border-[#1e3a8a]' : 'border-transparent hover:border-gray-300' }} cursor-pointer"
-                                id="thumbnail{{ $index }}"
-                                style="padding-top: 100%;">
-                            <img src="{{ $image }}" 
-                                 alt="Thumbnail {{ $index + 1 }}" 
-                                 class="absolute inset-0 w-full h-full object-cover hover:scale-110 transition-transform duration-300">
+                    <div class="mt-4 relative">
+                        <button type="button" onclick="scrollThumbs(-1)" aria-label="Previous thumbnails"
+                                class="absolute left-0 top-1/2 -translate-y-1/2 z-10 w-8 h-8 flex items-center justify-center rounded-full bg-gray-800 text-white hover:bg-gray-700 shadow-lg">
+                            <i class="fas fa-chevron-left text-sm"></i>
                         </button>
-                        @endforeach
+                        <button type="button" onclick="scrollThumbs(1)" aria-label="Next thumbnails"
+                                class="absolute right-0 top-1/2 -translate-y-1/2 z-10 w-8 h-8 flex items-center justify-center rounded-full bg-gray-800 text-white hover:bg-gray-700 shadow-lg">
+                            <i class="fas fa-chevron-right text-sm"></i>
+                        </button>
+                        <div id="thumbStrip" class="flex gap-2 overflow-x-auto scroll-smooth snap-x snap-mandatory py-1 px-10 scrollbar-hide" style="scrollbar-width: none; -ms-overflow-style: none;">
+                            @foreach($allImages as $index => $image)
+                            <button onclick="goToSlide({{ $index }}); openImageModal({{ $index }});" 
+                                    class="flex-shrink-0 w-20 h-20 snap-center relative overflow-hidden rounded-lg border-2 transition-all {{ $index === 0 ? 'border-indigo-600' : 'border-transparent hover:border-gray-400' }} cursor-pointer"
+                                    id="thumbnail{{ $index }}">
+                                <img src="{{ $image }}" 
+                                     alt="Thumbnail {{ $index + 1 }}" 
+                                     class="w-full h-full object-cover hover:scale-110 transition-transform duration-300">
+                            </button>
+                            @endforeach
+                        </div>
                     </div>
                     @endif
                 </div>
@@ -92,7 +100,7 @@
             <!-- Product Info -->
             <div>
                 <h1 class="text-3xl font-bold mb-4">{{ $product->name }}</h1>
-                <div class="flex items-center gap-4 mb-4">
+                <div class="flex flex-wrap items-center gap-4 mb-4">
                     <span class="px-3 py-1 bg-indigo-100 text-indigo-800 rounded-full text-sm font-semibold">
                         {{ $product->brand }}
                     </span>
@@ -101,6 +109,19 @@
                         {{ $product->condition }}
                     </span>
                     @endif
+                    @php
+                        $status = $product->status ?? 'stock';
+                        $statusClasses = [
+                            'reserved' => 'bg-amber-100 text-amber-800 border-amber-200',
+                            'sold' => 'bg-red-100 text-red-800 border-red-200',
+                            'stock' => 'bg-green-100 text-green-800 border-green-200',
+                            'ship' => 'bg-blue-100 text-blue-800 border-blue-200',
+                        ];
+                        $statusClass = $statusClasses[$status] ?? $statusClasses['stock'];
+                    @endphp
+                    <span class="px-3 py-1 rounded-full text-sm font-semibold border {{ $statusClass }}">
+                        {{ ucfirst($status) }}
+                    </span>
                 </div>
                 
                 <div class="flex flex-wrap items-end gap-6 mb-8 bg-blue-50/50 p-6 rounded-2xl border border-blue-100">
@@ -114,7 +135,14 @@
                         <p class="text-xl font-bold text-gray-600">Price on inquiry</p>
                         @endif
                     </div>
-                    
+                    @if($product->cnf_fob_type && $product->cnf_fob_price)
+                    <div>
+                        <h4 class="text-xs font-bold text-gray-500 uppercase tracking-widest mb-1">CNF/FOB Price</h4>
+                        <p class="text-xl font-bold text-[#1e3a8a]">
+                            {{ $product->cnf_fob_type }}: ${{ number_format($product->cnf_fob_price, 2) }}
+                        </p>
+                    </div>
+                    @endif
                     <a href="https://wa.me/819048043444?text=Hi, I'm interested in {{ urlencode($product->name) }}. Product ID: {{ $product->hashid }}. View Product: {{ urlencode(url()->current()) }}" 
                        target="_blank"
                        class="bg-[#25D366] hover:bg-[#128C7E] text-white px-6 py-3 rounded-xl font-bold transition-all flex items-center gap-2 shadow-lg hover:shadow-green-200/50 transform hover:-translate-y-1 mb-1">
@@ -123,120 +151,8 @@
                     </a>
                 </div>
 
-                <!-- General Details Table -->
-                <div class="bg-white rounded-xl shadow-md border border-gray-100 overflow-hidden mb-8">
-                    <div class="bg-gray-50 px-6 py-4 border-b border-gray-100">
-                        <h3 class="font-bold text-gray-800 flex items-center gap-2">
-                            <i class="fas fa-info-circle text-[#1e3a8a]"></i> Product Information
-                        </h3>
-                    </div>
-                    <div class="overflow-x-auto">
-                        <table class="w-full text-left border-collapse">
-                            <tbody class="divide-y divide-gray-100">
-                                <tr class="hover:bg-gray-50 transition">
-                                    <th class="py-4 px-6 bg-gray-50/50 text-gray-600 font-semibold w-1/3">Category</th>
-                                    <td class="py-4 px-6 text-gray-800 font-medium">{{ $product->category }}</td>
-                                </tr>
-                                <tr class="hover:bg-gray-50 transition">
-                                    <th class="py-4 px-6 bg-gray-50/50 text-gray-600 font-semibold">Brand</th>
-                                    <td class="py-4 px-6">
-                                        <span class="px-3 py-1 bg-blue-50 text-[#1e3a8a] rounded-full text-xs font-bold border border-blue-100">
-                                            {{ $product->brand }}
-                                        </span>
-                                    </td>
-                                </tr>
-                                @if($product->model)
-                                <tr class="hover:bg-gray-50 transition">
-                                    <th class="py-4 px-6 bg-gray-50/50 text-gray-600 font-semibold">Model</th>
-                                    <td class="py-4 px-6 text-gray-800 font-medium">{{ $product->model }}</td>
-                                </tr>
-                                @endif
-                                @if($product->part_number)
-                                <tr class="hover:bg-gray-50 transition">
-                                    <th class="py-4 px-6 bg-gray-50/50 text-gray-600 font-semibold">Part Number</th>
-                                    <td class="py-4 px-6 text-gray-800 font-mono text-blue-600">{{ $product->part_number }}</td>
-                                </tr>
-                                @endif
-                                <tr class="hover:bg-gray-50 transition">
-                                    <th class="py-4 px-6 bg-gray-50/50 text-gray-600 font-semibold">Status</th>
-                                    <td class="py-4 px-6">
-                                        <span class="inline-flex items-center gap-1.5 {{ $product->stock_quantity > 0 ? 'text-green-600' : 'text-red-600' }} font-bold">
-                                            <span class="w-2 h-2 rounded-full {{ $product->stock_quantity > 0 ? 'bg-green-500 animate-pulse' : 'bg-red-500' }}"></span>
-                                            {{ $product->stock_quantity > 0 ? $product->stock_quantity . ' In Stock' : 'Out of Stock' }}
-                                        </span>
-                                    </td>
-                                </tr>
-                            </tbody>
-                        </table>
-                    </div>
-                </div>
-
-                <!-- Vehicle Specifications Table -->
-                @if($product->stock_id || $product->chassis_number || $product->model_code || $product->year_month || $product->grade || $product->body_style || $product->mileage || $product->transmission || $product->engine_cc || $product->fuel_type || $product->color || $product->doors || $product->seats || $product->dimension)
-                <div class="bg-white rounded-xl shadow-md border border-gray-100 overflow-hidden mb-8">
-                    <div class="bg-gray-50 px-6 py-4 border-b border-gray-100">
-                        <h3 class="font-bold text-gray-800 flex items-center gap-2">
-                            <i class="fas fa-car text-[#1e3a8a]"></i> Vehicle Specifications
-                        </h3>
-                    </div>
-                    <div class="overflow-x-auto">
-                        <table class="w-full text-left border-collapse">
-                            <tbody class="divide-y divide-gray-100">
-                                @php
-                                    $specs = [
-                                        'Stock ID' => $product->stock_id,
-                                        'Chassis Number' => $product->chassis_number,
-                                        'Model Code' => $product->model_code,
-                                        'Year/Month' => $product->year_month,
-                                        'Grade' => $product->grade,
-                                        'Body Style' => $product->body_style,
-                                        'Mileage' => $product->mileage ? number_format($product->mileage) . ' km' : null,
-                                        'Transmission' => $product->transmission,
-                                        'Engine CC' => $product->engine_cc ? number_format($product->engine_cc) . ' cc' : null,
-                                        'Fuel Type' => $product->fuel_type,
-                                        'Color' => $product->color,
-                                        'Doors / Seats' => ($product->doors || $product->seats) ? ($product->doors ?? 'N/A') . ' / ' . ($product->seats ?? 'N/A') : null,
-                                        'Dimension' => $product->dimension,
-                                    ];
-                                @endphp
-
-                                @foreach($specs as $label => $value)
-                                    @if($value)
-                                    <tr class="hover:bg-gray-50 transition">
-                                        <th class="py-3 px-6 bg-gray-50/50 text-gray-500 font-semibold text-xs uppercase tracking-wider w-1/3">{{ $label }}</th>
-                                        <td class="py-3 px-6 text-gray-800 font-bold text-sm">{{ $value }}</td>
-                                    </tr>
-                                    @endif
-                                @endforeach
-                            </tbody>
-                        </table>
-                    </div>
-                </div>
-                @endif
-
-                <!-- Additional Features -->
-                @if($product->additional_features && count($product->additional_features) > 0)
-                <div class="bg-gray-50 rounded-lg p-6 mb-6">
-                    <h3 class="font-semibold text-lg mb-4">Additional Features</h3>
-                    <div class="flex flex-wrap gap-2">
-                        @foreach($product->additional_features as $feature)
-                        <span class="px-3 py-1 bg-blue-50 text-[#1e3a8a] rounded-full text-sm font-medium border border-blue-100">
-                            <i class="fas fa-check-circle mr-1 text-green-500"></i>{{ $feature }}
-                        </span>
-                        @endforeach
-                    </div>
-                </div>
-                @endif
-
-                @if($product->description)
-                <div class="mb-6">
-                    <h3 class="font-semibold text-lg mb-2">Description</h3>
-                    <p class="text-gray-700 leading-relaxed">{{ $product->description }}</p>
-                </div>
-                @endif
-
-                <!-- Enquiry Form -->
-                <div class="bg-white rounded-xl shadow-md border border-gray-100 overflow-hidden mb-8">
+                <!-- Enquiry Form (in sidebar on large screens) -->
+                <div class="bg-white rounded-xl shadow-md border border-gray-100 overflow-hidden mb-8 lg:mb-0">
                     <div class="bg-gray-50 px-6 py-4 border-b border-gray-100">
                         <h3 class="font-bold text-gray-800 flex items-center gap-2">
                             <i class="fas fa-paper-plane text-[#1e3a8a]"></i> Quick Enquiry
@@ -297,12 +213,148 @@
                         @else
                         <div class="mt-4 flex justify-center">
                             <a href="{{ route('enquiries.index') }}" class="text-sm font-bold text-gray-500 hover:text-[#1e3a8a] transition flex items-center gap-2">
-                                <i class="fas fa-list"></i> View My Previous Enquiries
+                                <!-- <i class="fas fa-list"></i> View My Previous Enquiries -->
                             </a>
                         </div>
                         @endguest
                     </div>
                 </div>
+            </div>
+        </div>
+
+        <!-- Tabs: Details (one tab) + Description (below) -->
+        <div class="mt-10 bg-white rounded-xl shadow-md border border-gray-100 overflow-hidden">
+            <div class="flex border-b border-gray-200">
+                <button type="button" id="tabDetails" onclick="switchProductTab('details')"
+                        class="tab-btn px-6 py-4 font-semibold text-gray-700 border-b-2 border-[#1e3a8a] bg-blue-50/50 text-[#1e3a8a] transition">
+                    <i class="fas fa-info-circle mr-2"></i> Details
+                </button>
+                <button type="button" id="tabDescription" onclick="switchProductTab('description')"
+                        class="tab-btn px-6 py-4 font-semibold text-gray-500 border-b-2 border-transparent hover:text-gray-700 hover:bg-gray-50/50 transition">
+                    <i class="fas fa-align-left mr-2"></i> Description
+                </button>
+            </div>
+
+            <!-- Tab panel: Details (Product Info + Vehicle Specs + Additional Features) -->
+            <div id="panelDetails" class="tab-panel p-6 md:p-8">
+                <div class="space-y-8">
+                    <!-- Product Information -->
+                    <div class="rounded-lg border border-gray-100 overflow-hidden">
+                        <div class="bg-gray-50 px-6 py-3 border-b border-gray-100">
+                            <h3 class="font-bold text-gray-800 flex items-center gap-2">
+                                <i class="fas fa-info-circle text-[#1e3a8a]"></i> Product Information
+                            </h3>
+                        </div>
+                        <div class="overflow-x-auto">
+                            <table class="w-full text-left border-collapse">
+                                <tbody class="divide-y divide-gray-100">
+                                    <tr class="hover:bg-gray-50 transition">
+                                        <th class="py-3 px-6 bg-gray-50/50 text-gray-600 font-semibold w-1/3">Category</th>
+                                        <td class="py-3 px-6 text-gray-800 font-medium">{{ $product->category }}</td>
+                                    </tr>
+                                    <tr class="hover:bg-gray-50 transition">
+                                        <th class="py-3 px-6 bg-gray-50/50 text-gray-600 font-semibold">Brand</th>
+                                        <td class="py-3 px-6">
+                                            <span class="px-3 py-1 bg-blue-50 text-[#1e3a8a] rounded-full text-xs font-bold border border-blue-100">{{ $product->brand }}</span>
+                                        </td>
+                                    </tr>
+                                    @if($product->model)
+                                    <tr class="hover:bg-gray-50 transition">
+                                        <th class="py-3 px-6 bg-gray-50/50 text-gray-600 font-semibold">Model</th>
+                                        <td class="py-3 px-6 text-gray-800 font-medium">{{ $product->model }}</td>
+                                    </tr>
+                                    @endif
+                                    @if($product->part_number)
+                                    <tr class="hover:bg-gray-50 transition">
+                                        <th class="py-3 px-6 bg-gray-50/50 text-gray-600 font-semibold">Part Number</th>
+                                        <td class="py-3 px-6 text-gray-800 font-mono text-blue-600">{{ $product->part_number }}</td>
+                                    </tr>
+                                    @endif
+                                    <tr class="hover:bg-gray-50 transition">
+                                        <th class="py-3 px-6 bg-gray-50/50 text-gray-600 font-semibold">Status</th>
+                                        <td class="py-3 px-6">
+                                            <span class="inline-flex items-center gap-1.5 {{ $product->stock_quantity > 0 ? 'text-green-600' : 'text-red-600' }} font-bold">
+                                                <span class="w-2 h-2 rounded-full {{ $product->stock_quantity > 0 ? 'bg-green-500 animate-pulse' : 'bg-red-500' }}"></span>
+                                                {{ $product->stock_quantity > 0 ? $product->stock_quantity . ' In Stock' : 'Out of Stock' }}
+                                            </span>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+
+                    <!-- Vehicle Specifications -->
+                    @if($product->stock_id || $product->chassis_number || $product->model_code || $product->year_month || $product->grade || $product->body_style || $product->mileage || $product->transmission || $product->engine_cc || $product->fuel_type || $product->color || $product->doors || $product->seats || $product->dimension)
+                    <div class="rounded-lg border border-gray-100 overflow-hidden">
+                        <div class="bg-gray-50 px-6 py-3 border-b border-gray-100">
+                            <h3 class="font-bold text-gray-800 flex items-center gap-2">
+                                <i class="fas fa-car text-[#1e3a8a]"></i> Vehicle Specifications
+                            </h3>
+                        </div>
+                        <div class="overflow-x-auto">
+                            <table class="w-full text-left border-collapse">
+                                <tbody class="divide-y divide-gray-100">
+                                    @php
+                                        $specs = [
+                                            'Stock ID' => $product->stock_id,
+                                            'Chassis Number' => $product->chassis_number,
+                                            'Model Code' => $product->model_code,
+                                            'Year/Month' => $product->year_month,
+                                            'Grade' => $product->grade,
+                                            'Body Style' => $product->body_style,
+                                            'Mileage' => $product->mileage ? number_format($product->mileage) . ' km' : null,
+                                            'Transmission' => $product->transmission,
+                                            'Engine CC' => $product->engine_cc ? number_format($product->engine_cc) . ' cc' : null,
+                                            'Fuel Type' => $product->fuel_type,
+                                            'Color' => $product->color,
+                                            'Doors / Seats' => ($product->doors || $product->seats) ? ($product->doors ?? 'N/A') . ' / ' . ($product->seats ?? 'N/A') : null,
+                                            'Dimension' => $product->dimension,
+                                        ];
+                                    @endphp
+                                    @foreach($specs as $label => $value)
+                                        @if($value)
+                                        <tr class="hover:bg-gray-50 transition">
+                                            <th class="py-3 px-6 bg-gray-50/50 text-gray-500 font-semibold text-xs uppercase tracking-wider w-1/3">{{ $label }}</th>
+                                            <td class="py-3 px-6 text-gray-800 font-bold text-sm">{{ $value }}</td>
+                                        </tr>
+                                        @endif
+                                    @endforeach
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                    @endif
+
+                    <!-- Additional Features -->
+                    @if($product->additional_features && count($product->additional_features) > 0)
+                    <div class="rounded-lg border border-gray-100 overflow-hidden">
+                        <div class="bg-gray-50 px-6 py-3 border-b border-gray-100">
+                            <h3 class="font-bold text-gray-800 flex items-center gap-2">
+                                <i class="fas fa-list-check text-[#1e3a8a]"></i> Additional Features
+                            </h3>
+                        </div>
+                        <div class="p-6">
+                            <div class="flex flex-wrap gap-2">
+                                @foreach($product->additional_features as $feature)
+                                <span class="px-3 py-1.5 bg-blue-50 text-[#1e3a8a] rounded-full text-sm font-medium border border-blue-100">
+                                    <i class="fas fa-check-circle mr-1 text-green-500"></i>{{ $feature }}
+                                </span>
+                                @endforeach
+                            </div>
+                        </div>
+                    </div>
+                    @endif
+                </div>
+            </div>
+
+            <!-- Tab panel: Description (below Details) -->
+            <div id="panelDescription" class="tab-panel hidden p-6 md:p-8">
+                @if($product->description)
+                <div class="text-gray-700 leading-relaxed break-words whitespace-pre-line max-w-full text-base md:text-lg">{{ $product->description }}</div>
+                @else
+                <p class="text-gray-500 italic">No description available.</p>
+                @endif
             </div>
         </div>
     </div>
@@ -454,6 +506,39 @@ function changeModalSlide(direction) {
         openImageModal(0);
     } else {
         openImageModal(newIndex);
+    }
+}
+
+// Thumbnail strip horizontal scroll
+function scrollThumbs(direction) {
+    const strip = document.getElementById('thumbStrip');
+    if (!strip) return;
+    const step = 100;
+    strip.scrollBy({ left: direction * step, behavior: 'smooth' });
+}
+
+// Product tabs: Details | Description
+function switchProductTab(tab) {
+    const tabDetails = document.getElementById('tabDetails');
+    const tabDescription = document.getElementById('tabDescription');
+    const panelDetails = document.getElementById('panelDetails');
+    const panelDescription = document.getElementById('panelDescription');
+    if (!tabDetails || !tabDescription || !panelDetails || !panelDescription) return;
+
+    if (tab === 'details') {
+        tabDetails.classList.add('border-[#1e3a8a]', 'bg-blue-50/50', 'text-[#1e3a8a]');
+        tabDetails.classList.remove('border-transparent');
+        tabDescription.classList.remove('border-[#1e3a8a]', 'bg-blue-50/50', 'text-[#1e3a8a]');
+        tabDescription.classList.add('border-transparent', 'text-gray-500');
+        panelDetails.classList.remove('hidden');
+        panelDescription.classList.add('hidden');
+    } else {
+        tabDescription.classList.add('border-[#1e3a8a]', 'bg-blue-50/50', 'text-[#1e3a8a]');
+        tabDescription.classList.remove('border-transparent', 'text-gray-500');
+        tabDetails.classList.remove('border-[#1e3a8a]', 'bg-blue-50/50', 'text-[#1e3a8a]');
+        tabDetails.classList.add('border-transparent', 'text-gray-500');
+        panelDescription.classList.remove('hidden');
+        panelDetails.classList.add('hidden');
     }
 }
 

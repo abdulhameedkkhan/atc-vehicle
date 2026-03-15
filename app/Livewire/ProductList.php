@@ -3,6 +3,8 @@
 namespace App\Livewire;
 
 use Livewire\Component;
+use App\Models\Brand;
+use App\Models\Category;
 use App\Models\Product;
 use Livewire\Attributes\Url;
 use Livewire\Attributes\On;
@@ -69,6 +71,23 @@ class ProductList extends Component
     {
         $query = Product::where('is_available', true);
 
+        // Only show products that are not expired deals
+        $now = now();
+        $query->where(function ($q) use ($now) {
+            $q->where('is_deal', false)
+              ->orWhere(function ($q2) use ($now) {
+                  $q2->where('is_deal', true)
+                     ->where(function ($q3) use ($now) {
+                         $q3->whereNull('deal_starts_at')
+                            ->orWhere('deal_starts_at', '<=', $now);
+                     })
+                     ->where(function ($q3) use ($now) {
+                         $q3->whereNull('deal_ends_at')
+                            ->orWhere('deal_ends_at', '>=', $now);
+                     });
+              });
+        });
+
         // Search filter
         if ($this->searchTerm) {
             $query->where(function($q) {
@@ -118,6 +137,8 @@ class ProductList extends Component
         return view('livewire.product-list', [
             'products' => $products,
             'totalCount' => $totalCount,
+            'brands' => Brand::orderBy('name')->get(),
+            'categories' => Category::orderBy('name')->get(),
         ]);
     }
 }

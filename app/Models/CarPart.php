@@ -23,13 +23,19 @@ class CarPart extends Model
         'condition',
         'part_number',
         'is_available',
+        'is_deal',
+        'deal_starts_at',
+        'deal_ends_at',
         'stock_quantity',
     ];
 
     protected $casts = [
         'images' => 'array',
         'is_available' => 'boolean',
+        'is_deal' => 'boolean',
         'price' => 'decimal:2',
+        'deal_starts_at' => 'datetime',
+        'deal_ends_at' => 'datetime',
     ];
 
     // Get encrypted ID

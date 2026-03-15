@@ -2,7 +2,9 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Brand;
 use App\Models\CarPart;
+use App\Models\PartCategory;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 
@@ -27,7 +29,9 @@ class CarPartController extends Controller
      */
     public function create()
     {
-        return view('car-parts.create');
+        $brands = Brand::orderBy('name')->get();
+        $partCategories = PartCategory::orderBy('name')->get();
+        return view('car-parts.create', compact('brands', 'partCategories'));
     }
 
     /**
@@ -42,6 +46,9 @@ class CarPartController extends Controller
             'category' => 'required|string',
             'model' => 'nullable|string',
             'price' => 'nullable|numeric',
+            'is_deal' => 'nullable|boolean',
+            'deal_starts_at' => 'nullable|date',
+            'deal_ends_at' => 'nullable|date|after_or_equal:deal_starts_at',
             'image' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg,webp,bmp,ico,tiff,tif|max:5120',
             'images' => 'nullable|array|max:10',
             'images.*' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg,webp,bmp,ico,tiff,tif|max:5120',
@@ -93,6 +100,17 @@ class CarPartController extends Controller
      */
     public function show(CarPart $carPart)
     {
+        // Hide expired deals from public (admins can still view)
+        if ($carPart->is_deal) {
+            $now = now();
+            $active = (!$carPart->deal_starts_at || $carPart->deal_starts_at <= $now)
+                && (!$carPart->deal_ends_at || $carPart->deal_ends_at >= $now);
+
+            if (!$active && !(auth()->check() && auth()->user()->hasRole('admin'))) {
+                abort(404);
+            }
+        }
+
         return view('car-parts.show', compact('carPart'));
     }
 
@@ -101,7 +119,9 @@ class CarPartController extends Controller
      */
     public function edit(CarPart $carPart)
     {
-        return view('car-parts.edit', compact('carPart'));
+        $brands = Brand::orderBy('name')->get();
+        $partCategories = PartCategory::orderBy('name')->get();
+        return view('car-parts.edit', compact('carPart', 'brands', 'partCategories'));
     }
 
     /**
@@ -116,6 +136,9 @@ class CarPartController extends Controller
             'category' => 'required|string',
             'model' => 'nullable|string',
             'price' => 'nullable|numeric',
+            'is_deal' => 'nullable|boolean',
+            'deal_starts_at' => 'nullable|date',
+            'deal_ends_at' => 'nullable|date|after_or_equal:deal_starts_at',
             'image' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg,webp,bmp,ico,tiff,tif|max:5120',
             'images' => 'nullable|array|max:10',
             'images.*' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg,webp,bmp,ico,tiff,tif|max:5120',

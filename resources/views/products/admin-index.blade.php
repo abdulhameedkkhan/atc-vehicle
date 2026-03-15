@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Manage Products - ATC Japan</title>
-    <script src="https://cdn.tailwindcss.com"></script>
+    @vite(['resources/css/app.css', 'resources/js/app.js'])
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
     <!-- DataTables CSS -->
     <link rel="stylesheet" href="https://cdn.datatables.net/1.13.7/css/jquery.dataTables.min.css">
@@ -205,6 +205,7 @@
                         <th class="px-6 py-4 text-left text-xs font-bold text-gray-700 uppercase tracking-wider">Price</th>
                         <th class="px-6 py-4 text-left text-xs font-bold text-gray-700 uppercase tracking-wider">Stock</th>
                         <th class="px-6 py-4 text-left text-xs font-bold text-gray-700 uppercase tracking-wider">Status</th>
+                        <th class="px-6 py-4 text-left text-xs font-bold text-gray-700 uppercase tracking-wider">Visibility</th>
                         <th class="px-6 py-4 text-right text-xs font-bold text-gray-700 uppercase tracking-wider">Actions</th>
                     </tr>
                 </thead>
@@ -233,10 +234,11 @@ $(document).ready(function() {
             { data: 'category', name: 'category' },
             { data: 'price', name: 'price', orderable: true, searchable: false },
             { data: 'stock', name: 'stock_quantity', orderable: true, searchable: false },
-            { data: 'status', name: 'is_available', orderable: true, searchable: false },
+            { data: 'status', name: 'status', orderable: true, searchable: false },
+            { data: 'visibility', name: 'is_available', orderable: true, searchable: false },
             { data: 'actions', name: 'actions', orderable: false, searchable: false },
         ],
-        order: [[1, 'desc']],
+        order: [[0, 'desc']],
         pageLength: 15,
         responsive: true,
         language: {
@@ -257,6 +259,27 @@ $(document).ready(function() {
         dom: '<"flex justify-between items-center mb-4"<"flex items-center gap-2"l><"flex items-center gap-2"f>>rt<"flex justify-between items-center mt-4"<"flex items-center gap-2"i><"flex items-center gap-2"p>>',
     });
 });
+
+function toggleVisibility(hashid) {
+    if(!confirm('Are you sure you want to change the visibility of this product on the website?')) return;
+    
+    $.ajax({
+        url: `/admin/products/${hashid}/toggle-visibility`,
+        type: 'PUT',
+        data: {
+            _token: '{{ csrf_token() }}'
+        },
+        success: function(response) {
+            if(response.success) {
+                $('#productsTable').DataTable().ajax.reload(null, false);
+                // Optional: show a toast notification here
+            }
+        },
+        error: function(xhr) {
+            alert('Something went wrong. Please try again.');
+        }
+    });
+}
 </script>
 </body>
 </html>

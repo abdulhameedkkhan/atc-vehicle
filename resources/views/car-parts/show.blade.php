@@ -94,9 +94,15 @@
                 </div>
 
                 @if($carPart->description)
-                <div class="mb-6">
-                    <h3 class="font-semibold text-lg mb-2">Description</h3>
-                    <p class="text-gray-700 leading-relaxed">{{ $carPart->description }}</p>
+                <div class="mb-6 bg-white rounded-xl shadow-md border border-gray-100 overflow-hidden">
+                    <div class="bg-gray-50 px-6 py-4 border-b border-gray-100">
+                        <h3 class="font-bold text-gray-800 flex items-center gap-2">
+                            <i class="fas fa-align-left text-teal-600"></i> Description
+                        </h3>
+                    </div>
+                    <div class="p-6">
+                        <div class="text-gray-700 leading-relaxed break-words whitespace-pre-line max-w-full">{{ $carPart->description }}</div>
+                    </div>
                 </div>
                 @endif
 

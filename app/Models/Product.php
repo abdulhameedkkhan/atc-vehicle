@@ -17,12 +17,18 @@ class Product extends Model
         'category',
         'model',
         'price',
+        'cnf_fob_type',
+        'cnf_fob_price',
         'image',
         'images',
         'video',
         'condition',
         'part_number',
         'is_available',
+        'is_deal',
+        'deal_starts_at',
+        'deal_ends_at',
+        'status',
         'stock_quantity',
         'stock_id',
         'chassis_number',
@@ -44,8 +50,12 @@ class Product extends Model
     protected $casts = [
         'images' => 'array',
         'is_available' => 'boolean',
+        'is_deal' => 'boolean',
         'price' => 'decimal:2',
+        'cnf_fob_price' => 'decimal:2',
         'additional_features' => 'array',
+        'deal_starts_at' => 'datetime',
+        'deal_ends_at' => 'datetime',
     ];
 
     // Get encrypted ID

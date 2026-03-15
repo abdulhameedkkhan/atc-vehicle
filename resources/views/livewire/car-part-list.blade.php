@@ -34,16 +34,9 @@
                     </label>
                     <select wire:model.live="selectedBrand" class="w-full px-4 py-2.5 border-2 border-gray-200 rounded-lg focus:ring-2 focus:ring-teal-500 focus:border-teal-500 text-sm">
                         <option value="">All Brands</option>
-                        <option value="TOYOTA">TOYOTA</option>
-                        <option value="NISSAN">NISSAN</option>
-                        <option value="HONDA">HONDA</option>
-                        <option value="MAZDA">MAZDA</option>
-                        <option value="MITSUBISHI">MITSUBISHI</option>
-                        <option value="SUZUKI">SUZUKI</option>
-                        <option value="SUBARU">SUBARU</option>
-                        <option value="ISUZU">ISUZU</option>
-                        <option value="LEXUS">LEXUS</option>
-                        <option value="DAIHATSU">DAIHATSU</option>
+                        @foreach($brands as $brand)
+                            <option value="{{ $brand->name }}">{{ $brand->name }}</option>
+                        @endforeach
                     </select>
                 </div>
 
@@ -54,14 +47,9 @@
                     </label>
                     <select wire:model.live="selectedCategory" class="w-full px-4 py-2.5 border-2 border-gray-200 rounded-lg focus:ring-2 focus:ring-teal-500 focus:border-teal-500 text-sm">
                         <option value="">All Categories</option>
-                        <option value="Engine Parts">Engine Parts</option>
-                        <option value="Brake System">Brake System</option>
-                        <option value="Transmission">Transmission</option>
-                        <option value="Body Parts">Body Parts</option>
-                        <option value="Lighting">Lighting</option>
-                        <option value="Fuel System">Fuel System</option>
-                        <option value="HVAC">HVAC</option>
-                        <option value="Other">Other</option>
+                        @foreach($partCategories as $partCategory)
+                            <option value="{{ $partCategory->name }}">{{ $partCategory->name }}</option>
+                        @endforeach
                     </select>
                 </div>
 

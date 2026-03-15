@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Brand;
+use App\Models\Category;
 use App\Models\Product;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
@@ -27,7 +29,9 @@ class ProductController extends Controller
      */
     public function create()
     {
-        return view('products.create');
+        $brands = Brand::orderBy('name')->get();
+        $categories = Category::orderBy('name')->get();
+        return view('products.create', compact('brands', 'categories'));
     }
 
     /**
@@ -42,12 +46,21 @@ class ProductController extends Controller
             'category' => 'required|string',
             'model' => 'nullable|string',
             'price' => 'nullable|numeric',
+            'cnf_fob_type' => 'nullable|in:CNF,FOB',
+            'cnf_fob_price' => 'nullable|numeric',
+            'is_deal' => 'nullable|boolean',
+            'deal_starts_at' => 'nullable|date',
+            'deal_ends_at' => 'nullable|date|after_or_equal:deal_starts_at',
+            'is_deal' => 'nullable|boolean',
+            'deal_starts_at' => 'nullable|date',
+            'deal_ends_at' => 'nullable|date|after_or_equal:deal_starts_at',
             'image' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg,webp,bmp,ico,tiff,tif|max:5120',
             'images' => 'nullable|array|max:10',
             'images.*' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg,webp,bmp,ico,tiff,tif|max:5120',
             'video' => 'nullable|mimes:mp4,avi,mov|max:10240',
             'condition' => 'nullable|string',
             'part_number' => 'nullable|string',
+            'status' => 'nullable|in:reserved,sold,stock,ship',
             'stock_quantity' => 'nullable|integer',
             'stock_id' => 'nullable|string|max:255',
             'chassis_number' => 'nullable|string|max:255',
@@ -55,13 +68,13 @@ class ProductController extends Controller
             'year_month' => 'nullable|string|max:255',
             'grade' => 'nullable|string|max:255',
             'body_style' => 'nullable|string|max:255',
-            'mileage' => 'nullable|integer|min:0',
+            'mileage' => 'nullable|integer|min:0|max:2147483647',
             'transmission' => 'nullable|string|max:255',
-            'engine_cc' => 'nullable|integer|min:0',
+            'engine_cc' => 'nullable|integer|min:0|max:99999',
             'fuel_type' => 'nullable|string|max:255',
             'color' => 'nullable|string|max:255',
-            'doors' => 'nullable|integer|min:0',
-            'seats' => 'nullable|integer|min:0',
+            'doors' => 'nullable|integer|min:0|max:20',
+            'seats' => 'nullable|integer|min:0|max:100',
             'dimension' => 'nullable|string|max:255',
             'additional_features' => 'nullable|array',
             'additional_features.*' => 'nullable|string|max:255',
@@ -70,6 +83,8 @@ class ProductController extends Controller
             'images.*.image' => 'Each file must be an image.',
             'images.*.mimes' => 'Each image must be a file of type: jpeg, png, jpg, gif, svg, webp, bmp, ico, tiff, tif.',
             'images.*.max' => 'Each image must not be larger than 5MB.',
+            'engine_cc.max' => 'Engine CC must not exceed 99,999.',
+            'mileage.max' => 'Mileage value is too large.',
         ]);
 
         // Upload main image
@@ -93,9 +108,16 @@ class ProductController extends Controller
             }
         }
 
-        // Upload video
+        // Upload video (check store result; on failure return back with error)
         if ($request->hasFile('video')) {
-            $validated['video'] = $request->file('video')->store('products/videos', 'public');
+            if (!$request->file('video')->isValid()) {
+                return redirect()->back()->withInput()->withErrors(['video' => 'The video file is invalid or failed to upload.']);
+            }
+            $videoPath = $request->file('video')->store('products/videos', 'public');
+            if ($videoPath === false) {
+                return redirect()->back()->withInput()->withErrors(['video' => 'Video upload failed. Try a smaller file (max 10MB) or check storage permissions.']);
+            }
+            $validated['video'] = $videoPath;
         }
 
         Product::create($validated);
@@ -109,6 +131,17 @@ class ProductController extends Controller
      */
     public function show(Product $product)
     {
+        // Hide expired deals from public (admins can still view)
+        if ($product->is_deal) {
+            $now = now();
+            $active = (!$product->deal_starts_at || $product->deal_starts_at <= $now)
+                && (!$product->deal_ends_at || $product->deal_ends_at >= $now);
+
+            if (!$active && !(auth()->check() && auth()->user()->hasRole('admin'))) {
+                abort(404);
+            }
+        }
+
         return view('products.show', compact('product'));
     }
 
@@ -117,7 +150,9 @@ class ProductController extends Controller
      */
     public function edit(Product $product)
     {
-        return view('products.edit', compact('product'));
+        $brands = Brand::orderBy('name')->get();
+        $categories = Category::orderBy('name')->get();
+        return view('products.edit', compact('product', 'brands', 'categories'));
     }
 
     /**
@@ -132,12 +167,15 @@ class ProductController extends Controller
             'category' => 'required|string',
             'model' => 'nullable|string',
             'price' => 'nullable|numeric',
+            'cnf_fob_type' => 'nullable|in:CNF,FOB',
+            'cnf_fob_price' => 'nullable|numeric',
             'image' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg,webp,bmp,ico,tiff,tif|max:5120',
             'images' => 'nullable|array|max:10',
             'images.*' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg,webp,bmp,ico,tiff,tif|max:5120',
             'video' => 'nullable|mimes:mp4,avi,mov|max:10240',
             'condition' => 'nullable|string',
             'part_number' => 'nullable|string',
+            'status' => 'nullable|in:reserved,sold,stock,ship',
             'stock_quantity' => 'nullable|integer',
             'is_available' => 'nullable|boolean',
             'stock_id' => 'nullable|string|max:255',
@@ -146,13 +184,13 @@ class ProductController extends Controller
             'year_month' => 'nullable|string|max:255',
             'grade' => 'nullable|string|max:255',
             'body_style' => 'nullable|string|max:255',
-            'mileage' => 'nullable|integer|min:0',
+            'mileage' => 'nullable|integer|min:0|max:2147483647',
             'transmission' => 'nullable|string|max:255',
-            'engine_cc' => 'nullable|integer|min:0',
+            'engine_cc' => 'nullable|integer|min:0|max:99999',
             'fuel_type' => 'nullable|string|max:255',
             'color' => 'nullable|string|max:255',
-            'doors' => 'nullable|integer|min:0',
-            'seats' => 'nullable|integer|min:0',
+            'doors' => 'nullable|integer|min:0|max:20',
+            'seats' => 'nullable|integer|min:0|max:100',
             'dimension' => 'nullable|string|max:255',
             'additional_features' => 'nullable|array',
             'additional_features.*' => 'nullable|string|max:255',
@@ -161,6 +199,8 @@ class ProductController extends Controller
             'images.*.image' => 'Each file must be an image.',
             'images.*.mimes' => 'Each image must be a file of type: jpeg, png, jpg, gif, svg, webp, bmp, ico, tiff, tif.',
             'images.*.max' => 'Each image must not be larger than 5MB.',
+            'engine_cc.max' => 'Engine CC must not exceed 99,999.',
+            'mileage.max' => 'Mileage value is too large.',
         ]);
 
         // Update main image
@@ -195,12 +235,19 @@ class ProductController extends Controller
             }
         }
 
-        // Update video
+        // Update video (check store result; on failure return back with error)
         if ($request->hasFile('video')) {
+            if (!$request->file('video')->isValid()) {
+                return redirect()->back()->withInput()->withErrors(['video' => 'The video file is invalid or failed to upload.']);
+            }
+            $videoPath = $request->file('video')->store('products/videos', 'public');
+            if ($videoPath === false) {
+                return redirect()->back()->withInput()->withErrors(['video' => 'Video upload failed. Try a smaller file (max 10MB) or check storage permissions.']);
+            }
             if ($product->video) {
                 Storage::disk('public')->delete($product->video);
             }
-            $validated['video'] = $request->file('video')->store('products/videos', 'public');
+            $validated['video'] = $videoPath;
         }
 
         $product->update($validated);
@@ -257,8 +304,9 @@ class ProductController extends Controller
             3 => 'category',
             4 => 'price',
             5 => 'stock_quantity',
-            6 => 'is_available',
-            7 => null, // actions - not sortable
+            6 => 'status',
+            7 => 'is_available',
+            8 => null, // actions - not sortable
         ];
 
         $orderColumnName = $columnMap[$orderColumn] ?? 'created_at';
@@ -303,9 +351,8 @@ class ProductController extends Controller
                 'category' => '<span class="text-sm text-gray-700 font-medium">' . e($product->category) . '</span>',
                 'price' => $product->price ? '<span class="text-sm font-bold text-green-600">$' . number_format($product->price, 2) . '</span>' : '<span class="text-sm text-gray-400 italic">N/A</span>',
                 'stock' => '<span class="px-2 py-1 text-xs font-semibold rounded-lg ' . ($product->stock_quantity > 0 ? 'bg-blue-100 text-blue-800' : 'bg-gray-100 text-gray-600') . '">' . $product->stock_quantity . ' units</span>',
-                'status' => $product->is_available 
-                    ? '<span class="px-3 py-1.5 text-xs font-bold rounded-lg bg-gradient-to-r from-green-100 to-emerald-100 text-green-800 border border-green-200 flex items-center gap-1 w-fit"><i class="fas fa-check-circle"></i> Available</span>'
-                    : '<span class="px-3 py-1.5 text-xs font-bold rounded-lg bg-gradient-to-r from-red-100 to-pink-100 text-red-800 border border-red-200 flex items-center gap-1 w-fit"><i class="fas fa-times-circle"></i> Unavailable</span>',
+                'status' => static::productStatusBadge($product->status ?? 'stock'),
+                'visibility' => '<button onclick="toggleVisibility(\'' . $product->hashid . '\')" class="w-24 text-center px-3 py-1 text-xs font-bold rounded-full transition-colors duration-200 ' . ($product->is_available ? 'bg-green-100 text-green-700 hover:bg-green-200' : 'bg-gray-200 text-gray-700 hover:bg-gray-300') . '">' . ($product->is_available ? '<i class="fas fa-eye"></i> Active' : '<i class="fas fa-eye-slash"></i> Inactive') . '</button>',
                 'actions' => '<div class="flex items-center justify-end gap-2">
                     <a href="' . route('products.show', $product->hashid) . '" class="px-3 py-1.5 bg-indigo-100 text-indigo-700 hover:bg-indigo-200 rounded-lg transition-colors duration-200 flex items-center gap-1 text-xs font-semibold"><i class="fas fa-eye"></i> View</a>
                     <a href="' . route('admin.products.edit', $product->hashid) . '" class="px-3 py-1.5 bg-blue-100 text-blue-700 hover:bg-blue-200 rounded-lg transition-colors duration-200 flex items-center gap-1 text-xs font-semibold"><i class="fas fa-edit"></i> Edit</a>
@@ -323,6 +370,36 @@ class ProductController extends Controller
             'recordsTotal' => $totalRecords,
             'recordsFiltered' => $filteredRecords,
             'data' => $data,
+        ]);
+    }
+
+    /**
+     * Return HTML badge for product status (reserved, sold, stock, ship).
+     */
+    private static function productStatusBadge(string $status): string
+    {
+        $badges = [
+            'reserved' => '<span class="px-3 py-1.5 text-xs font-bold rounded-lg bg-gradient-to-r from-amber-100 to-yellow-100 text-amber-800 border border-amber-200 flex items-center gap-1 w-fit"><i class="fas fa-bookmark"></i> Reserved</span>',
+            'sold' => '<span class="px-3 py-1.5 text-xs font-bold rounded-lg bg-gradient-to-r from-red-100 to-pink-100 text-red-800 border border-red-200 flex items-center gap-1 w-fit"><i class="fas fa-check-circle"></i> Sold</span>',
+            'stock' => '<span class="px-3 py-1.5 text-xs font-bold rounded-lg bg-gradient-to-r from-green-100 to-emerald-100 text-green-800 border border-green-200 flex items-center gap-1 w-fit"><i class="fas fa-box"></i> Stock</span>',
+            'ship' => '<span class="px-3 py-1.5 text-xs font-bold rounded-lg bg-gradient-to-r from-blue-100 to-cyan-100 text-blue-800 border border-blue-200 flex items-center gap-1 w-fit"><i class="fas fa-shipping-fast"></i> Ship</span>',
+        ];
+        return $badges[$status] ?? $badges['stock'];
+    }
+
+    /**
+     * Toggle product visibility on the website.
+     */
+    public function toggleVisibility(Product $product)
+    {
+        $product->update([
+            'is_available' => !$product->is_available
+        ]);
+
+        return response()->json([
+            'success' => true,
+            'is_available' => $product->is_available,
+            'message' => 'Product is now ' . ($product->is_available ? 'active' : 'inactive') . ' on the website.'
         ]);
     }
 }

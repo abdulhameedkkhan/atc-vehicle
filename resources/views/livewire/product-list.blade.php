@@ -34,16 +34,9 @@
                     </label>
                     <select wire:model.live="selectedBrand" class="w-full px-4 py-2.5 border-2 border-gray-200 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-sm">
                         <option value="">All Brands</option>
-                        <option value="TOYOTA">TOYOTA</option>
-                        <option value="NISSAN">NISSAN</option>
-                        <option value="HONDA">HONDA</option>
-                        <option value="MAZDA">MAZDA</option>
-                        <option value="MITSUBISHI">MITSUBISHI</option>
-                        <option value="SUZUKI">SUZUKI</option>
-                        <option value="SUBARU">SUBARU</option>
-                        <option value="ISUZU">ISUZU</option>
-                        <option value="LEXUS">LEXUS</option>
-                        <option value="DAIHATSU">DAIHATSU</option>
+                        @foreach($brands as $brand)
+                            <option value="{{ $brand->name }}">{{ $brand->name }}</option>
+                        @endforeach
                     </select>
                 </div>
 
@@ -54,12 +47,9 @@
                     </label>
                     <select wire:model.live="selectedCategory" class="w-full px-4 py-2.5 border-2 border-gray-200 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-sm">
                         <option value="">All Categories</option>
-                        <option value="Vehicles">Vehicles</option>
-                        <option value="Parts">Parts</option>
-                        <option value="Engines">Engines</option>
-                        <option value="Transmissions">Transmissions</option>
-                        <option value="Body Parts">Body Parts</option>
-                        <option value="Interior">Interior</option>
+                        @foreach($categories as $category)
+                            <option value="{{ $category->name }}">{{ $category->name }}</option>
+                        @endforeach
                     </select>
                 </div>
 
